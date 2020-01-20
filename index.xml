@@ -1,0 +1,492 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Guohao Zhang&#39;s Blog</title>
+    <link>/</link>
+    <description>Recent content on Guohao Zhang&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 20 Jan 2020 10:18:34 +0800</lastBuildDate>
+    
+	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>20. Valid Parentheses</title>
+      <link>/leetcode/20.-valid-parentheses/</link>
+      <pubDate>Mon, 20 Jan 2020 10:18:34 +0800</pubDate>
+      
+      <guid>/leetcode/20.-valid-parentheses/</guid>
+      <description>No summary</description>
+    </item>
+    
+    <item>
+      <title>Google File System Notes</title>
+      <link>/distributed-system/google-file-system-notes/</link>
+      <pubDate>Thu, 16 Jan 2020 21:09:05 +0800</pubDate>
+      
+      <guid>/distributed-system/google-file-system-notes/</guid>
+      <description>本文是对Google经典论文Google File System的翻译及归纳。</description>
+    </item>
+    
+    <item>
+      <title>MapReduce Notes</title>
+      <link>/distributed-system/mapreduce-notes/</link>
+      <pubDate>Thu, 16 Jan 2020 21:09:03 +0800</pubDate>
+      
+      <guid>/distributed-system/mapreduce-notes/</guid>
+      <description>本文是对Google经典论文MapReduce的翻译及归纳。</description>
+    </item>
+    
+    <item>
+      <title>203. Remove Linked List Elements</title>
+      <link>/leetcode/203.-remove-linked-list-elements/</link>
+      <pubDate>Thu, 16 Jan 2020 09:35:39 +0800</pubDate>
+      
+      <guid>/leetcode/203.-remove-linked-list-elements/</guid>
+      <description>No summary</description>
+    </item>
+    
+    <item>
+      <title>160. Intersection of Two Linked Lists</title>
+      <link>/leetcode/160.-intersection-of-two-linked-lists/</link>
+      <pubDate>Wed, 15 Jan 2020 10:14:16 +0800</pubDate>
+      
+      <guid>/leetcode/160.-intersection-of-two-linked-lists/</guid>
+      <description>No summary</description>
+    </item>
+    
+    <item>
+      <title>Problems of Slow and Fast Pointer in Linked List</title>
+      <link>/leetcode/problems-of-slow-and-fast-pointer-in-linked-list/</link>
+      <pubDate>Wed, 15 Jan 2020 10:01:07 +0800</pubDate>
+      
+      <guid>/leetcode/problems-of-slow-and-fast-pointer-in-linked-list/</guid>
+      <description>A problem set of Slow and Fast Pointer in Linked List problems.</description>
+    </item>
+    
+    <item>
+      <title>4. Median of Two Sorted Arrays</title>
+      <link>/leetcode/4.-median-of-two-sorted-arrays/</link>
+      <pubDate>Tue, 14 Jan 2020 10:43:23 +0800</pubDate>
+      
+      <guid>/leetcode/4.-median-of-two-sorted-arrays/</guid>
+      <description>This post gives two versions of a solution.</description>
+    </item>
+    
+    <item>
+      <title>268. Missing Number</title>
+      <link>/leetcode/268.-missing-number/</link>
+      <pubDate>Mon, 13 Jan 2020 15:54:21 +0800</pubDate>
+      
+      <guid>/leetcode/268.-missing-number/</guid>
+      <description>No summary</description>
+    </item>
+    
+    <item>
+      <title>287. Find the Duplicate Number</title>
+      <link>/leetcode/287.-find-the-duplicate-number/</link>
+      <pubDate>Mon, 13 Jan 2020 15:39:45 +0800</pubDate>
+      
+      <guid>/leetcode/287.-find-the-duplicate-number/</guid>
+      <description>The best solution of the problem is very tricky, which use cycle detection algorithm to find the duplicate number.</description>
+    </item>
+    
+    <item>
+      <title>43. Multiply Strings</title>
+      <link>/leetcode/43.-multiply-strings/</link>
+      <pubDate>Sun, 12 Jan 2020 13:45:46 +0800</pubDate>
+      
+      <guid>/leetcode/43.-multiply-strings/</guid>
+      <description>We solved this problem by simulating vertical multiplication which factoring the multiplier into coefficient and exponent.</description>
+    </item>
+    
+    <item>
+      <title>415. Add Strings</title>
+      <link>/leetcode/415.-add-strings/</link>
+      <pubDate>Sun, 12 Jan 2020 13:44:58 +0800</pubDate>
+      
+      <guid>/leetcode/415.-add-strings/</guid>
+      <description>No summary</description>
+    </item>
+    
+    <item>
+      <title>67. Add Binary</title>
+      <link>/leetcode/67.-add-binary/</link>
+      <pubDate>Sun, 12 Jan 2020 13:43:57 +0800</pubDate>
+      
+      <guid>/leetcode/67.-add-binary/</guid>
+      <description>Given two binary strings, we calculate their sum.</description>
+    </item>
+    
+    <item>
+      <title>18. 4Sum</title>
+      <link>/leetcode/18.-4sum/</link>
+      <pubDate>Sun, 12 Jan 2020 13:42:38 +0800</pubDate>
+      
+      <guid>/leetcode/18.-4sum/</guid>
+      <description>In this problem, we use four pointers to get no repeating tuples, two for iteration and two for shrinking the solution space.</description>
+    </item>
+    
+    <item>
+      <title>Problems of 3Sum</title>
+      <link>/leetcode/problems-of-3sum/</link>
+      <pubDate>Sun, 12 Jan 2020 13:42:29 +0800</pubDate>
+      
+      <guid>/leetcode/problems-of-3sum/</guid>
+      <description>A problem set of 3Sum problems.</description>
+    </item>
+    
+    <item>
+      <title>253. Meeting Room II</title>
+      <link>/leetcode/253.-meeting-room-ii/</link>
+      <pubDate>Sun, 12 Jan 2020 13:39:07 +0800</pubDate>
+      
+      <guid>/leetcode/253.-meeting-room-ii/</guid>
+      <description>No summary</description>
+    </item>
+    
+    <item>
+      <title>Problems of Merge Intervals</title>
+      <link>/leetcode/problems-of-merge-intervals/</link>
+      <pubDate>Sun, 12 Jan 2020 13:39:00 +0800</pubDate>
+      
+      <guid>/leetcode/problems-of-merge-intervals/</guid>
+      <description>A problem set of Merge Intervals problems.</description>
+    </item>
+    
+    <item>
+      <title>252. Meeting Rooms</title>
+      <link>/leetcode/252.-meeting-rooms/</link>
+      <pubDate>Sun, 12 Jan 2020 13:38:19 +0800</pubDate>
+      
+      <guid>/leetcode/252.-meeting-rooms/</guid>
+      <description>No summary</description>
+    </item>
+    
+    <item>
+      <title>56. Merge Intervals</title>
+      <link>/leetcode/56.-merge-intervals/</link>
+      <pubDate>Sat, 11 Jan 2020 22:37:38 +0800</pubDate>
+      
+      <guid>/leetcode/56.-merge-intervals/</guid>
+      <description>if we sort intervals by the start endpoint of an interval, those mergeable intervals must be consecutive.</description>
+    </item>
+    
+    <item>
+      <title>57. Insert Intervals</title>
+      <link>/leetcode/57.-insert-intervals/</link>
+      <pubDate>Sat, 11 Jan 2020 22:36:49 +0800</pubDate>
+      
+      <guid>/leetcode/57.-insert-intervals/</guid>
+      <description>We can solve this problem by using a greedy strategy.</description>
+    </item>
+    
+    <item>
+      <title>24. Swap Nodes in Pairs</title>
+      <link>/leetcode/24.-swap-nodes-in-pairs/</link>
+      <pubDate>Sat, 11 Jan 2020 15:40:56 +0800</pubDate>
+      
+      <guid>/leetcode/24.-swap-nodes-in-pairs/</guid>
+      <description>No summary</description>
+    </item>
+    
+    <item>
+      <title>Problems of In-place Reversal of Linked List</title>
+      <link>/leetcode/problems-of-in-place-reversal-of-linked-list/</link>
+      <pubDate>Sat, 11 Jan 2020 15:40:25 +0800</pubDate>
+      
+      <guid>/leetcode/problems-of-in-place-reversal-of-linked-list/</guid>
+      <description>A problem set of In-place Reversal of Linked List problems.</description>
+    </item>
+    
+    <item>
+      <title>202. Happy Number</title>
+      <link>/leetcode/202.-happy-number/</link>
+      <pubDate>Sat, 11 Jan 2020 10:09:40 +0800</pubDate>
+      
+      <guid>/leetcode/202.-happy-number/</guid>
+      <description>We can use Floyd&#39;s cycle detection algorithm to solve this problem.</description>
+    </item>
+    
+    <item>
+      <title>234. Palindrome Linked List</title>
+      <link>/leetcode/234.-palindrome-linked-list/</link>
+      <pubDate>Fri, 10 Jan 2020 19:05:17 +0800</pubDate>
+      
+      <guid>/leetcode/234.-palindrome-linked-list/</guid>
+      <description>A good example that slowed how to make your code modular.</description>
+    </item>
+    
+    <item>
+      <title>92. Reverse Linked List II</title>
+      <link>/leetcode/92.-reverse-linked-list-ii/</link>
+      <pubDate>Fri, 10 Jan 2020 19:04:15 +0800</pubDate>
+      
+      <guid>/leetcode/92.-reverse-linked-list-ii/</guid>
+      <description>No summary</description>
+    </item>
+    
+    <item>
+      <title>206. Reverse Linked List</title>
+      <link>/leetcode/206.-reverse-linked-list/</link>
+      <pubDate>Fri, 10 Jan 2020 18:55:37 +0800</pubDate>
+      
+      <guid>/leetcode/206.-reverse-linked-list/</guid>
+      <description>This post explained each step of the solution.</description>
+    </item>
+    
+    <item>
+      <title>876. Middle of the Linked List</title>
+      <link>/leetcode/876.-middle-of-the-linked-list/</link>
+      <pubDate>Wed, 08 Jan 2020 10:33:48 +0800</pubDate>
+      
+      <guid>/leetcode/876.-middle-of-the-linked-list/</guid>
+      <description>No summary</description>
+    </item>
+    
+    <item>
+      <title>19. Remove Nth Node From End of List</title>
+      <link>/leetcode/19.-remove-nth-node-from-end-of-list/</link>
+      <pubDate>Wed, 08 Jan 2020 10:20:47 +0800</pubDate>
+      
+      <guid>/leetcode/19.-remove-nth-node-from-end-of-list/</guid>
+      <description>In this problem, I write some comments to visualize each step of the solution.</description>
+    </item>
+    
+    <item>
+      <title>141. Linked List Cycle</title>
+      <link>/leetcode/141.-linked-list-cycle/</link>
+      <pubDate>Wed, 08 Jan 2020 10:02:03 +0800</pubDate>
+      
+      <guid>/leetcode/141.-linked-list-cycle/</guid>
+      <description>No summary</description>
+    </item>
+    
+    <item>
+      <title>259. 3Sum Smaller</title>
+      <link>/leetcode/259.-3sum-smaller/</link>
+      <pubDate>Wed, 08 Jan 2020 09:11:36 +0800</pubDate>
+      
+      <guid>/leetcode/259.-3sum-smaller/</guid>
+      <description>No summary</description>
+    </item>
+    
+    <item>
+      <title>Problems of Paint House</title>
+      <link>/leetcode/problems-of-paint-house/</link>
+      <pubDate>Mon, 06 Jan 2020 19:00:55 +0800</pubDate>
+      
+      <guid>/leetcode/problems-of-paint-house/</guid>
+      <description>A problem set of Paint House problems.</description>
+    </item>
+    
+    <item>
+      <title>Problems of Maximum&amp;Minimum Depth of Binary Tree</title>
+      <link>/leetcode/problems-of-maximumminimum-depth-of-binary-tree/</link>
+      <pubDate>Mon, 06 Jan 2020 19:00:43 +0800</pubDate>
+      
+      <guid>/leetcode/problems-of-maximumminimum-depth-of-binary-tree/</guid>
+      <description>A problem set of Depth of Binary Tree problems.</description>
+    </item>
+    
+    <item>
+      <title>Problems of House Rubber</title>
+      <link>/leetcode/problems-of-house-rubber/</link>
+      <pubDate>Mon, 06 Jan 2020 19:00:20 +0800</pubDate>
+      
+      <guid>/leetcode/problems-of-house-rubber/</guid>
+      <description>A problem set of House Robber problems.</description>
+    </item>
+    
+    <item>
+      <title>Problems of Best Time to Buy and Sell Stock</title>
+      <link>/leetcode/problems-of-best-time-to-buy-and-sell-stock/</link>
+      <pubDate>Mon, 06 Jan 2020 19:00:04 +0800</pubDate>
+      
+      <guid>/leetcode/problems-of-best-time-to-buy-and-sell-stock/</guid>
+      <description>A problem set of Best Time to Buy and Sell Stock problems.</description>
+    </item>
+    
+    <item>
+      <title>Problems of Add Binary, Add Strings and Multiply Strings</title>
+      <link>/leetcode/problems-of-add-binary-add-strings-and-multiply-strings/</link>
+      <pubDate>Mon, 06 Jan 2020 18:59:45 +0800</pubDate>
+      
+      <guid>/leetcode/problems-of-add-binary-add-strings-and-multiply-strings/</guid>
+      <description>A problem set of strings calculation problems.</description>
+    </item>
+    
+    <item>
+      <title>Problems of Longest Subsequence</title>
+      <link>/leetcode/problems-of-longest-subsequence/</link>
+      <pubDate>Mon, 06 Jan 2020 18:58:35 +0800</pubDate>
+      
+      <guid>/leetcode/problems-of-longest-subsequence/</guid>
+      <description>A problem set of Longest Subsequence problems.</description>
+    </item>
+    
+    <item>
+      <title>215. Kth Largest Element in an Array</title>
+      <link>/leetcode/215.-kth-largest-element-in-an-array/</link>
+      <pubDate>Mon, 06 Jan 2020 16:51:25 +0800</pubDate>
+      
+      <guid>/leetcode/215.-kth-largest-element-in-an-array/</guid>
+      <description>We used quick selection to solve this problem.</description>
+    </item>
+    
+    <item>
+      <title>16. 3Sum Closest</title>
+      <link>/leetcode/16.-3sum-closest/</link>
+      <pubDate>Mon, 06 Jan 2020 16:16:03 +0800</pubDate>
+      
+      <guid>/leetcode/16.-3sum-closest/</guid>
+      <description>No summary</description>
+    </item>
+    
+    <item>
+      <title>977. Squares of a Sorted Array</title>
+      <link>/leetcode/977.-squares-of-a-sorted-array/</link>
+      <pubDate>Mon, 06 Jan 2020 15:42:45 +0800</pubDate>
+      
+      <guid>/leetcode/977.-squares-of-a-sorted-array/</guid>
+      <description>No summary</description>
+    </item>
+    
+    <item>
+      <title>26. Remove Duplicates From Sorted Array</title>
+      <link>/leetcode/26.-remove-duplicates-from-sorted-array/</link>
+      <pubDate>Mon, 06 Jan 2020 15:24:49 +0800</pubDate>
+      
+      <guid>/leetcode/26.-remove-duplicates-from-sorted-array/</guid>
+      <description>No summary</description>
+    </item>
+    
+    <item>
+      <title>23. Merge k Sorted Lists</title>
+      <link>/leetcode/23.-merge-k-sorted-lists/</link>
+      <pubDate>Sun, 05 Jan 2020 10:50:30 +0800</pubDate>
+      
+      <guid>/leetcode/23.-merge-k-sorted-lists/</guid>
+      <description>I used prioritiy queue to solve this problem.</description>
+    </item>
+    
+    <item>
+      <title>15. 3Sum</title>
+      <link>/leetcode/15.-3sum/</link>
+      <pubDate>Wed, 01 Jan 2020 16:12:23 +0800</pubDate>
+      
+      <guid>/leetcode/15.-3sum/</guid>
+      <description>In this problem, we use three pointers to get no repeating tuples, one for iteration and two for shrinking the solution space.</description>
+    </item>
+    
+    <item>
+      <title>70. Climbing Stairs</title>
+      <link>/leetcode/70.-climbing-stairs/</link>
+      <pubDate>Sun, 29 Dec 2019 15:08:42 +0800</pubDate>
+      
+      <guid>/leetcode/70.-climbing-stairs/</guid>
+      <description>This is a classic dynamic programming problem.</description>
+    </item>
+    
+    <item>
+      <title>11. Container With Most Water</title>
+      <link>/leetcode/11.-container-with-most-water/</link>
+      <pubDate>Sat, 28 Dec 2019 16:55:27 +0800</pubDate>
+      
+      <guid>/leetcode/11.-container-with-most-water/</guid>
+      <description>通过观察面积公式，如果我们想让面积最大，就要让(right_index - left_index)由最大值向0收敛，并且尽可能地提高Min(height[left_index], height[right_index])的“短板”。</description>
+    </item>
+    
+    <item>
+      <title>146. LRU Cache</title>
+      <link>/leetcode/146.-lru-cache/</link>
+      <pubDate>Wed, 18 Dec 2019 09:21:18 +0800</pubDate>
+      
+      <guid>/leetcode/146.-lru-cache/</guid>
+      <description>Design a LRU cache</description>
+    </item>
+    
+    <item>
+      <title>5. Longest Palindromic Substring</title>
+      <link>/leetcode/5.-longest-palindromic-substring/</link>
+      <pubDate>Thu, 12 Dec 2019 19:09:06 +0800</pubDate>
+      
+      <guid>/leetcode/5.-longest-palindromic-substring/</guid>
+      <description>We can solve this problem in many ways.</description>
+    </item>
+    
+    <item>
+      <title>361. Bomb Enemy</title>
+      <link>/leetcode/361.-bomb-enemy/</link>
+      <pubDate>Wed, 11 Dec 2019 10:39:12 +0800</pubDate>
+      
+      <guid>/leetcode/361.-bomb-enemy/</guid>
+      <description>No summary</description>
+    </item>
+    
+    <item>
+      <title>64. Minimum Path Sum</title>
+      <link>/leetcode/64.-minimum-path-sum/</link>
+      <pubDate>Tue, 10 Dec 2019 23:32:23 +0800</pubDate>
+      
+      <guid>/leetcode/64.-minimum-path-sum/</guid>
+      <description>This is a classic dynamic programming problem.</description>
+    </item>
+    
+    <item>
+      <title>322. Coin Change</title>
+      <link>/leetcode/322.-coin-change/</link>
+      <pubDate>Sun, 08 Dec 2019 22:36:33 +0800</pubDate>
+      
+      <guid>/leetcode/322.-coin-change/</guid>
+      <description>This is a classic dynamic programming problem.</description>
+    </item>
+    
+    <item>
+      <title>3. Longest Substring Without Repeating Characters</title>
+      <link>/leetcode/3.-longest-substring-without-repeating-characters/</link>
+      <pubDate>Sun, 08 Dec 2019 00:08:25 +0800</pubDate>
+      
+      <guid>/leetcode/3.-longest-substring-without-repeating-characters/</guid>
+      <description>We can solve this problem with dynamic programming or sliding window.</description>
+    </item>
+    
+    <item>
+      <title>300. Longest Increasing Subsequence</title>
+      <link>/leetcode/300.-longest-increasing-subsequence/</link>
+      <pubDate>Sun, 08 Dec 2019 00:03:21 +0800</pubDate>
+      
+      <guid>/leetcode/300.-longest-increasing-subsequence/</guid>
+      <description>No summary</description>
+    </item>
+    
+    <item>
+      <title>674. Longest Continuous Increasing Subsequence</title>
+      <link>/leetcode/674.-longest-continuous-increasing-subsequence/</link>
+      <pubDate>Sun, 08 Dec 2019 00:02:23 +0800</pubDate>
+      
+      <guid>/leetcode/674.-longest-continuous-increasing-subsequence/</guid>
+      <description>No summary</description>
+    </item>
+    
+    <item>
+      <title>63. Unique Paths II</title>
+      <link>/leetcode/63.-unique-paths-ii/</link>
+      <pubDate>Tue, 22 Oct 2019 08:07:28 +0800</pubDate>
+      
+      <guid>/leetcode/63.-unique-paths-ii/</guid>
+      <description>The one difference between this problem and Unique Path is that we have to handle more of edge cases.</description>
+    </item>
+    
+    <item>
+      <title>62. Unique Paths</title>
+      <link>/leetcode/62.-unique-paths/</link>
+      <pubDate>Mon, 21 Oct 2019 18:57:35 +0800</pubDate>
+      
+      <guid>/leetcode/62.-unique-paths/</guid>
+      <description>This is a classic dynamic programming problem.</description>
+    </item>
+    
+  </channel>
+</rss>

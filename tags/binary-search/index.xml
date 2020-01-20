@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Binary Search on Guohao Zhang&#39;s Blog</title>
+    <link>/tags/binary-search/</link>
+    <description>Recent content in Binary Search on Guohao Zhang&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 14 Jan 2020 10:43:23 +0800</lastBuildDate>
+    
+	<atom:link href="/tags/binary-search/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>4. Median of Two Sorted Arrays</title>
+      <link>/leetcode/4.-median-of-two-sorted-arrays/</link>
+      <pubDate>Tue, 14 Jan 2020 10:43:23 +0800</pubDate>
+      
+      <guid>/leetcode/4.-median-of-two-sorted-arrays/</guid>
+      <description>This post gives two versions of a solution.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en-us">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Google File System Notes - Guohao Zhang&#39;s Blog</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="">
+	<meta property="og:title" content="Google File System Notes" />
+<meta property="og:description" content="本文是对Google经典论文Google File System的翻译及归纳。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/distributed-system/google-file-system-notes/" />
+<meta property="article:published_time" content="2020-01-16T21:09:05+08:00" />
+<meta property="article:modified_time" content="2020-01-16T21:09:05+08:00" />
+
+	
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+	<link rel="stylesheet" href="/css/style.css">
+	
+	<link rel="shortcut icon" href="/favicon.ico">
+		
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-156444600-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container">
+		<div class="logo">
+			<a class="logo__link" href="/" title="Guohao Zhang&#39;s Blog" rel="home">
+				<div class="logo__title">Guohao Zhang&#39;s Blog</div>
+				<div class="logo__tagline">Another me in a foreign land</div>
+			</a>
+		</div>
+		<div class="divider"></div>
+	</div>
+</header>
+		<div class="wrapper flex">
+			<div class="primary">
+			
+<main class="main" role="main">
+	<article class="post">
+		<header class="post__header">
+			<h1 class="post__title">Google File System Notes</h1>
+			<div class="post__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
+	<time class="meta__text" datetime="2020-01-16T21:09:05">2020-01-16</time>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/distributed-system/" rel="category">Distributed System</a>
+	</span>
+</div></div>
+		</header><div class="content post__content clearfix">
+			<h2 id="0-qa">0. QA</h2>
+<p>Question：GFS是建立在Linux文件系统之上，还是取代了它？</p>
+<p>Answer：当然是建立在Linux文件系统之上啦！整个GFS系统都是用户级别的进程。此外，chunkserver还利用了Linux的文件缓存机制呢。</p>
+<p>~</p>
+<p>Question：GFS提供的接口和POSIX API处于同一层么？</p>
+<p>Answer：</p>
+<p>~</p>
+<p>Question：chunk lease是什么？</p>
+<p>Answer：chunk lease是用于维护多chunk副本一致性的机制。master向其中一个chunk副本授予lease，这个副本被称作primary，其余的副本都被称作secondary。primary为chunk的所有修改选择一个序列顺序，所有副本进行修改时遵循这个顺序。</p>
+<p>~</p>
+<p>Question：chunkserver怎么保证数据完整性？</p>
+<p>Answer：chunkserver用checksum保证数据完整性。每个chunk都会被分解成64KB大小的块，每个块都有一个32位的checksum。对于读操作，chunkserver在数据返回给请求者之前，检查所有交叠部分的checksum。如果checksum不一致，chunkserver会<strong>向请求者返回错误</strong>并<strong>向master报告数据缺失</strong>，请求者会转而请求其他chunk副本，master会从其他chunk副本复制发给缺失者。收到新的副本后，旧的损坏副本会被删除。</p>
+<h2 id="1-introduction">1. Introduction</h2>
+<p>Google File System借鉴了先前的分布式系统在性能、扩展性、可靠性、可用性的成果，并基于对Google应用程序的工作负载和技术环节的观察，做出了许多与传统设计相异的设计假设：</p>
+<ul>
+<li><strong>Component错误比预期中更常见</strong>：因为系统是由成百上千台商用计算机构成，更有可能出现各种各样的错误，所以持续监控、错误检查、自动容错恢复非常必要。</li>
+<li><strong>与传统标准（论文发表的时代）相比，存储的文件数目更多体积更大</strong></li>
+<li><strong>文件读写有特定规律</strong>：多数文件追加新数据而不是覆盖已存在的数据、随机写入几乎不存在、文件经常是被顺序读取而不是随机读取</li>
+<li><strong>应用和文件系统协同设计有利于提高系统整体灵活性</strong></li>
+</ul>
+<h2 id="2-design-overview">2. Design Overview</h2>
+<h3 id="21-assumptions">2.1 Assumptions</h3>
+<ul>
+<li>系统是由许多不昂贵的商用电脑组成的，它们经常挂掉。所以系统需要持续地被监控、探测、容忍错误，并例行地及时从错误中恢复。</li>
+<li>系统存储了适量的大文件。我们期望有几百万个每个几百MB的文件。几GB的文件是非常常见的，它们应该被有效地管理。小文件也必须被支持，但是无需为他们优化。</li>
+<li>系统的工作负载主要由两部分读操作组成：<strong>大的流式读取</strong>和<strong>小的随机读取</strong>。在大的流式读取中，单次操作往往读取几百KB，更常见的是1MB及以上；来自同一个客户端的连续操作经常从文件的一个邻近区域读取。小的随机读取往往是以任意的偏移量读取几KB。注重性能的应用程序通常对小的随机读取进行批处理和排序，以稳定地读取文件，而不是来回移动。</li>
+<li>系统的工作负载也有许多<strong>大的顺序的向文件追加数据的写操作</strong>。典型的写操作与读操作的数据大小相似。一旦写入，文件就很少被再次修改。系统支持小的文件随机写入操作，但是它们不必高效。</li>
+<li>系统必须高效地实现定义明确的“<strong>多client并发追加数据到同一个文件</strong>”语义。系统里的文件经常被用于生产者-消费者队列或多路归并。数百个生产者（每台机器一个）将并发地向文件追加数据。这一语义必须满足原子性，并具有最小的同步开销。文件可能会在以后读取，消费者也可能同时读取文件。</li>
+<li><strong>高持续带宽比低延迟更重要</strong>。多数的目标应用程序都非常重视高速处理大量数据，而很少有对单个读取或写入有严格响应时间要求的应用程序。</li>
+</ul>
+<h3 id="22-interface">2.2 Interface</h3>
+<p>虽然Google File System没有实现标准API（例如POSIX），但它提供了熟悉的文件系统接口：<em>create</em>、<em>delete</em>、<em>open</em>、<em>close</em>、<em>read</em>、<em>write</em>。</p>
+<p>除此之外，GFS还提供了<em>snapshot</em>和<em>record append</em>这两种操作。</p>
+<ul>
+<li>snapshot：低成本创建一个文件或文件夹树的拷贝</li>
+<li>record append：允许多客户端向同一个文件并发地追加数据，并保证每个客户端追加操作的原子性</li>
+</ul>
+<h3 id="23-architecture">2.3 Architecture</h3>
+<p>一个GFS集群由一个master、多个chunkserver和多个client组成，它们通常都是运行在商用Linux机器上的<strong>用户级别进程</strong>。</p>
+<p>文件被分割成固定大小的chunks，每个chunk通过一个不可变的全局唯一的64位chunk handle识别（在chunk创建时由master分配）。chunkserver以Linux文件的形式在本地硬盘上存储chunk，读写chunk数据需要使用chunk handle和byte range指明。用户可以为不同的命名空间指定不同的复制级别，默认情况下，我们存储三份文件的拷贝。</p>
+<p><strong>Master维护了所有的文件系统元信息，其中包括：命名空间、访问控制信息、文件到chunk的映射、chunk的当前位置</strong>。它也控制了全系统的活动，例如chunk租约管理、孤儿chunk的垃圾回收、chunkserver之间的chunk迁移。Master周期性地和chunkserver以心跳包的形式通信，给它们发送指示，并收集它们的状态。</p>
+<p>与每个应用程序相连的GFS client代码实现了文件系统的API，并代表应用程序读写数据，与master和chunkserver通信。client与master交互以进行元数据操作，但所有的携带数据的通信都是直接与chunkserver进行。我们不提供POSIX API，因此不需要连接到Linux vnode层。</p>
+<p><strong>client和chunkserver都不缓存文件数据</strong>。client缓存收效甚微，因为大多数应用程序流经大文件或有太大的工作集以至于无法被缓存。因为无需实现client缓存，消除了缓存一致性问题，简化了client和整个系统的设计（但client还是要缓存元数据）。chunkserver也不需要缓存文件数据，因为chunk以本地文件的形式存储，所以Linux的缓存已经把最常访问的的数据缓存在内存里了。</p>
+<h3 id="24-single-master">2.4 Single Master</h3>
+<p>单个的master极大地简化了我们的设计，使得master可以使用全局信息来制定复杂的chunk放置决策和复制决策。但我们必须使它对读写操作的波及最小化，以确保它不会成为瓶颈。client不经由master读写文件，而是问master它需要联系哪个chunkserver。client在有限时间内缓存这个信息，在随后的操作中直接与chunkserver交互。</p>
+<p>（下面两段是例子，就不翻译了）</p>
+<h3 id="25-chunk-size">2.5 Chunk Size</h3>
+<p>Chunk size是关键设计参数之一，我们选择64MB作为chunk size，这比典型的文件系统块大小更大。每个块复制品以普通Linux文件的形式存储在chunkserver上，它仅按需扩展。惰性空间分配避免了由于内部碎片而浪费空间，这可能是对如此大的块大小的最大反对意见。<strong>（？）</strong></p>
+<p>大chunk size有以下几点好处：</p>
+<ul>
+<li><strong>它减少了client和master交互的需求</strong>，因为读写同一个chunk仅需要一次对chunk位置信息的初始请求。这对减少工作负载是非常显著的，因为应用程序大多顺序地读写大文件。即使是小的顺序读取，客户端也能缓存几TB工作集所有的chunk位置信息</li>
+<li>在一个大chunk上，客户端更有可能在给定的chunk执行多个操作，所以大的chunk size可以<strong>在长时间内通过保持一个持久的TCP连接来减少网络开销</strong></li>
+<li><strong>它减少了存储在master的元数据大小</strong>，这使得可以在内存中保存元数据。反过来也带来了其它好处，我们会在Section 2.6.1讨论</li>
+</ul>
+<p>另一方面，大的chunk size（即便是惰性空间分配）也有其缺点。假如有一个小文件，它由几个chunk组成（可能只有一个）。如果客户端多次访问同一个文件，这些chunk会成为chunkserver中的热点。在实践中，热点通常不会成为主要问题，因为我们的应用多数是以大的多chunk顺序读取。</p>
+<p>但是，当批处理队列系统首次使用GFS时，热点确实出现了：</p>
+<h3 id="26-metadata">2.6 Metadata</h3>
+<p>（暂时未翻译）</p>
+<h3 id="27-consistency-model">2.7 Consistency Model</h3>
+<ul>
+<li><strong>Consistent</strong>: 如果所有的client无论从哪个副本读取都能得到相同数据，那么这个文件区域是一致的。</li>
+<li><strong>Defined</strong>: 客户端向某个offset写入数据后，读取，读到的是自己写的那个。</li>
+<li><strong>Undefined but consistent</strong>: 多客户端并发写，所有客户端都能看见一致的数据，但无从得知什么客户端写了什么数据。</li>
+</ul>
+<p>这位博主写的GFS一致性模型<a href="https://www.leeif.me/2019/07/gfs-consistency.html">文章</a>解释得很清楚，可以参考一下。</p>
+<h2 id="reference">Reference</h2>
+<ul>
+<li><a href="https://static.googleusercontent.com/media/research.google.com/en//archive/gfs-sosp2003.pdf">Google File System</a></li>
+</ul>
+
+		</div>
+		<footer class="post__footer">
+			
+<div class="post__tags tags clearfix">
+	<svg class="tags__badge icon icon-tag" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
+	<ul class="tags__list">
+		<li class="tags__item"><a class="tags__link btn" href="/tags/storage-system/" rel="tag">Storage System</a></li>
+	</ul>
+</div>
+		</footer>
+	</article>
+</main>
+
+
+<nav class="post-nav flex">
+	<div class="post-nav__item post-nav__item--prev">
+		<a class="post-nav__link" href="/distributed-system/mapreduce-notes/" rel="prev"><span class="post-nav__caption">«&thinsp;Previous</span><p class="post-nav__post-title">MapReduce Notes</p></a>
+	</div>
+</nav>
+
+
+			</div>
+			
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2020 Guohao Zhang.
+			<span class="footer__copyright-credits">Generated with <a href="https://gohugo.io/" rel="nofollow noopener" target="_blank">Hugo</a> and <a href="https://github.com/Vimux/Mainroad/" rel="nofollow noopener" target="_blank">Mainroad</a> theme.</span>
+		</div>
+	</div>
+</footer>
+	</div>
+<script async defer src="/js/menu.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+</body>
+</html>

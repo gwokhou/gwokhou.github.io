@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Merge Intervals on Guohao Zhang&#39;s Blog</title>
+    <link>/tags/merge-intervals/</link>
+    <description>Recent content in Merge Intervals on Guohao Zhang&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 12 Jan 2020 13:39:07 +0800</lastBuildDate>
+    
+	<atom:link href="/tags/merge-intervals/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>253. Meeting Room II</title>
+      <link>/leetcode/253.-meeting-room-ii/</link>
+      <pubDate>Sun, 12 Jan 2020 13:39:07 +0800</pubDate>
+      
+      <guid>/leetcode/253.-meeting-room-ii/</guid>
+      <description>No summary</description>
+    </item>
+    
+    <item>
+      <title>Problems of Merge Intervals</title>
+      <link>/leetcode/problems-of-merge-intervals/</link>
+      <pubDate>Sun, 12 Jan 2020 13:39:00 +0800</pubDate>
+      
+      <guid>/leetcode/problems-of-merge-intervals/</guid>
+      <description>A problem set of Merge Intervals problems.</description>
+    </item>
+    
+    <item>
+      <title>252. Meeting Rooms</title>
+      <link>/leetcode/252.-meeting-rooms/</link>
+      <pubDate>Sun, 12 Jan 2020 13:38:19 +0800</pubDate>
+      
+      <guid>/leetcode/252.-meeting-rooms/</guid>
+      <description>No summary</description>
+    </item>
+    
+    <item>
+      <title>56. Merge Intervals</title>
+      <link>/leetcode/56.-merge-intervals/</link>
+      <pubDate>Sat, 11 Jan 2020 22:37:38 +0800</pubDate>
+      
+      <guid>/leetcode/56.-merge-intervals/</guid>
+      <description>if we sort intervals by the start endpoint of an interval, those mergeable intervals must be consecutive.</description>
+    </item>
+    
+    <item>
+      <title>57. Insert Intervals</title>
+      <link>/leetcode/57.-insert-intervals/</link>
+      <pubDate>Sat, 11 Jan 2020 22:36:49 +0800</pubDate>
+      
+      <guid>/leetcode/57.-insert-intervals/</guid>
+      <description>We can solve this problem by using a greedy strategy.</description>
+    </item>
+    
+  </channel>
+</rss>

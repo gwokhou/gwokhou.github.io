@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Linked List on Guohao Zhang&#39;s Blog</title>
+    <link>/tags/linked-list/</link>
+    <description>Recent content in Linked List on Guohao Zhang&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 16 Jan 2020 09:35:39 +0800</lastBuildDate>
+    
+	<atom:link href="/tags/linked-list/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>203. Remove Linked List Elements</title>
+      <link>/leetcode/203.-remove-linked-list-elements/</link>
+      <pubDate>Thu, 16 Jan 2020 09:35:39 +0800</pubDate>
+      
+      <guid>/leetcode/203.-remove-linked-list-elements/</guid>
+      <description>No summary</description>
+    </item>
+    
+    <item>
+      <title>160. Intersection of Two Linked Lists</title>
+      <link>/leetcode/160.-intersection-of-two-linked-lists/</link>
+      <pubDate>Wed, 15 Jan 2020 10:14:16 +0800</pubDate>
+      
+      <guid>/leetcode/160.-intersection-of-two-linked-lists/</guid>
+      <description>No summary</description>
+    </item>
+    
+    <item>
+      <title>Problems of Slow and Fast Pointer in Linked List</title>
+      <link>/leetcode/problems-of-slow-and-fast-pointer-in-linked-list/</link>
+      <pubDate>Wed, 15 Jan 2020 10:01:07 +0800</pubDate>
+      
+      <guid>/leetcode/problems-of-slow-and-fast-pointer-in-linked-list/</guid>
+      <description>A problem set of Slow and Fast Pointer in Linked List problems.</description>
+    </item>
+    
+    <item>
+      <title>287. Find the Duplicate Number</title>
+      <link>/leetcode/287.-find-the-duplicate-number/</link>
+      <pubDate>Mon, 13 Jan 2020 15:39:45 +0800</pubDate>
+      
+      <guid>/leetcode/287.-find-the-duplicate-number/</guid>
+      <description>The best solution of the problem is very tricky, which use cycle detection algorithm to find the duplicate number.</description>
+    </item>
+    
+    <item>
+      <title>24. Swap Nodes in Pairs</title>
+      <link>/leetcode/24.-swap-nodes-in-pairs/</link>
+      <pubDate>Sat, 11 Jan 2020 15:40:56 +0800</pubDate>
+      
+      <guid>/leetcode/24.-swap-nodes-in-pairs/</guid>
+      <description>No summary</description>
+    </item>
+    
+    <item>
+      <title>Problems of In-place Reversal of Linked List</title>
+      <link>/leetcode/problems-of-in-place-reversal-of-linked-list/</link>
+      <pubDate>Sat, 11 Jan 2020 15:40:25 +0800</pubDate>
+      
+      <guid>/leetcode/problems-of-in-place-reversal-of-linked-list/</guid>
+      <description>A problem set of In-place Reversal of Linked List problems.</description>
+    </item>
+    
+    <item>
+      <title>202. Happy Number</title>
+      <link>/leetcode/202.-happy-number/</link>
+      <pubDate>Sat, 11 Jan 2020 10:09:40 +0800</pubDate>
+      
+      <guid>/leetcode/202.-happy-number/</guid>
+      <description>We can use Floyd&#39;s cycle detection algorithm to solve this problem.</description>
+    </item>
+    
+    <item>
+      <title>234. Palindrome Linked List</title>
+      <link>/leetcode/234.-palindrome-linked-list/</link>
+      <pubDate>Fri, 10 Jan 2020 19:05:17 +0800</pubDate>
+      
+      <guid>/leetcode/234.-palindrome-linked-list/</guid>
+      <description>A good example that slowed how to make your code modular.</description>
+    </item>
+    
+    <item>
+      <title>92. Reverse Linked List II</title>
+      <link>/leetcode/92.-reverse-linked-list-ii/</link>
+      <pubDate>Fri, 10 Jan 2020 19:04:15 +0800</pubDate>
+      
+      <guid>/leetcode/92.-reverse-linked-list-ii/</guid>
+      <description>No summary</description>
+    </item>
+    
+    <item>
+      <title>206. Reverse Linked List</title>
+      <link>/leetcode/206.-reverse-linked-list/</link>
+      <pubDate>Fri, 10 Jan 2020 18:55:37 +0800</pubDate>
+      
+      <guid>/leetcode/206.-reverse-linked-list/</guid>
+      <description>This post explained each step of the solution.</description>
+    </item>
+    
+    <item>
+      <title>19. Remove Nth Node From End of List</title>
+      <link>/leetcode/19.-remove-nth-node-from-end-of-list/</link>
+      <pubDate>Wed, 08 Jan 2020 10:20:47 +0800</pubDate>
+      
+      <guid>/leetcode/19.-remove-nth-node-from-end-of-list/</guid>
+      <description>In this problem, I write some comments to visualize each step of the solution.</description>
+    </item>
+    
+    <item>
+      <title>141. Linked List Cycle</title>
+      <link>/leetcode/141.-linked-list-cycle/</link>
+      <pubDate>Wed, 08 Jan 2020 10:02:03 +0800</pubDate>
+      
+      <guid>/leetcode/141.-linked-list-cycle/</guid>
+      <description>No summary</description>
+    </item>
+    
+  </channel>
+</rss>

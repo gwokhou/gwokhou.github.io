@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Two Pointers on Guohao Zhang&#39;s Blog</title>
+    <link>/tags/two-pointers/</link>
+    <description>Recent content in Two Pointers on Guohao Zhang&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 12 Jan 2020 13:42:38 +0800</lastBuildDate>
+    
+	<atom:link href="/tags/two-pointers/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>18. 4Sum</title>
+      <link>/leetcode/18.-4sum/</link>
+      <pubDate>Sun, 12 Jan 2020 13:42:38 +0800</pubDate>
+      
+      <guid>/leetcode/18.-4sum/</guid>
+      <description>In this problem, we use four pointers to get no repeating tuples, two for iteration and two for shrinking the solution space.</description>
+    </item>
+    
+    <item>
+      <title>Problems of 3Sum</title>
+      <link>/leetcode/problems-of-3sum/</link>
+      <pubDate>Sun, 12 Jan 2020 13:42:29 +0800</pubDate>
+      
+      <guid>/leetcode/problems-of-3sum/</guid>
+      <description>A problem set of 3Sum problems.</description>
+    </item>
+    
+    <item>
+      <title>259. 3Sum Smaller</title>
+      <link>/leetcode/259.-3sum-smaller/</link>
+      <pubDate>Wed, 08 Jan 2020 09:11:36 +0800</pubDate>
+      
+      <guid>/leetcode/259.-3sum-smaller/</guid>
+      <description>No summary</description>
+    </item>
+    
+    <item>
+      <title>16. 3Sum Closest</title>
+      <link>/leetcode/16.-3sum-closest/</link>
+      <pubDate>Mon, 06 Jan 2020 16:16:03 +0800</pubDate>
+      
+      <guid>/leetcode/16.-3sum-closest/</guid>
+      <description>No summary</description>
+    </item>
+    
+    <item>
+      <title>977. Squares of a Sorted Array</title>
+      <link>/leetcode/977.-squares-of-a-sorted-array/</link>
+      <pubDate>Mon, 06 Jan 2020 15:42:45 +0800</pubDate>
+      
+      <guid>/leetcode/977.-squares-of-a-sorted-array/</guid>
+      <description>No summary</description>
+    </item>
+    
+    <item>
+      <title>26. Remove Duplicates From Sorted Array</title>
+      <link>/leetcode/26.-remove-duplicates-from-sorted-array/</link>
+      <pubDate>Mon, 06 Jan 2020 15:24:49 +0800</pubDate>
+      
+      <guid>/leetcode/26.-remove-duplicates-from-sorted-array/</guid>
+      <description>No summary</description>
+    </item>
+    
+    <item>
+      <title>15. 3Sum</title>
+      <link>/leetcode/15.-3sum/</link>
+      <pubDate>Wed, 01 Jan 2020 16:12:23 +0800</pubDate>
+      
+      <guid>/leetcode/15.-3sum/</guid>
+      <description>In this problem, we use three pointers to get no repeating tuples, one for iteration and two for shrinking the solution space.</description>
+    </item>
+    
+    <item>
+      <title>11. Container With Most Water</title>
+      <link>/leetcode/11.-container-with-most-water/</link>
+      <pubDate>Sat, 28 Dec 2019 16:55:27 +0800</pubDate>
+      
+      <guid>/leetcode/11.-container-with-most-water/</guid>
+      <description>通过观察面积公式，如果我们想让面积最大，就要让(right_index - left_index)由最大值向0收敛，并且尽可能地提高Min(height[left_index], height[right_index])的“短板”。</description>
+    </item>
+    
+  </channel>
+</rss>

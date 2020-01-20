@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en-us">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>MapReduce Notes - Guohao Zhang&#39;s Blog</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="">
+	<meta property="og:title" content="MapReduce Notes" />
+<meta property="og:description" content="本文是对Google经典论文MapReduce的翻译及归纳。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/distributed-system/mapreduce-notes/" />
+<meta property="article:published_time" content="2020-01-16T21:09:03+08:00" />
+<meta property="article:modified_time" content="2020-01-16T21:09:03+08:00" />
+
+	
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+	<link rel="stylesheet" href="/css/style.css">
+	
+	<link rel="shortcut icon" href="/favicon.ico">
+		
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-156444600-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container">
+		<div class="logo">
+			<a class="logo__link" href="/" title="Guohao Zhang&#39;s Blog" rel="home">
+				<div class="logo__title">Guohao Zhang&#39;s Blog</div>
+				<div class="logo__tagline">Another me in a foreign land</div>
+			</a>
+		</div>
+		<div class="divider"></div>
+	</div>
+</header>
+		<div class="wrapper flex">
+			<div class="primary">
+			
+<main class="main" role="main">
+	<article class="post">
+		<header class="post__header">
+			<h1 class="post__title">MapReduce Notes</h1>
+			<div class="post__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
+	<time class="meta__text" datetime="2020-01-16T21:09:03">2020-01-16</time>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/distributed-system/" rel="category">Distributed System</a>
+	</span>
+</div></div>
+		</header><div class="content post__content clearfix">
+			<h2 id="execution-overview">Execution Overview</h2>
+<ol>
+<li>把input files分割成M个部分。在机器集群上启动若干个程序的拷贝，其中有个特殊的拷贝叫master，其余的是worker，它们在master上注册。一共有M个map task和R个reduce task等待被分配给worker。</li>
+<li>被分配到map task的worker，把M个input file pieces转换成Key-Value，存储在内存中。（在实际应用中，内存中的数据会被周期性地写入到硬盘中，根据partitioning function，被分配到R个区域。这些被写入磁盘的数据的位置，会被传给master。）</li>
+<li>被分配到reduce task的worker，它们知道map task的output位置，使用RPC来获取这些output。当reduce worker获取到所有的intermediate data，就根据Key来排序，以确保相同Key的Key-Value聚集在一起。（如果内存装不下，需要采用外部排序）</li>
+<li>reduce worker遍历已排序的数据，对于每一个Key，把Key和它的Value集合作为参数传给<code>Reduce(key string, values []string) string</code>，Reduce函数的output会被添加到这个reduce partition最终的output里。</li>
+</ol>
+<h2 id="types">Types</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// map    (k1, v1)       → list(k2, v2)
+</span><span style="color:#75715e"></span><span style="color:#75715e">// reduce (k2, list(v2)) → list(v2)
+</span><span style="color:#75715e"></span>
+<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">KeyValue</span> <span style="color:#66d9ef">struct</span> {
+	<span style="color:#a6e22e">Key</span>   <span style="color:#66d9ef">string</span>
+	<span style="color:#a6e22e">Value</span> <span style="color:#66d9ef">string</span>
+}
+
+<span style="color:#a6e22e">mapFuc</span>(<span style="color:#a6e22e">key</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">value</span> <span style="color:#66d9ef">string</span>) []<span style="color:#a6e22e">KeyValue</span>
+
+<span style="color:#75715e">// Typically just zero or one output value is produced per Reduce invocation
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">reduceFuc</span>(<span style="color:#a6e22e">key</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">values</span> []<span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">string</span>
+</code></pre></div><h2 id="example">Example</h2>
+<h3 id="1-count-of-word-frequency-of-a-large-collections-of-documents">1. Count of Word Frequency of a Large Collections of Documents</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">mapFuc</span>(<span style="color:#a6e22e">filename</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">contents</span> <span style="color:#66d9ef">string</span>) []<span style="color:#a6e22e">KeyValue</span> {
+	<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">output</span> []<span style="color:#a6e22e">KeyValue</span>
+	<span style="color:#a6e22e">keys</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">strings</span>.<span style="color:#a6e22e">FieldsFunc</span>(<span style="color:#a6e22e">contents</span>, <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">r</span> <span style="color:#66d9ef">rune</span>) <span style="color:#66d9ef">bool</span> {
+		<span style="color:#66d9ef">return</span> !<span style="color:#a6e22e">unicode</span>.<span style="color:#a6e22e">IsLetter</span>(<span style="color:#a6e22e">r</span>) <span style="color:#f92672">&amp;&amp;</span> !<span style="color:#a6e22e">unicode</span>.<span style="color:#a6e22e">IsNumber</span>(<span style="color:#a6e22e">r</span>)
+	})
+	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">k</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">keys</span> {
+		<span style="color:#a6e22e">output</span> = append(<span style="color:#a6e22e">output</span>, <span style="color:#a6e22e">KeyValue</span>{<span style="color:#a6e22e">Key</span>: <span style="color:#a6e22e">k</span>, <span style="color:#a6e22e">Value</span>: <span style="color:#e6db74">&#34;1&#34;</span>})
+	}
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">output</span>
+}
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">reduceFuc</span>(<span style="color:#a6e22e">key</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">values</span> []<span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">string</span> {
+	<span style="color:#a6e22e">num</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>
+	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">value</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">values</span> {
+		<span style="color:#a6e22e">i</span>, <span style="color:#a6e22e">_</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">strconv</span>.<span style="color:#a6e22e">Atoi</span>(<span style="color:#a6e22e">value</span>)
+		<span style="color:#a6e22e">num</span> <span style="color:#f92672">+=</span> <span style="color:#a6e22e">i</span>
+	}
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">strconv</span>.<span style="color:#a6e22e">Itoa</span>(<span style="color:#a6e22e">num</span>)
+}
+</code></pre></div><h3 id="2-distributed-grep">2. Distributed Grep</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">pattern</span> = <span style="color:#e6db74">&#34;your pattern here&#34;</span>
+
+<span style="color:#75715e">// The map function emits a line if it matches a supplied pattern
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">mapFuc</span>(<span style="color:#a6e22e">filename</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">contents</span> <span style="color:#66d9ef">string</span>) []<span style="color:#a6e22e">KeyValue</span> {
+	<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">output</span> []<span style="color:#a6e22e">KeyValue</span>
+    
+    <span style="color:#75715e">// seperates file contents by line
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">keys</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">strings</span>.<span style="color:#a6e22e">FieldsFunc</span>(<span style="color:#a6e22e">contents</span>, <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">r</span> <span style="color:#66d9ef">rune</span>) <span style="color:#66d9ef">bool</span> {
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">r</span> <span style="color:#f92672">!=</span> <span style="color:#e6db74">&#39;\n&#39;</span>
+	})
+    <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">k</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">keys</span> {
+        <span style="color:#a6e22e">matched</span>, <span style="color:#a6e22e">_</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">regexp</span>.<span style="color:#a6e22e">Match</span>(<span style="color:#a6e22e">pattern</span>, []byte(<span style="color:#a6e22e">k</span>))
+        <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">matched</span>) {
+            <span style="color:#a6e22e">output</span> = append(<span style="color:#a6e22e">output</span>, <span style="color:#a6e22e">KeyValue</span>{<span style="color:#a6e22e">Key</span>: <span style="color:#a6e22e">k</span>, <span style="color:#a6e22e">Value</span>: <span style="color:#e6db74">&#34;&#34;</span>})
+        }
+    }
+    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">output</span>
+}
+
+<span style="color:#75715e">// The reduce function is an identity function that 
+</span><span style="color:#75715e"></span><span style="color:#75715e">// just copies the supplied intermediate data to the output
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">reduceFuc</span>(<span style="color:#a6e22e">key</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">values</span>[] <span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">string</span> {
+    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">key</span>
+}
+</code></pre></div><h3 id="3-count-of-url-access-frequency">3. Count of URL Access Frequency</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// The map function processes logs of web page requests and outputs &lt;URL, 1&gt;
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">mapFuc</span>(<span style="color:#a6e22e">filename</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">contents</span> <span style="color:#66d9ef">string</span>) []<span style="color:#a6e22e">KeyValue</span> {
+}
+
+<span style="color:#75715e">// The reduce function adds together all values for the same URL 
+</span><span style="color:#75715e"></span><span style="color:#75715e">// and emits a &lt;URL, total count&gt; pairs
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">reduceFuc</span>(<span style="color:#a6e22e">key</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">values</span>[] <span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">string</span> {
+}
+</code></pre></div><h3 id="4-reverse-web-link-graph">4. Reverse Web-Link Graph</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// The map function outputs &lt;target, source&gt; pairs for each link 
+</span><span style="color:#75715e"></span><span style="color:#75715e">// to target URL found in a page named source
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">mapFuc</span>(<span style="color:#a6e22e">filename</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">contents</span> <span style="color:#66d9ef">string</span>) []<span style="color:#a6e22e">KeyValue</span> {
+}
+
+<span style="color:#75715e">// The reduce function concatenates the list of all source URLs 
+</span><span style="color:#75715e"></span><span style="color:#75715e">// associated with a given target URL and emits the pair: &lt;target, list(source)&gt;
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">reduceFuc</span>(<span style="color:#a6e22e">key</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">values</span>[] <span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">string</span> {
+}
+</code></pre></div><h3 id="5-term-vector-per-host">5. Term-Vector per Host</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">/*
+</span><span style="color:#75715e">	A term summarizes the most important words that occur in a document 
+</span><span style="color:#75715e">	or a set of documents as a list of &lt;work, frequency&gt; pairs.
+</span><span style="color:#75715e">	
+</span><span style="color:#75715e">	What is a term vector? 
+</span><span style="color:#75715e">	http://www.inf.ed.ac.uk/teaching/courses/tts/pdf/vspace-2x2.pdf
+</span><span style="color:#75715e">*/</span>
+
+<span style="color:#75715e">// The map function emits a &lt;hostname, term vector&gt; pair for each input document.
+</span><span style="color:#75715e"></span><span style="color:#75715e">// (where the hostname is extracted from the URL of the document)
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">mapFuc</span>(<span style="color:#a6e22e">filename</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">contents</span> <span style="color:#66d9ef">string</span>) []<span style="color:#a6e22e">KeyValue</span> {
+}
+
+<span style="color:#75715e">// The reduce function is passed all per-document term vectors for a given host.
+</span><span style="color:#75715e"></span><span style="color:#75715e">// It adds these term vectors together, throwing away infrequent terms, 
+</span><span style="color:#75715e"></span><span style="color:#75715e">// and then emits a final &lt;hostname, term vector&gt; pair.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">reduceFuc</span>(<span style="color:#a6e22e">key</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">values</span>[] <span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">string</span> {
+}
+</code></pre></div><h3 id="6-inverted-index">6. Inverted Index</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// The map function parses each document, 
+</span><span style="color:#75715e"></span><span style="color:#75715e">// and emits a sequence of &lt;word, document ID&gt; pairs.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">mapFuc</span>(<span style="color:#a6e22e">filename</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">contents</span> <span style="color:#66d9ef">string</span>) []<span style="color:#a6e22e">KeyValue</span> {
+    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">output</span> []<span style="color:#a6e22e">KeyValue</span>;
+    <span style="color:#a6e22e">words</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">strings</span>.<span style="color:#a6e22e">FieldsFunc</span>(<span style="color:#a6e22e">contents</span>, <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">r</span> <span style="color:#66d9ef">rune</span>) <span style="color:#66d9ef">bool</span> {
+        <span style="color:#66d9ef">return</span> !<span style="color:#a6e22e">unicode</span>.<span style="color:#a6e22e">IsLetter</span>(<span style="color:#a6e22e">r</span>) <span style="color:#f92672">&amp;&amp;</span> !<span style="color:#a6e22e">unicode</span>.<span style="color:#a6e22e">IsNumber</span>(<span style="color:#a6e22e">r</span>)
+    })
+    <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">word</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">words</span> {
+        <span style="color:#a6e22e">output</span> = append(<span style="color:#a6e22e">output</span>, <span style="color:#a6e22e">KeyValue</span>{<span style="color:#a6e22e">Key</span>: <span style="color:#a6e22e">word</span>, <span style="color:#a6e22e">Value</span>: <span style="color:#a6e22e">filename</span>})
+    }
+    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">output</span>
+}
+
+<span style="color:#75715e">// The reduce function accepts all pairs for a given word, 
+</span><span style="color:#75715e"></span><span style="color:#75715e">// sorts the corresponding document IDs and emits a &lt;word, list(documentID)&gt; pair.
+</span><span style="color:#75715e"></span><span style="color:#75715e">// The set of all output pairs forms a simple inverted index.
+</span><span style="color:#75715e"></span><span style="color:#75715e">// It is easy to augment this computation to keep track of word positions.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">reduceFuc</span>(<span style="color:#a6e22e">key</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">values</span>[] <span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">string</span> {
+    
+}
+</code></pre></div><h3 id="7-distributed-sort">7. Distributed Sort</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// The map function extracts the key from each record, and emits a &lt;key, record&gt; pair.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">mapFuc</span>(<span style="color:#a6e22e">filename</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">contents</span> <span style="color:#66d9ef">string</span>) []<span style="color:#a6e22e">KeyValue</span> {
+}
+
+<span style="color:#75715e">// The reduce function emits all pairs unchanged.
+</span><span style="color:#75715e"></span><span style="color:#75715e">// (This computation depends on the partitioning facilties described in
+</span><span style="color:#75715e"></span><span style="color:#75715e">// Section 4.1 and the ordering properties described in Section 4.2)
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">reduceFuc</span>(<span style="color:#a6e22e">key</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">values</span>[] <span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">string</span> {
+}
+</code></pre></div><h2 id="how-to-handle-worker-failures">How To Handle Worker Failures?</h2>
+<p>Master周期性ping已注册的worker，如果没有响应（不管是延迟还是真的挂了），master就认为这个worker挂了。分配给挂掉的worker的task会被重新分配给空闲的worker：</p>
+<ul>
+<li>
+<p>已完成的map task在worker挂掉的情况下<strong>会</strong>被重新执行，因为存储在local machine的output已经不可获取。</p>
+</li>
+<li>
+<p>已完成的reduce task在worker挂掉的情况下<strong>不会</strong>被重新执行，因为它的output已经存储在global file system中。</p>
+</li>
+</ul>
+<p>如果一个map task先后被worker A和worker B执行（因为worker A挂了），所有在执行reduce task的worker都会被告知这次re-execution。然后，所有还没读worker A产生的数据的reduce task都会从worker B读。</p>
+<h2 id="how-to-handle-master-failure">How To Handle Master Failure?</h2>
+<p>周期性地把master的数据写入硬盘（checkpoints），如果master挂了，就从最新的checkpoint恢复。</p>
+<p>master挂了以后，停止MapReduce的计算，以确保一致性。</p>
+<h2 id="paritioning-function">Paritioning Function</h2>
+<p>Map阶段使用Partitioning Function把中间结果分配到不同的文件中，默认的是<code>hash(Key) % R</code>，用户也可以根据需要指定自己的函数。</p>
+<h2 id="ordering-guarantees">Ordering Guarantees</h2>
+<p>我们保证在一个给定的partition中，中间结果key-value对是以key递增的顺序处理的。</p>
+<p>顺序保证让生成有序的输出文件变得容易，当输出文件需要<strong>支持高效的循键随机访问</strong>或<strong>输出文件的用户需要有序的数据</strong>，这会很有帮助。</p>
+<h2 id="combiner-function">Combiner Function</h2>
+<p>在执行完map函数之后（仍是map阶段）通过网络传输之前，可以使用combiner对数据做部分的归并，这能明显加速某些MapReduce操作。</p>
+<p>例如使用MapReduce做词频统计，因为在自然语言的语料库里单词的出现频率遵循齐夫分布（Zipf distribution），每个map任务都会产生成百上千的&lt;the, 1&gt;，这些大量的重复记录都会通过网络传输给单个reduce任务，并通过reduce函数产生一个结果。<em>所以我们可以使用combiner减轻reduce任务的计算压力并节约网络带宽。</em></p>
+<p>reduce函数和combiner函数通常是一样的，唯一区别是：前者的输出会被写入到最终的输出文件里，后者的输出会被写入到中间结果文件里。</p>
+<h2 id="reference">Reference</h2>
+<ul>
+<li><a href="https://research.google.com/archive/mapreduce-osdi04.pdf"> MapReduce: Simplified Data Processing on Large Clusters  </a></li>
+<li><a href="https://pdos.csail.mit.edu/6.824/labs/lab-1.html">6.824 Lab 1: MapReduce</a></li>
+</ul>
+
+		</div>
+		<footer class="post__footer">
+			
+<div class="post__tags tags clearfix">
+	<svg class="tags__badge icon icon-tag" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
+	<ul class="tags__list">
+		<li class="tags__item"><a class="tags__link btn" href="/tags/big-data/" rel="tag">Big Data</a></li>
+	</ul>
+</div>
+		</footer>
+	</article>
+</main>
+
+
+<nav class="post-nav flex">
+	<div class="post-nav__item post-nav__item--next">
+		<a class="post-nav__link" href="/distributed-system/google-file-system-notes/" rel="next"><span class="post-nav__caption">Next&thinsp;»</span><p class="post-nav__post-title">Google File System Notes</p></a>
+	</div>
+</nav>
+
+
+			</div>
+			
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2020 Guohao Zhang.
+			<span class="footer__copyright-credits">Generated with <a href="https://gohugo.io/" rel="nofollow noopener" target="_blank">Hugo</a> and <a href="https://github.com/Vimux/Mainroad/" rel="nofollow noopener" target="_blank">Mainroad</a> theme.</span>
+		</div>
+	</div>
+</footer>
+	</div>
+<script async defer src="/js/menu.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+</body>
+</html>

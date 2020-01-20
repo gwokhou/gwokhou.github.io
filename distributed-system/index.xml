@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Distributed-systems on Guohao Zhang&#39;s Blog</title>
+    <link>/distributed-system/</link>
+    <description>Recent content in Distributed-systems on Guohao Zhang&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 16 Jan 2020 21:09:05 +0800</lastBuildDate>
+    
+	<atom:link href="/distributed-system/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Google File System Notes</title>
+      <link>/distributed-system/google-file-system-notes/</link>
+      <pubDate>Thu, 16 Jan 2020 21:09:05 +0800</pubDate>
+      
+      <guid>/distributed-system/google-file-system-notes/</guid>
+      <description>本文是对Google经典论文Google File System的翻译及归纳。</description>
+    </item>
+    
+    <item>
+      <title>MapReduce Notes</title>
+      <link>/distributed-system/mapreduce-notes/</link>
+      <pubDate>Thu, 16 Jan 2020 21:09:03 +0800</pubDate>
+      
+      <guid>/distributed-system/mapreduce-notes/</guid>
+      <description>本文是对Google经典论文MapReduce的翻译及归纳。</description>
+    </item>
+    
+  </channel>
+</rss>
