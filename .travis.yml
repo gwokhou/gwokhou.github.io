@@ -5,7 +5,7 @@ go:
 
 branches:
   only:
-    - hugo 
+    - code
 
 install:
     - uname -a
