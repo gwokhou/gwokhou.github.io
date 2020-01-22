@@ -6,10 +6,19 @@
     <description>Recent content in Heap on Guohao Zhang&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 05 Jan 2020 10:50:30 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 22 Jan 2020 10:11:59 +0800</lastBuildDate>
     
 	<atom:link href="/tags/heap/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>295. Find Median From Data Stream</title>
+      <link>/leetcode/295.-find-median-from-data-stream/</link>
+      <pubDate>Wed, 22 Jan 2020 10:11:59 +0800</pubDate>
+      
+      <guid>/leetcode/295.-find-median-from-data-stream/</guid>
+      <description>Using two heaps to find the median from data stream</description>
+    </item>
     
     <item>
       <title>23. Merge k Sorted Lists</title>
