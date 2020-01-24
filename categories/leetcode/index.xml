@@ -6,10 +6,19 @@
     <description>Recent content in LeetCode on Guohao Zhang&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 22 Jan 2020 19:48:06 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 23 Jan 2020 10:48:42 +0800</lastBuildDate>
     
 	<atom:link href="/categories/leetcode/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>34. Find First and Last Position of Element in Sorted Array</title>
+      <link>/leetcode/34.-find-first-and-last-position-of-element-in-sorted-array/</link>
+      <pubDate>Thu, 23 Jan 2020 10:48:42 +0800</pubDate>
+      
+      <guid>/leetcode/34.-find-first-and-last-position-of-element-in-sorted-array/</guid>
+      <description>No summary</description>
+    </item>
     
     <item>
       <title>179. Largest Number</title>
@@ -17,7 +26,7 @@
       <pubDate>Wed, 22 Jan 2020 19:48:06 +0800</pubDate>
       
       <guid>/leetcode/179.-largest-number/</guid>
-      <description>When we customized a comparator, it won&#39;t follow the simple descending order but compares two of the concatenations of the strings.</description>
+      <description>When we customized a comparator, it won&amp;rsquo;t follow the simple descending order but compares two of the concatenations of the strings.</description>
     </item>
     
     <item>
@@ -215,7 +224,7 @@
       <pubDate>Sat, 11 Jan 2020 10:09:40 +0800</pubDate>
       
       <guid>/leetcode/202.-happy-number/</guid>
-      <description>We can use Floyd&#39;s cycle detection algorithm to solve this problem.</description>
+      <description>We can use Floyd&amp;rsquo;s cycle detection algorithm to solve this problem.</description>
     </item>
     
     <item>

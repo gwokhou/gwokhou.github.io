@@ -8,7 +8,7 @@
 	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
 	<meta name="description" content="">
 	<meta property="og:title" content="202. Happy Number" />
-<meta property="og:description" content="We can use Floyd&#39;s cycle detection algorithm to solve this problem." />
+<meta property="og:description" content="We can use Floyd&rsquo;s cycle detection algorithm to solve this problem." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/leetcode/202.-happy-number/" />
 <meta property="article:published_time" content="2020-01-11T10:09:40+08:00" />
@@ -67,7 +67,7 @@ if (!doNotTrack) {
 </div></div>
 		</header><div class="content post__content clearfix">
 			<p>If a number is a &ldquo;happy number&rdquo;, it will eventually converge to 1, otherwise it will fall into a infinite &ldquo;unhappy number&rdquo; loop.</p>
-<p>Thus we can use Floyd's cycle detection algorithm to solve this problem. The slow pointer calculate the sum of digit square once per loop, and the fast pointer calculate the sum of digit square twice per loop, finally they will meet.</p>
+<p>Thus we can use Floyd&rsquo;s cycle detection algorithm to solve this problem. The slow pointer calculate the sum of digit square once per loop, and the fast pointer calculate the sum of digit square twice per loop, finally they will meet.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Solution</span> <span style="color:#f92672">{</span>
     <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">digitSquareSum</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> n<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
         <span style="color:#66d9ef">int</span> sum <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span>

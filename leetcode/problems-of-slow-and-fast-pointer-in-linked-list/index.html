@@ -103,7 +103,7 @@ if (!doNotTrack) {
 <p>Given a linked list, return the node where the cycle begins. If there is no cycle, return <code>null</code>.</p>
 </blockquote>
 <p>If there is cycle in a given linked list, pointers with step size of 1 and 2 will eventually meet. When they meet, <code>2 * distance(slow) = distance(fast)</code>.</p>
-<p>Let's assume that the pointers walk around the cycle (if it exists) clockwise.</p>
+<p>Let&rsquo;s assume that the pointers walk around the cycle (if it exists) clockwise.</p>
 <ul>
 <li>
 <p><code>F</code> : the distance from head to the cycle entrance</p>
@@ -228,7 +228,7 @@ if (!doNotTrack) {
 <span style="color:#f92672">}</span>
 </code></pre></div><h2 id="202-happy-number">202. Happy Number</h2>
 <p>If a number is a &ldquo;happy number&rdquo;, it will eventually converge to 1, otherwise it will fall into a infinite &ldquo;unhappy number&rdquo; loop.</p>
-<p>Thus we can use Floyd's cycle detection algorithm to solve this problem. The slow pointer calculate the sum of digit square once per loop, and the fast pointer calculate the sum of digit square twice per loop, finally they will meet.</p>
+<p>Thus we can use Floyd&rsquo;s cycle detection algorithm to solve this problem. The slow pointer calculate the sum of digit square once per loop, and the fast pointer calculate the sum of digit square twice per loop, finally they will meet.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Solution</span> <span style="color:#f92672">{</span>
     <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">digitSquareSum</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> n<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
         <span style="color:#66d9ef">int</span> sum <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span>

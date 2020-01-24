@@ -6,10 +6,19 @@
     <description>Recent content in Binary Search on Guohao Zhang&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 14 Jan 2020 10:43:23 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 23 Jan 2020 10:48:42 +0800</lastBuildDate>
     
 	<atom:link href="/tags/binary-search/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>34. Find First and Last Position of Element in Sorted Array</title>
+      <link>/leetcode/34.-find-first-and-last-position-of-element-in-sorted-array/</link>
+      <pubDate>Thu, 23 Jan 2020 10:48:42 +0800</pubDate>
+      
+      <guid>/leetcode/34.-find-first-and-last-position-of-element-in-sorted-array/</guid>
+      <description>No summary</description>
+    </item>
     
     <item>
       <title>4. Median of Two Sorted Arrays</title>
