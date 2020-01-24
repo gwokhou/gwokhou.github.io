@@ -6,10 +6,19 @@
     <description>Recent content in LeetCode on Guohao Zhang&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 23 Jan 2020 10:48:42 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 24 Jan 2020 11:08:31 +0800</lastBuildDate>
     
 	<atom:link href="/categories/leetcode/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>704. Binary Search</title>
+      <link>/leetcode/704.-binary-search/</link>
+      <pubDate>Fri, 24 Jan 2020 11:08:31 +0800</pubDate>
+      
+      <guid>/leetcode/704.-binary-search/</guid>
+      <description>A classic binary search example</description>
+    </item>
     
     <item>
       <title>34. Find First and Last Position of Element in Sorted Array</title>
