@@ -117,9 +117,12 @@ if (!doNotTrack) {
         queue<span style="color:#f92672">.</span><span style="color:#a6e22e">addFirst</span><span style="color:#f92672">(</span>root<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
         <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span><span style="color:#f92672">!</span>queue<span style="color:#f92672">.</span><span style="color:#a6e22e">isEmpty</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
             TreeNode x <span style="color:#f92672">=</span> queue<span style="color:#f92672">.</span><span style="color:#a6e22e">removeFirst</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-            TreeNode temp <span style="color:#f92672">=</span> x<span style="color:#f92672">.</span><span style="color:#a6e22e">left</span><span style="color:#f92672">;</span>
+            
+            <span style="color:#75715e">// swap the address of left tree and right tree of the current node
+</span><span style="color:#75715e"></span>            TreeNode temp <span style="color:#f92672">=</span> x<span style="color:#f92672">.</span><span style="color:#a6e22e">left</span><span style="color:#f92672">;</span>
             x<span style="color:#f92672">.</span><span style="color:#a6e22e">left</span> <span style="color:#f92672">=</span> x<span style="color:#f92672">.</span><span style="color:#a6e22e">right</span><span style="color:#f92672">;</span>
             x<span style="color:#f92672">.</span><span style="color:#a6e22e">right</span> <span style="color:#f92672">=</span> temp<span style="color:#f92672">;</span>
+            
             <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>x<span style="color:#f92672">.</span><span style="color:#a6e22e">left</span> <span style="color:#f92672">!</span><span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
                 queue<span style="color:#f92672">.</span><span style="color:#a6e22e">addLast</span><span style="color:#f92672">(</span>x<span style="color:#f92672">.</span><span style="color:#a6e22e">left</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
             <span style="color:#f92672">}</span>
