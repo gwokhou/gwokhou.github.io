@@ -67,7 +67,6 @@ if (!doNotTrack) {
 </div></div>
 		</header><div class="content post__content clearfix">
 			<p>In this article, we will implement a basic calculator with addition and subtraction, which can also dealing with parentheses. To simplify the implementation, we assume the given expression is always valid, which contains only digits, positive sign, negative sign, and space.</p>
-<p>In our solution, we don&rsquo;t use <code>Stack</code> of Java but use <code>LinkedList</code> instead, cause <code>Stack</code> in Java extends <code>Vector</code>, which is a time-consuming thread-safe container.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Solution</span> <span style="color:#f92672">{</span>
     <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">calculate</span><span style="color:#f92672">(</span>String s<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
         <span style="color:#75715e">// init
@@ -108,7 +107,8 @@ if (!doNotTrack) {
         <span style="color:#66d9ef">return</span> res<span style="color:#f92672">;</span>
     <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
-</code></pre></div><h2 id="reference">Reference</h2>
+</code></pre></div><p>We can also use the Shunting-yard algorithm to convert the infix expression to postfix expression, then solve the postfix expression.</p>
+<h2 id="reference">Reference</h2>
 <p><a href="https://leetcode.com/problems/basic-calculator/discuss/62362/JAVA-Easy-Version-To-Understand!!!!!">https://leetcode.com/problems/basic-calculator/discuss/62362/JAVA-Easy-Version-To-Understand!!!!!</a></p>
 
 		</div>
