@@ -6,10 +6,19 @@
     <description>Recent content in Stack on Guohao Zhang&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 20 Jan 2020 10:18:34 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 28 Jan 2020 13:31:14 +0800</lastBuildDate>
     
 	<atom:link href="/tags/stack/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>224. Basic Calculator</title>
+      <link>/leetcode/224.-basic-calculator/</link>
+      <pubDate>Tue, 28 Jan 2020 13:31:14 +0800</pubDate>
+      
+      <guid>/leetcode/224.-basic-calculator/</guid>
+      <description>Implementation of a basic calculator with addition and subtraction</description>
+    </item>
     
     <item>
       <title>20. Valid Parentheses</title>

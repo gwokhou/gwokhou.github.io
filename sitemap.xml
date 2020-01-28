@@ -3,37 +3,47 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>/leetcode/224.-basic-calculator/</loc>
+    <lastmod>2020-01-28T13:31:14+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/categories/</loc>
+    <lastmod>2020-01-28T13:31:14+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/</loc>
+    <lastmod>2020-01-28T13:31:14+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/categories/leetcode/</loc>
+    <lastmod>2020-01-28T13:31:14+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/leetcode/</loc>
+    <lastmod>2020-01-28T13:31:14+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/stack/</loc>
+    <lastmod>2020-01-28T13:31:14+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/</loc>
+    <lastmod>2020-01-28T13:31:14+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/leetcode/103.-binary-tree-zigzag-level-order-traversal/</loc>
     <lastmod>2020-01-27T20:47:38+08:00</lastmod>
   </url>
   
   <url>
     <loc>/tags/binary-tree/</loc>
-    <lastmod>2020-01-27T20:47:38+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/categories/</loc>
-    <lastmod>2020-01-27T20:47:38+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/</loc>
-    <lastmod>2020-01-27T20:47:38+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/categories/leetcode/</loc>
-    <lastmod>2020-01-27T20:47:38+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/leetcode/</loc>
-    <lastmod>2020-01-27T20:47:38+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/</loc>
     <lastmod>2020-01-27T20:47:38+08:00</lastmod>
   </url>
   
@@ -129,11 +139,6 @@
   
   <url>
     <loc>/leetcode/20.-valid-parentheses/</loc>
-    <lastmod>2020-01-20T10:18:34+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/stack/</loc>
     <lastmod>2020-01-20T10:18:34+08:00</lastmod>
   </url>
   
