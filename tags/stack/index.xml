@@ -6,10 +6,19 @@
     <description>Recent content in Stack on Guohao Zhang&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 28 Jan 2020 13:31:14 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 28 Jan 2020 19:54:28 +0800</lastBuildDate>
     
 	<atom:link href="/tags/stack/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>150. Evaluate Reverse Polish Notation</title>
+      <link>/leetcode/150.-evaluate-reverse-polish-notation/</link>
+      <pubDate>Tue, 28 Jan 2020 19:54:28 +0800</pubDate>
+      
+      <guid>/leetcode/150.-evaluate-reverse-polish-notation/</guid>
+      <description>Using stack to evaluate the value of an arithmetic expression in Reverse Polish Notation.</description>
+    </item>
     
     <item>
       <title>224. Basic Calculator</title>
