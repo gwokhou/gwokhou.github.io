@@ -82,7 +82,7 @@ if (!doNotTrack) {
 <p>Apparently, this is a classic optimization problem, so we can use dynamic programming to solve it.</p>
 <p>First, we should define the original problem and the sub-problem, then figure out the connection between them. To find them, we can focus on the transition of the last step.</p>
 <p>Because array is consecutive, if an array <code>subarray(i)</code> ends at <code>nums[i]</code> is a maximum subarray, the second largest maximum subarray <code>subarray(i - 1)</code> must ends at <code>nums[i - 1]</code> when it can make <code>subarray(i)</code> larger.</p>
-<p>In addition, we may have many maximum subarray, but what we want is the subarray which has largest sum.</p>
+<p>In addition, we may have many maximum subarray, but what we want is the subarray which has the largest sum.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Solution</span> <span style="color:#f92672">{</span>
     <span style="color:#75715e">// dp[i]: the maximum sum of a subarray which ends at nums[i]
 </span><span style="color:#75715e"></span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">maxSubArray</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span><span style="color:#f92672">[</span><span style="color:#f92672">]</span> nums<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
@@ -119,6 +119,9 @@ if (!doNotTrack) {
 <nav class="post-nav flex">
 	<div class="post-nav__item post-nav__item--prev">
 		<a class="post-nav__link" href="/leetcode/150.-evaluate-reverse-polish-notation/" rel="prev"><span class="post-nav__caption">«&thinsp;Previous</span><p class="post-nav__post-title">150. Evaluate Reverse Polish Notation</p></a>
+	</div>
+	<div class="post-nav__item post-nav__item--next">
+		<a class="post-nav__link" href="/leetcode/98.-validate-binary-search-tree/" rel="next"><span class="post-nav__caption">Next&thinsp;»</span><p class="post-nav__post-title">98. Validate Binary Search Tree</p></a>
 	</div>
 </nav>
 
