@@ -3,37 +3,47 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>/leetcode/13.-roman-to-integer/</loc>
+    <lastmod>2020-02-05T21:26:40+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/categories/</loc>
+    <lastmod>2020-02-05T21:26:40+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/</loc>
+    <lastmod>2020-02-05T21:26:40+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/categories/leetcode/</loc>
+    <lastmod>2020-02-05T21:26:40+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/leetcode/</loc>
+    <lastmod>2020-02-05T21:26:40+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/math/</loc>
+    <lastmod>2020-02-05T21:26:40+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/</loc>
+    <lastmod>2020-02-05T21:26:40+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/leetcode/98.-validate-binary-search-tree/</loc>
     <lastmod>2020-01-30T15:18:33+08:00</lastmod>
   </url>
   
   <url>
     <loc>/tags/binary-tree/</loc>
-    <lastmod>2020-01-30T15:18:33+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/categories/</loc>
-    <lastmod>2020-01-30T15:18:33+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/</loc>
-    <lastmod>2020-01-30T15:18:33+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/categories/leetcode/</loc>
-    <lastmod>2020-01-30T15:18:33+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/leetcode/</loc>
-    <lastmod>2020-01-30T15:18:33+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/</loc>
     <lastmod>2020-01-30T15:18:33+08:00</lastmod>
   </url>
   
@@ -229,11 +239,6 @@
   
   <url>
     <loc>/leetcode/268.-missing-number/</loc>
-    <lastmod>2020-01-13T15:54:21+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/math/</loc>
     <lastmod>2020-01-13T15:54:21+08:00</lastmod>
   </url>
   

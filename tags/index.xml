@@ -6,10 +6,19 @@
     <description>Recent content in Tags on Guohao Zhang&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 30 Jan 2020 15:18:33 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 05 Feb 2020 21:26:40 +0800</lastBuildDate>
     
 	<atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Math</title>
+      <link>/tags/math/</link>
+      <pubDate>Wed, 05 Feb 2020 21:26:40 +0800</pubDate>
+      
+      <guid>/tags/math/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>Binary Tree</title>
@@ -116,15 +125,6 @@
       <pubDate>Wed, 15 Jan 2020 10:01:07 +0800</pubDate>
       
       <guid>/tags/problem-set/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Math</title>
-      <link>/tags/math/</link>
-      <pubDate>Mon, 13 Jan 2020 15:54:21 +0800</pubDate>
-      
-      <guid>/tags/math/</guid>
       <description></description>
     </item>
     
