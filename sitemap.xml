@@ -3,37 +3,42 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>/leetcode/9.-palindrome-number/</loc>
-    <lastmod>2020-02-06T10:57:00+08:00</lastmod>
+    <loc>/leetcode/7.-reverse-integer/</loc>
+    <lastmod>2020-02-06T12:11:45+08:00</lastmod>
   </url>
   
   <url>
     <loc>/categories/</loc>
-    <lastmod>2020-02-06T10:57:00+08:00</lastmod>
+    <lastmod>2020-02-06T12:11:45+08:00</lastmod>
   </url>
   
   <url>
     <loc>/</loc>
-    <lastmod>2020-02-06T10:57:00+08:00</lastmod>
+    <lastmod>2020-02-06T12:11:45+08:00</lastmod>
   </url>
   
   <url>
     <loc>/categories/leetcode/</loc>
-    <lastmod>2020-02-06T10:57:00+08:00</lastmod>
+    <lastmod>2020-02-06T12:11:45+08:00</lastmod>
   </url>
   
   <url>
     <loc>/leetcode/</loc>
-    <lastmod>2020-02-06T10:57:00+08:00</lastmod>
+    <lastmod>2020-02-06T12:11:45+08:00</lastmod>
   </url>
   
   <url>
     <loc>/tags/math/</loc>
-    <lastmod>2020-02-06T10:57:00+08:00</lastmod>
+    <lastmod>2020-02-06T12:11:45+08:00</lastmod>
   </url>
   
   <url>
     <loc>/tags/</loc>
+    <lastmod>2020-02-06T12:11:45+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/leetcode/9.-palindrome-number/</loc>
     <lastmod>2020-02-06T10:57:00+08:00</lastmod>
   </url>
   
