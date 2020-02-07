@@ -3,37 +3,52 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>/leetcode/235.-lowest-common-ancestor-of-a-binary-search-tree/</loc>
+    <lastmod>2020-02-07T22:08:15+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/binary-tree/</loc>
+    <lastmod>2020-02-07T22:08:15+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/categories/</loc>
+    <lastmod>2020-02-07T22:08:15+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/</loc>
+    <lastmod>2020-02-07T22:08:15+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/categories/leetcode/</loc>
+    <lastmod>2020-02-07T22:08:15+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/leetcode/</loc>
+    <lastmod>2020-02-07T22:08:15+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/</loc>
+    <lastmod>2020-02-07T22:08:15+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/leetcode/236.-lowest-common-ancestor-of-a-binary-tree/</loc>
+    <lastmod>2020-02-07T21:22:46+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/leetcode/7.-reverse-integer/</loc>
     <lastmod>2020-02-06T12:11:45+08:00</lastmod>
   </url>
   
   <url>
-    <loc>/categories/</loc>
-    <lastmod>2020-02-06T12:11:45+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/</loc>
-    <lastmod>2020-02-06T12:11:45+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/categories/leetcode/</loc>
-    <lastmod>2020-02-06T12:11:45+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/leetcode/</loc>
-    <lastmod>2020-02-06T12:11:45+08:00</lastmod>
-  </url>
-  
-  <url>
     <loc>/tags/math/</loc>
-    <lastmod>2020-02-06T12:11:45+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/</loc>
     <lastmod>2020-02-06T12:11:45+08:00</lastmod>
   </url>
   
@@ -49,11 +64,6 @@
   
   <url>
     <loc>/leetcode/98.-validate-binary-search-tree/</loc>
-    <lastmod>2020-01-30T15:18:33+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/binary-tree/</loc>
     <lastmod>2020-01-30T15:18:33+08:00</lastmod>
   </url>
   
