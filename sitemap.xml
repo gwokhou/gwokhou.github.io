@@ -3,17 +3,32 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>/leetcode/200.-number-of-islands/</loc>
-    <lastmod>2020-02-08T20:03:43+08:00</lastmod>
+    <loc>/categories/algorithm/</loc>
+    <lastmod>2020-02-10T18:39:15+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/algorithm/</loc>
+    <lastmod>2020-02-10T18:39:15+08:00</lastmod>
   </url>
   
   <url>
     <loc>/categories/</loc>
-    <lastmod>2020-02-08T20:03:43+08:00</lastmod>
+    <lastmod>2020-02-10T18:39:15+08:00</lastmod>
   </url>
   
   <url>
     <loc>/</loc>
+    <lastmod>2020-02-10T18:39:15+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/algorithm/quick-sort-vs-merge-sort/</loc>
+    <lastmod>2020-02-10T18:39:15+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/leetcode/200.-number-of-islands/</loc>
     <lastmod>2020-02-08T20:03:43+08:00</lastmod>
   </url>
   

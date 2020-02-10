@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Algorithm on Guohao&#39;s Blog</title>
+    <link>/categories/algorithm/</link>
+    <description>Recent content in Algorithm on Guohao&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 10 Feb 2020 18:39:15 +0800</lastBuildDate>
+    
+	<atom:link href="/categories/algorithm/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Quick Sort vs Merge Sort</title>
+      <link>/algorithm/quick-sort-vs-merge-sort/</link>
+      <pubDate>Mon, 10 Feb 2020 18:39:15 +0800</pubDate>
+      
+      <guid>/algorithm/quick-sort-vs-merge-sort/</guid>
+      <description>No summary</description>
+    </item>
+    
+  </channel>
+</rss>
