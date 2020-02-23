@@ -81,7 +81,7 @@ if (!doNotTrack) {
     <span style="color:#66d9ef">public</span> ListNode <span style="color:#a6e22e">reverseList</span><span style="color:#f92672">(</span>ListNode head<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
         ListNode prev <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
         ListNode curr <span style="color:#f92672">=</span> head<span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>curr <span style="color:#f92672">!</span><span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>curr <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
             ListNode oldNext <span style="color:#f92672">=</span> curr<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">;</span>	<span style="color:#75715e">// 1. stores the old next
 </span><span style="color:#75715e"></span>            curr<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span> <span style="color:#f92672">=</span> prev<span style="color:#f92672">;</span>				<span style="color:#75715e">// 2. the current points to the previous
 </span><span style="color:#75715e"></span>            prev <span style="color:#f92672">=</span> curr<span style="color:#f92672">;</span>					<span style="color:#75715e">// 3. the current becomes a new previous

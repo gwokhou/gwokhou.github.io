@@ -76,7 +76,7 @@ if (!doNotTrack) {
 </span><span style="color:#75715e"> */</span>
 <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Solution</span> <span style="color:#f92672">{</span>
     <span style="color:#66d9ef">public</span> ListNode <span style="color:#a6e22e">removeNthFromEnd</span><span style="color:#f92672">(</span>ListNode head<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> n<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        ListNode dummy <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ListNode<span style="color:#f92672">(</span>42<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        ListNode dummy <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ListNode<span style="color:#f92672">(</span>42<span style="color:#f92672">);</span>
         dummy<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span> <span style="color:#f92672">=</span> head<span style="color:#f92672">;</span>
 
         <span style="color:#75715e">// example: n = 2
@@ -89,14 +89,14 @@ if (!doNotTrack) {
         <span style="color:#75715e">// dummy -&gt;  1  -&gt;  2  -&gt;  3  -&gt;  4  -&gt;  5  -&gt;  6  -&gt;
 </span><span style="color:#75715e"></span>        <span style="color:#75715e">//  slow
 </span><span style="color:#75715e"></span>        <span style="color:#75715e">//                 fast
-</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> n<span style="color:#f92672">;</span> i<span style="color:#f92672">+</span><span style="color:#f92672">+</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> n<span style="color:#f92672">;</span> i<span style="color:#f92672">++)</span> <span style="color:#f92672">{</span>
             fast <span style="color:#f92672">=</span> fast<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">;</span>
         <span style="color:#f92672">}</span>
 
         <span style="color:#75715e">// dummy -&gt;  1  -&gt;  2  -&gt;  3  -&gt;  4  -&gt;  5  -&gt;  6  -&gt;
 </span><span style="color:#75715e"></span>        <span style="color:#75715e">//                               slow
 </span><span style="color:#75715e"></span>        <span style="color:#75715e">//                                             fast
-</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>fast<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span> <span style="color:#f92672">!</span><span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>fast<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
             slow <span style="color:#f92672">=</span> slow<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">;</span>
             fast <span style="color:#f92672">=</span> fast<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">;</span>
         <span style="color:#f92672">}</span>

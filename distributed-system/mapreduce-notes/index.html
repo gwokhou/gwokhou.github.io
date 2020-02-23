@@ -75,7 +75,7 @@ if (!doNotTrack) {
 </ol>
 <h2 id="types">Types</h2>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// map    (k1, v1)       → list(k2, v2)
-</span><span style="color:#75715e"></span><span style="color:#75715e">// reduce (k2, list(v2)) → list(v2)
+</span><span style="color:#75715e">// reduce (k2, list(v2)) → list(v2)
 </span><span style="color:#75715e"></span>
 <span style="color:#66d9ef">type</span> <span style="color:#a6e22e">KeyValue</span> <span style="color:#66d9ef">struct</span> {
 	<span style="color:#a6e22e">Key</span>   <span style="color:#66d9ef">string</span>
@@ -128,7 +128,7 @@ if (!doNotTrack) {
 }
 
 <span style="color:#75715e">// The reduce function is an identity function that 
-</span><span style="color:#75715e"></span><span style="color:#75715e">// just copies the supplied intermediate data to the output
+</span><span style="color:#75715e">// just copies the supplied intermediate data to the output
 </span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">reduceFuc</span>(<span style="color:#a6e22e">key</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">values</span>[] <span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">string</span> {
     <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">key</span>
 }
@@ -138,17 +138,17 @@ if (!doNotTrack) {
 }
 
 <span style="color:#75715e">// The reduce function adds together all values for the same URL 
-</span><span style="color:#75715e"></span><span style="color:#75715e">// and emits a &lt;URL, total count&gt; pairs
+</span><span style="color:#75715e">// and emits a &lt;URL, total count&gt; pairs
 </span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">reduceFuc</span>(<span style="color:#a6e22e">key</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">values</span>[] <span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">string</span> {
 }
 </code></pre></div><h3 id="4-reverse-web-link-graph">4. Reverse Web-Link Graph</h3>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// The map function outputs &lt;target, source&gt; pairs for each link 
-</span><span style="color:#75715e"></span><span style="color:#75715e">// to target URL found in a page named source
+</span><span style="color:#75715e">// to target URL found in a page named source
 </span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">mapFuc</span>(<span style="color:#a6e22e">filename</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">contents</span> <span style="color:#66d9ef">string</span>) []<span style="color:#a6e22e">KeyValue</span> {
 }
 
 <span style="color:#75715e">// The reduce function concatenates the list of all source URLs 
-</span><span style="color:#75715e"></span><span style="color:#75715e">// associated with a given target URL and emits the pair: &lt;target, list(source)&gt;
+</span><span style="color:#75715e">// associated with a given target URL and emits the pair: &lt;target, list(source)&gt;
 </span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">reduceFuc</span>(<span style="color:#a6e22e">key</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">values</span>[] <span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">string</span> {
 }
 </code></pre></div><h3 id="5-term-vector-per-host">5. Term-Vector per Host</h3>
@@ -161,18 +161,18 @@ if (!doNotTrack) {
 </span><span style="color:#75715e">*/</span>
 
 <span style="color:#75715e">// The map function emits a &lt;hostname, term vector&gt; pair for each input document.
-</span><span style="color:#75715e"></span><span style="color:#75715e">// (where the hostname is extracted from the URL of the document)
+</span><span style="color:#75715e">// (where the hostname is extracted from the URL of the document)
 </span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">mapFuc</span>(<span style="color:#a6e22e">filename</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">contents</span> <span style="color:#66d9ef">string</span>) []<span style="color:#a6e22e">KeyValue</span> {
 }
 
 <span style="color:#75715e">// The reduce function is passed all per-document term vectors for a given host.
-</span><span style="color:#75715e"></span><span style="color:#75715e">// It adds these term vectors together, throwing away infrequent terms, 
-</span><span style="color:#75715e"></span><span style="color:#75715e">// and then emits a final &lt;hostname, term vector&gt; pair.
+</span><span style="color:#75715e">// It adds these term vectors together, throwing away infrequent terms, 
+</span><span style="color:#75715e">// and then emits a final &lt;hostname, term vector&gt; pair.
 </span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">reduceFuc</span>(<span style="color:#a6e22e">key</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">values</span>[] <span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">string</span> {
 }
 </code></pre></div><h3 id="6-inverted-index">6. Inverted Index</h3>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// The map function parses each document, 
-</span><span style="color:#75715e"></span><span style="color:#75715e">// and emits a sequence of &lt;word, document ID&gt; pairs.
+</span><span style="color:#75715e">// and emits a sequence of &lt;word, document ID&gt; pairs.
 </span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">mapFuc</span>(<span style="color:#a6e22e">filename</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">contents</span> <span style="color:#66d9ef">string</span>) []<span style="color:#a6e22e">KeyValue</span> {
     <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">output</span> []<span style="color:#a6e22e">KeyValue</span>;
     <span style="color:#a6e22e">words</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">strings</span>.<span style="color:#a6e22e">FieldsFunc</span>(<span style="color:#a6e22e">contents</span>, <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">r</span> <span style="color:#66d9ef">rune</span>) <span style="color:#66d9ef">bool</span> {
@@ -185,9 +185,9 @@ if (!doNotTrack) {
 }
 
 <span style="color:#75715e">// The reduce function accepts all pairs for a given word, 
-</span><span style="color:#75715e"></span><span style="color:#75715e">// sorts the corresponding document IDs and emits a &lt;word, list(documentID)&gt; pair.
-</span><span style="color:#75715e"></span><span style="color:#75715e">// The set of all output pairs forms a simple inverted index.
-</span><span style="color:#75715e"></span><span style="color:#75715e">// It is easy to augment this computation to keep track of word positions.
+</span><span style="color:#75715e">// sorts the corresponding document IDs and emits a &lt;word, list(documentID)&gt; pair.
+</span><span style="color:#75715e">// The set of all output pairs forms a simple inverted index.
+</span><span style="color:#75715e">// It is easy to augment this computation to keep track of word positions.
 </span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">reduceFuc</span>(<span style="color:#a6e22e">key</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">values</span>[] <span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">string</span> {
     
 }
@@ -197,8 +197,8 @@ if (!doNotTrack) {
 }
 
 <span style="color:#75715e">// The reduce function emits all pairs unchanged.
-</span><span style="color:#75715e"></span><span style="color:#75715e">// (This computation depends on the partitioning facilties described in
-</span><span style="color:#75715e"></span><span style="color:#75715e">// Section 4.1 and the ordering properties described in Section 4.2)
+</span><span style="color:#75715e">// (This computation depends on the partitioning facilties described in
+</span><span style="color:#75715e">// Section 4.1 and the ordering properties described in Section 4.2)
 </span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">reduceFuc</span>(<span style="color:#a6e22e">key</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">values</span>[] <span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">string</span> {
 }
 </code></pre></div><h2 id="how-to-handle-worker-failures">How To Handle Worker Failures?</h2>

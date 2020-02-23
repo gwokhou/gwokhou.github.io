@@ -69,19 +69,19 @@ if (!doNotTrack) {
 			<p>If there is no duplicate in the array, the mapping <code>f(index) = num</code> must be one to one, otherwise the mapping is many to one.</p>
 <p>If we linked all the mappings up we can reduce this problem to cycle detection. In an array with duplicate numbers, there must be at least two <code>indexes</code> mapped to the same <code>num</code>, one of the <code>indexes</code> belongs to the cycle, the other belongs to the &ldquo;straight line&rdquo;, thus the cycle entrance is the <code>num</code>.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Solution</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">findDuplicate</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span><span style="color:#f92672">[</span><span style="color:#f92672">]</span> nums<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">int</span> slow <span style="color:#f92672">=</span> nums<span style="color:#f92672">[</span>0<span style="color:#f92672">]</span><span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">int</span> fast <span style="color:#f92672">=</span> nums<span style="color:#f92672">[</span>0<span style="color:#f92672">]</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">findDuplicate</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span><span style="color:#f92672">[]</span> nums<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">int</span> slow <span style="color:#f92672">=</span> nums<span style="color:#f92672">[</span>0<span style="color:#f92672">];</span>
+        <span style="color:#66d9ef">int</span> fast <span style="color:#f92672">=</span> nums<span style="color:#f92672">[</span>0<span style="color:#f92672">];</span>
         <span style="color:#66d9ef">do</span> <span style="color:#f92672">{</span>
-            slow <span style="color:#f92672">=</span> nums<span style="color:#f92672">[</span>slow<span style="color:#f92672">]</span><span style="color:#f92672">;</span>
-            fast <span style="color:#f92672">=</span> nums<span style="color:#f92672">[</span>nums<span style="color:#f92672">[</span>fast<span style="color:#f92672">]</span><span style="color:#f92672">]</span><span style="color:#f92672">;</span>
-        <span style="color:#f92672">}</span> <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>slow <span style="color:#f92672">!</span><span style="color:#f92672">=</span> fast<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            slow <span style="color:#f92672">=</span> nums<span style="color:#f92672">[</span>slow<span style="color:#f92672">];</span>
+            fast <span style="color:#f92672">=</span> nums<span style="color:#f92672">[</span>nums<span style="color:#f92672">[</span>fast<span style="color:#f92672">]];</span>
+        <span style="color:#f92672">}</span> <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>slow <span style="color:#f92672">!=</span> fast<span style="color:#f92672">);</span>
         
         <span style="color:#66d9ef">int</span> ptr1 <span style="color:#f92672">=</span> slow<span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">int</span> ptr2 <span style="color:#f92672">=</span> nums<span style="color:#f92672">[</span>0<span style="color:#f92672">]</span><span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>ptr1 <span style="color:#f92672">!</span><span style="color:#f92672">=</span> ptr2<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            ptr1 <span style="color:#f92672">=</span> nums<span style="color:#f92672">[</span>ptr1<span style="color:#f92672">]</span><span style="color:#f92672">;</span>
-            ptr2 <span style="color:#f92672">=</span> nums<span style="color:#f92672">[</span>ptr2<span style="color:#f92672">]</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">int</span> ptr2 <span style="color:#f92672">=</span> nums<span style="color:#f92672">[</span>0<span style="color:#f92672">];</span>
+        <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>ptr1 <span style="color:#f92672">!=</span> ptr2<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            ptr1 <span style="color:#f92672">=</span> nums<span style="color:#f92672">[</span>ptr1<span style="color:#f92672">];</span>
+            ptr2 <span style="color:#f92672">=</span> nums<span style="color:#f92672">[</span>ptr2<span style="color:#f92672">];</span>
         <span style="color:#f92672">}</span>
         <span style="color:#66d9ef">return</span> ptr1<span style="color:#f92672">;</span>
     <span style="color:#f92672">}</span>

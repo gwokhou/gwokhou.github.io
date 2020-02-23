@@ -79,16 +79,16 @@ if (!doNotTrack) {
 <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Solution</span> {
 <span style="color:#66d9ef">private</span><span style="color:#f92672">:</span>
     <span style="color:#66d9ef">void</span> dfs(TreeNode<span style="color:#f92672">*</span> root, <span style="color:#66d9ef">int</span><span style="color:#f92672">&amp;</span> k, <span style="color:#66d9ef">int</span><span style="color:#f92672">&amp;</span> res) {
-        <span style="color:#66d9ef">if</span> (root <span style="color:#f92672">=</span><span style="color:#f92672">=</span> <span style="color:#66d9ef">nullptr</span>) {
+        <span style="color:#66d9ef">if</span> (root <span style="color:#f92672">==</span> <span style="color:#66d9ef">nullptr</span>) {
             <span style="color:#66d9ef">return</span>;
         }
-        dfs(root<span style="color:#f92672">-</span><span style="color:#f92672">&gt;</span>left, k, res);
-        k<span style="color:#f92672">-</span><span style="color:#f92672">-</span>;
-        <span style="color:#66d9ef">if</span> (k <span style="color:#f92672">=</span><span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>) {
-            res <span style="color:#f92672">=</span> root<span style="color:#f92672">-</span><span style="color:#f92672">&gt;</span>val;
+        dfs(root<span style="color:#f92672">-&gt;</span>left, k, res);
+        k<span style="color:#f92672">--</span>;
+        <span style="color:#66d9ef">if</span> (k <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>) {
+            res <span style="color:#f92672">=</span> root<span style="color:#f92672">-&gt;</span>val;
             <span style="color:#66d9ef">return</span>;
         }
-        dfs(root<span style="color:#f92672">-</span><span style="color:#f92672">&gt;</span>right, k, res);
+        dfs(root<span style="color:#f92672">-&gt;</span>right, k, res);
     }
 <span style="color:#66d9ef">public</span><span style="color:#f92672">:</span>
     <span style="color:#66d9ef">int</span> kthSmallest(TreeNode<span style="color:#f92672">*</span> root, <span style="color:#66d9ef">int</span> k) {

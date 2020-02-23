@@ -75,31 +75,31 @@ if (!doNotTrack) {
 </span><span style="color:#75715e"> * }
 </span><span style="color:#75715e"> */</span>
 <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Solution</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">public</span> ListNode <span style="color:#a6e22e">mergeKLists</span><span style="color:#f92672">(</span>ListNode<span style="color:#f92672">[</span><span style="color:#f92672">]</span> lists<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        PriorityQueue<span style="color:#f92672">&lt;</span>ListNode<span style="color:#f92672">&gt;</span> queue <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> PriorityQueue<span style="color:#f92672">&lt;</span>ListNode<span style="color:#f92672">&gt;</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Comparator<span style="color:#f92672">&lt;</span>ListNode<span style="color:#f92672">&gt;</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">public</span> ListNode <span style="color:#a6e22e">mergeKLists</span><span style="color:#f92672">(</span>ListNode<span style="color:#f92672">[]</span> lists<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        PriorityQueue<span style="color:#f92672">&lt;</span>ListNode<span style="color:#f92672">&gt;</span> queue <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> PriorityQueue<span style="color:#f92672">&lt;</span>ListNode<span style="color:#f92672">&gt;(</span><span style="color:#66d9ef">new</span> Comparator<span style="color:#f92672">&lt;</span>ListNode<span style="color:#f92672">&gt;()</span> <span style="color:#f92672">{</span>
             <span style="color:#a6e22e">@Override</span>
             <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">compare</span><span style="color:#f92672">(</span>ListNode o1<span style="color:#f92672">,</span> ListNode o2<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
                 <span style="color:#66d9ef">return</span> o1<span style="color:#f92672">.</span><span style="color:#a6e22e">val</span> <span style="color:#f92672">-</span> o2<span style="color:#f92672">.</span><span style="color:#a6e22e">val</span><span style="color:#f92672">;</span>
             <span style="color:#f92672">}</span>
-        <span style="color:#f92672">}</span><span style="color:#f92672">)</span><span style="color:#f92672">{</span><span style="color:#f92672">}</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">}){};</span>
 
         <span style="color:#75715e">// init
 </span><span style="color:#75715e"></span>        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>ListNode node <span style="color:#f92672">:</span> lists<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>node <span style="color:#f92672">!</span><span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-                queue<span style="color:#f92672">.</span><span style="color:#a6e22e">offer</span><span style="color:#f92672">(</span>node<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>node <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                queue<span style="color:#f92672">.</span><span style="color:#a6e22e">offer</span><span style="color:#f92672">(</span>node<span style="color:#f92672">);</span>
             <span style="color:#f92672">}</span>
         <span style="color:#f92672">}</span>
 
         <span style="color:#75715e">// merge k sorted lists
-</span><span style="color:#75715e"></span>        ListNode dummy <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ListNode<span style="color:#f92672">(</span>42<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+</span><span style="color:#75715e"></span>        ListNode dummy <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ListNode<span style="color:#f92672">(</span>42<span style="color:#f92672">);</span>
         ListNode p <span style="color:#f92672">=</span> dummy<span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span><span style="color:#f92672">!</span>queue<span style="color:#f92672">.</span><span style="color:#a6e22e">isEmpty</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            ListNode smallest <span style="color:#f92672">=</span> queue<span style="color:#f92672">.</span><span style="color:#a6e22e">poll</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">while</span> <span style="color:#f92672">(!</span>queue<span style="color:#f92672">.</span><span style="color:#a6e22e">isEmpty</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+            ListNode smallest <span style="color:#f92672">=</span> queue<span style="color:#f92672">.</span><span style="color:#a6e22e">poll</span><span style="color:#f92672">();</span>
             p<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span> <span style="color:#f92672">=</span> smallest<span style="color:#f92672">;</span>
             p <span style="color:#f92672">=</span> p<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">;</span>
             smallest <span style="color:#f92672">=</span> smallest<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">;</span>
-            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>smallest <span style="color:#f92672">!</span><span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-                queue<span style="color:#f92672">.</span><span style="color:#a6e22e">offer</span><span style="color:#f92672">(</span>smallest<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>smallest <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                queue<span style="color:#f92672">.</span><span style="color:#a6e22e">offer</span><span style="color:#f92672">(</span>smallest<span style="color:#f92672">);</span>
             <span style="color:#f92672">}</span>
         <span style="color:#f92672">}</span>
         <span style="color:#66d9ef">return</span> dummy<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">;</span>
