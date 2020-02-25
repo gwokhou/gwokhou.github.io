@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en-us">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Permutations, Subsets and Combinations - Guohao&#39;s Blog</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="">
+	<meta property="og:title" content="Permutations, Subsets and Combinations" />
+<meta property="og:description" content="Classic backtracking problems" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/leetcode/permutations-subsets-and-combinations/" />
+<meta property="article:published_time" content="2020-02-23T19:12:29+08:00" />
+<meta property="article:modified_time" content="2020-02-23T19:12:29+08:00" />
+
+	
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+	<link rel="stylesheet" href="/css/style.css">
+	
+	<link rel="shortcut icon" href="/favicon.ico">
+		
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-156444600-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container">
+		<div class="logo">
+			<a class="logo__link" href="/" title="Guohao&#39;s Blog" rel="home">
+				<div class="logo__title">Guohao&#39;s Blog</div>
+				<div class="logo__tagline">Another me in a foreign land</div>
+			</a>
+		</div>
+		<div class="divider"></div>
+	</div>
+</header>
+		<div class="wrapper flex">
+			<div class="primary">
+			
+<main class="main" role="main">
+	<article class="post">
+		<header class="post__header">
+			<h1 class="post__title">Permutations, Subsets and Combinations</h1>
+			<div class="post__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
+	<time class="meta__text" datetime="2020-02-23T19:12:29">2020-02-23</time>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/leetcode/" rel="category">LeetCode</a>
+	</span>
+</div></div>
+		</header><div class="content post__content clearfix">
+			<h2 id="template">Template</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">result <span style="color:#f92672">=</span> []
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">backtrack</span>(path, option_list):
+    <span style="color:#75715e"># base case</span>
+    <span style="color:#66d9ef">if</span> satisify the output formaT:
+        result<span style="color:#f92672">.</span>add(path)
+        <span style="color:#66d9ef">return</span>
+    
+    <span style="color:#66d9ef">for</span> option <span style="color:#f92672">in</span> option_list:
+        make a decision
+        backtrack(path, option_list)
+        withdraw the decision
+</code></pre></div><p>It is absolutely vital to <strong>draw a backtracking tree</strong> when solving a backtracking problem, which is helpful to get the condition of the base case.</p>
+<h2 id="46-permutations">46. Permutations</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c++" data-lang="c++"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Solution</span> {
+<span style="color:#66d9ef">public</span><span style="color:#f92672">:</span>
+    <span style="color:#66d9ef">void</span> backtrack(vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;&amp;</span> nums, vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;&amp;</span> path, vector<span style="color:#f92672">&lt;</span>vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;&gt;&amp;</span> res, vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;&amp;</span> visited) {
+        <span style="color:#66d9ef">if</span> (path.size() <span style="color:#f92672">==</span> nums.size()) {
+            res.push_back(path);
+            <span style="color:#66d9ef">return</span>;
+        }
+
+        <span style="color:#75715e">// No need to exclude used numbers, but need to exclude invalid combinations
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> nums.size(); i<span style="color:#f92672">++</span>) {
+            <span style="color:#66d9ef">if</span> (visited[i] <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>) <span style="color:#66d9ef">continue</span>;
+
+            <span style="color:#75715e">// make a decision
+</span><span style="color:#75715e"></span>            path.push_back(nums[i]);
+            visited[i] <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;
+            
+            backtrack(nums, path, res, visited);
+			
+            <span style="color:#75715e">// withdraw the decision
+</span><span style="color:#75715e"></span>            visited[i] <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+            path.pop_back();
+        }
+    }
+
+    vector<span style="color:#f92672">&lt;</span>vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;&gt;</span> permute(vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;&amp;</span> nums) {
+        vector<span style="color:#f92672">&lt;</span>vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;&gt;</span> res;
+        vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span> path;
+        vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span> visited(nums.size(), <span style="color:#ae81ff">0</span>);
+        backtrack(nums, path, res, visited);
+        <span style="color:#66d9ef">return</span> res;
+    }
+};
+</code></pre></div><h2 id="77-combinations">77. Combinations</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c++" data-lang="c++"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Solution</span> {
+<span style="color:#66d9ef">public</span><span style="color:#f92672">:</span>
+    <span style="color:#66d9ef">void</span> backtrack(<span style="color:#66d9ef">int</span> start, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">int</span> k, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">int</span> n, vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;&amp;</span> path, vector<span style="color:#f92672">&lt;</span>vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;&gt;&amp;</span> res) {
+        <span style="color:#66d9ef">if</span> (path.size() <span style="color:#f92672">==</span> k) {
+            res.push_back(path);
+            <span style="color:#66d9ef">return</span>;
+        }
+        <span style="color:#75715e">// Each cycle starts with &#34;start&#34; to exclude selected numbers
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> start; i <span style="color:#f92672">&lt;=</span> n; i<span style="color:#f92672">++</span>) {
+            <span style="color:#75715e">// make a decision
+</span><span style="color:#75715e"></span>            path.push_back(i);
+            
+            backtrack(i <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>, k, n, path, res);
+            
+            <span style="color:#75715e">// withdraw the decision
+</span><span style="color:#75715e"></span>            path.pop_back();
+        }
+    }
+
+    vector<span style="color:#f92672">&lt;</span>vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;&gt;</span> combine(<span style="color:#66d9ef">int</span> n, <span style="color:#66d9ef">int</span> k) {
+        vector<span style="color:#f92672">&lt;</span>vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;&gt;</span> res;
+        <span style="color:#66d9ef">if</span> (n <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">||</span> k <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">0</span>) {
+            <span style="color:#66d9ef">return</span> res;
+        }
+        vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span> path;
+        backtrack(<span style="color:#ae81ff">1</span>, k, n, path, res);
+        <span style="color:#66d9ef">return</span> res;
+    }
+};
+</code></pre></div><h2 id="78-subsets">78. Subsets</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c++" data-lang="c++"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Solution</span> {
+<span style="color:#66d9ef">public</span><span style="color:#f92672">:</span>
+    <span style="color:#66d9ef">void</span> backtrack(<span style="color:#66d9ef">int</span> start, vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;&amp;</span> nums, vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;&amp;</span> path, vector<span style="color:#f92672">&lt;</span>vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;&gt;&amp;</span> res) {
+        res.push_back(path);
+        
+        <span style="color:#75715e">// Each cycle starts with &#34;start&#34; to exclude used numbers
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> start; i <span style="color:#f92672">&lt;</span> nums.size(); i<span style="color:#f92672">++</span>) {
+            <span style="color:#75715e">// make a decision
+</span><span style="color:#75715e"></span>            path.push_back(nums[i]);
+
+            <span style="color:#75715e">// backtracking
+</span><span style="color:#75715e"></span>            backtrack(i <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>, nums, path, res);
+
+            <span style="color:#75715e">// withdraw the decision
+</span><span style="color:#75715e"></span>            path.pop_back();
+        }
+    }
+
+    vector<span style="color:#f92672">&lt;</span>vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;&gt;</span> subsets(vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;&amp;</span> nums) {
+        vector<span style="color:#f92672">&lt;</span>vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;&gt;</span> res;
+        vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span> path;
+        backtrack(<span style="color:#ae81ff">0</span>, nums, path, res);
+        <span style="color:#66d9ef">return</span> res;
+    }
+};
+</code></pre></div><h2 id="reference">Reference</h2>
+<p><a href="https://mp.weixin.qq.com/s?__biz=MzAxODQxMDM0Mw==&amp;mid=2247485007&amp;idx=1&amp;sn=ceb42ba2f341af34953d158358c61f7c&amp;chksm=9bd7f847aca071517fe0889d2679ead78b40caf6978ebc1d3d8355d6693acc7ec3aca60823f0&amp;mpshare=1&amp;scene=1&amp;srcid=&amp;sharer_sharetime=1582212599135&amp;sharer_shareid=ce032d2ac3c0ffa094beb1f6c1188245&amp;key=c18083f5f50f04278f8504d8b376af735b4bb212d64970c5510247d81a754ae750102df9fd15ea24ad1b826c72dc29cd80c60ad5f615cfdecc354ebbdbb38734f9287d9133dde49faf367804d9dd38e6&amp;ascene=1&amp;uin=NzkwNTU4NTYz&amp;devicetype=Windows+10&amp;version=62080079&amp;lang=zh_CN&amp;exportkey=AwG%2FcmXnZA8eYlk62IasoeM%3D&amp;pass_ticket=Hl9XO%2Fo8jo8DSXyn7cTzYXk%2BE6KyZQIR19HKPx%2FdhbbpdgXdO0bwZOHeitc1xSdn">回溯算法团灭排列/组合/子集问题</a></p>
+
+		</div>
+		<footer class="post__footer">
+			
+<div class="post__tags tags clearfix">
+	<svg class="tags__badge icon icon-tag" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
+	<ul class="tags__list">
+		<li class="tags__item"><a class="tags__link btn" href="/tags/backtracking/" rel="tag">Backtracking</a></li>
+	</ul>
+</div>
+		</footer>
+	</article>
+</main>
+
+
+<nav class="post-nav flex">
+	<div class="post-nav__item post-nav__item--prev">
+		<a class="post-nav__link" href="/leetcode/76.-minimum-window-substring/" rel="prev"><span class="post-nav__caption">«&thinsp;Previous</span><p class="post-nav__post-title">76. Minimum Window Substring</p></a>
+	</div>
+</nav>
+
+
+			</div>
+			
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2020 Guohao Zhang.
+			<span class="footer__copyright-credits">Generated with <a href="https://gohugo.io/" rel="nofollow noopener" target="_blank">Hugo</a> and <a href="https://github.com/Vimux/Mainroad/" rel="nofollow noopener" target="_blank">Mainroad</a> theme.</span>
+		</div>
+	</div>
+</footer>
+	</div>
+<script async defer src="/js/menu.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+</body>
+</html>

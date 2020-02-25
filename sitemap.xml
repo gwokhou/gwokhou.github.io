@@ -3,37 +3,52 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>/tags/backtracking/</loc>
+    <lastmod>2020-02-23T19:12:29+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/categories/</loc>
+    <lastmod>2020-02-23T19:12:29+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/</loc>
+    <lastmod>2020-02-23T19:12:29+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/categories/leetcode/</loc>
+    <lastmod>2020-02-23T19:12:29+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/leetcode/</loc>
+    <lastmod>2020-02-23T19:12:29+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/leetcode/permutations-subsets-and-combinations/</loc>
+    <lastmod>2020-02-23T19:12:29+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/</loc>
+    <lastmod>2020-02-23T19:12:29+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/leetcode/76.-minimum-window-substring/</loc>
+    <lastmod>2020-02-23T15:17:22+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/leetcode/355.-design-twitter/</loc>
     <lastmod>2020-02-23T13:59:23+08:00</lastmod>
   </url>
   
   <url>
-    <loc>/categories/</loc>
-    <lastmod>2020-02-23T13:59:23+08:00</lastmod>
-  </url>
-  
-  <url>
     <loc>/tags/design/</loc>
-    <lastmod>2020-02-23T13:59:23+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/</loc>
-    <lastmod>2020-02-23T13:59:23+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/categories/leetcode/</loc>
-    <lastmod>2020-02-23T13:59:23+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/leetcode/</loc>
-    <lastmod>2020-02-23T13:59:23+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/</loc>
     <lastmod>2020-02-23T13:59:23+08:00</lastmod>
   </url>
   

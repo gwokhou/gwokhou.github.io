@@ -6,10 +6,28 @@
     <description>Recent content in LeetCode on Guohao&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 23 Feb 2020 13:59:23 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 23 Feb 2020 19:12:29 +0800</lastBuildDate>
     
 	<atom:link href="/categories/leetcode/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Permutations, Subsets and Combinations</title>
+      <link>/leetcode/permutations-subsets-and-combinations/</link>
+      <pubDate>Sun, 23 Feb 2020 19:12:29 +0800</pubDate>
+      
+      <guid>/leetcode/permutations-subsets-and-combinations/</guid>
+      <description>Classic backtracking problems</description>
+    </item>
+    
+    <item>
+      <title>76. Minimum Window Substring</title>
+      <link>/leetcode/76.-minimum-window-substring/</link>
+      <pubDate>Sun, 23 Feb 2020 15:17:22 +0800</pubDate>
+      
+      <guid>/leetcode/76.-minimum-window-substring/</guid>
+      <description>A classic sliding window problem</description>
+    </item>
     
     <item>
       <title>355. Design Twitter</title>
