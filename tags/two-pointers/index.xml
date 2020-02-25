@@ -6,10 +6,19 @@
     <description>Recent content in Two Pointers on Guohao&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 12 Jan 2020 13:42:38 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 23 Feb 2020 15:17:22 +0800</lastBuildDate>
     
 	<atom:link href="/tags/two-pointers/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>76. Minimum Window Substring</title>
+      <link>/leetcode/76.-minimum-window-substring/</link>
+      <pubDate>Sun, 23 Feb 2020 15:17:22 +0800</pubDate>
+      
+      <guid>/leetcode/76.-minimum-window-substring/</guid>
+      <description>A classic sliding window problem</description>
+    </item>
     
     <item>
       <title>18. 4Sum</title>
