@@ -6,10 +6,28 @@
     <description>Recent content on Guohao&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 25 Feb 2020 22:59:47 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 26 Feb 2020 22:16:51 +0800</lastBuildDate>
     
 	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>238. Product of Array Except Self</title>
+      <link>/leetcode/238.-product-of-array-except-self/</link>
+      <pubDate>Wed, 26 Feb 2020 22:16:51 +0800</pubDate>
+      
+      <guid>/leetcode/238.-product-of-array-except-self/</guid>
+      <description>No summary</description>
+    </item>
+    
+    <item>
+      <title>42. Trapping Rain Water</title>
+      <link>/leetcode/42.-trapping-rain-water/</link>
+      <pubDate>Wed, 26 Feb 2020 16:34:58 +0800</pubDate>
+      
+      <guid>/leetcode/42.-trapping-rain-water/</guid>
+      <description>No summary</description>
+    </item>
     
     <item>
       <title>438. Find All Anagrams in a String</title>

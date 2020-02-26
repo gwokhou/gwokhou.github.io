@@ -6,10 +6,28 @@
     <description>Recent content in Dynamic Programming on Guohao&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 29 Jan 2020 21:33:04 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 26 Feb 2020 22:16:51 +0800</lastBuildDate>
     
 	<atom:link href="/tags/dynamic-programming/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>238. Product of Array Except Self</title>
+      <link>/leetcode/238.-product-of-array-except-self/</link>
+      <pubDate>Wed, 26 Feb 2020 22:16:51 +0800</pubDate>
+      
+      <guid>/leetcode/238.-product-of-array-except-self/</guid>
+      <description>No summary</description>
+    </item>
+    
+    <item>
+      <title>42. Trapping Rain Water</title>
+      <link>/leetcode/42.-trapping-rain-water/</link>
+      <pubDate>Wed, 26 Feb 2020 16:34:58 +0800</pubDate>
+      
+      <guid>/leetcode/42.-trapping-rain-water/</guid>
+      <description>No summary</description>
+    </item>
     
     <item>
       <title>53. Maximum Subarray</title>
