@@ -6,10 +6,19 @@
     <description>Recent content in Linked List on Guohao&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 16 Jan 2020 09:35:39 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 02 Mar 2020 18:23:40 +0800</lastBuildDate>
     
 	<atom:link href="/tags/linked-list/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>25. Reverse Nodes in k-Group</title>
+      <link>/leetcode/25.-reverse-nodes-in-k-group/</link>
+      <pubDate>Mon, 02 Mar 2020 18:23:40 +0800</pubDate>
+      
+      <guid>/leetcode/25.-reverse-nodes-in-k-group/</guid>
+      <description>No summary</description>
+    </item>
     
     <item>
       <title>203. Remove Linked List Elements</title>
