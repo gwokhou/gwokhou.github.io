@@ -25,7 +25,7 @@ categories: ["career"]
 
 ### MapReduce库
 
-该项目是使用Go语言编写的迷你MapReduce库，实现了Google经典分布式系统论文*MapReduce* 中所描述的大部分feathers。
+该项目是MIT分布式系统课程的项目，是个使用Go语言编写的迷你MapReduce库，实现了Google经典分布式系统论文*MapReduce* 中所描述的大部分features。
 
 在这个项目中，我阅读论文并学习Go语言，完成了系统的几个核心部分：map和reduce阶段的执行流程、任务自动调度和并行化、worker failures容错处理。随后也编写了自己的map和reduce函数作为系统参数传入，用RPC模拟分布式计算，实现了分布式的英文文本词频统计。
 
