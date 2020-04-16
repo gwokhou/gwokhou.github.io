@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Careers on Guohao&#39;s Blog</title>
+    <link>/career/</link>
+    <description>Recent content in Careers on Guohao&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 16 Apr 2020 14:14:04 +0800</lastBuildDate>
+    
+	<atom:link href="/career/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>后端开发工程师</title>
+      <link>/career/resume_cn/</link>
+      <pubDate>Thu, 16 Apr 2020 14:14:04 +0800</pubDate>
+      
+      <guid>/career/resume_cn/</guid>
+      <description>我的中文简历</description>
+    </item>
+    
+  </channel>
+</rss>
