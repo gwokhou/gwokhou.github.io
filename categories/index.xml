@@ -6,19 +6,10 @@
     <description>Recent content in Categories on Guohao&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 16 Apr 2020 14:14:04 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 02 Mar 2020 18:23:40 +0800</lastBuildDate>
     
 	<atom:link href="/categories/index.xml" rel="self" type="application/rss+xml" />
     
-    
-    <item>
-      <title>career</title>
-      <link>/categories/career/</link>
-      <pubDate>Thu, 16 Apr 2020 14:14:04 +0800</pubDate>
-      
-      <guid>/categories/career/</guid>
-      <description></description>
-    </item>
     
     <item>
       <title>LeetCode</title>
