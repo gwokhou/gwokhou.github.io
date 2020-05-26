@@ -38,5 +38,14 @@
       <description>This post gives two versions of a solution.</description>
     </item>
     
+    <item>
+      <title>287. Find the Duplicate Number</title>
+      <link>/leetcode/287.-find-the-duplicate-number/</link>
+      <pubDate>Mon, 13 Jan 2020 15:39:45 +0800</pubDate>
+      
+      <guid>/leetcode/287.-find-the-duplicate-number/</guid>
+      <description>Fast &amp;amp; Slow Pointers and Binary Search Solutions</description>
+    </item>
+    
   </channel>
 </rss>

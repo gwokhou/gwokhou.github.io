@@ -4,15 +4,15 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>141. Linked List Cycle - Guohao&#39;s Blog</title>
+	<title>142. Linked List Cycle II - Guohao&#39;s Blog</title>
 	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
 	<meta name="description" content="">
-	<meta property="og:title" content="141. Linked List Cycle" />
-<meta property="og:description" content="Solving this problem with classic fast and slow pointers solution" />
+	<meta property="og:title" content="142. Linked List Cycle II" />
+<meta property="og:description" content="No summary" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="/leetcode/141.-linked-list-cycle/" />
-<meta property="article:published_time" content="2020-01-08T10:02:03+08:00" />
-<meta property="article:modified_time" content="2020-01-08T10:02:03+08:00" />
+<meta property="og:url" content="/leetcode/142.-linked-list-cycle-ii/" />
+<meta property="article:published_time" content="2020-05-26T15:20:31+08:00" />
+<meta property="article:modified_time" content="2020-05-26T15:20:31+08:00" />
 
 	
 	<link rel="dns-prefetch" href="//fonts.googleapis.com">
@@ -53,11 +53,11 @@ if (!doNotTrack) {
 <main class="main" role="main">
 	<article class="post">
 		<header class="post__header">
-			<h1 class="post__title">141. Linked List Cycle</h1>
+			<h1 class="post__title">142. Linked List Cycle II</h1>
 			<div class="post__meta meta">
 <div class="meta__item-datetime meta__item">
 	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
-	<time class="meta__text" datetime="2020-01-08T10:02:03">2020-01-08</time>
+	<time class="meta__text" datetime="2020-05-26T15:20:31">2020-05-26</time>
 </div>
 
 <div class="meta__item-categories meta__item">
@@ -66,7 +66,18 @@ if (!doNotTrack) {
 	</span>
 </div></div>
 		</header><div class="content post__content clearfix">
-			<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">/**
+			<blockquote>
+<p>Given a linked list, return the node where the cycle begins. If there is no cycle, return <code>null</code>.</p>
+</blockquote>
+<p>If there is cycle in a given linked list, pointers with step size of 1 and 2 will eventually meet. When they meet, <code>2 * distance(slow) = distance(fast)</code>.</p>
+<p>Let’s assume that the pointers walk around the cycle (if it exists) clockwise.</p>
+<ul>
+<li><code>F</code> : the distance from head to the cycle entrance</li>
+<li><code>a</code>: the distance from cycle entrance to intersection</li>
+<li><code>b</code>: the distance from intersection to cycle entrance</li>
+</ul>
+<p>Thus <code>2 * (F + a) = F + N(a + b) + a</code>, then <code>F = b + (N - 1)(a + b)</code>. After we find the intersection, let one pointer go from the intersection and the other from <code>head</code>, both of them have a same step size. We will get the cycle entrance when they meet.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">/**
 </span><span style="color:#75715e"> * Definition for singly-linked list.
 </span><span style="color:#75715e"> * class ListNode {
 </span><span style="color:#75715e"> *     int val;
@@ -78,23 +89,36 @@ if (!doNotTrack) {
 </span><span style="color:#75715e"> * }
 </span><span style="color:#75715e"> */</span>
 <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Solution</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">hasCycle</span><span style="color:#f92672">(</span>ListNode head<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#75715e">// len == 0 || len == 1
-</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>head <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">||</span> head<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">public</span> ListNode <span style="color:#a6e22e">detectCycle</span><span style="color:#f92672">(</span>ListNode head<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#75715e">// corner case
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>head <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
         <span style="color:#f92672">}</span>
-        ListNode slow <span style="color:#f92672">=</span> head<span style="color:#f92672">;</span>
+        
+        <span style="color:#75715e">// phase 1: find the intersection
+</span><span style="color:#75715e"></span>        ListNode slow <span style="color:#f92672">=</span> head<span style="color:#f92672">;</span>
         ListNode fast <span style="color:#f92672">=</span> head<span style="color:#f92672">;</span>
-        <span style="color:#75715e">// if the fast pointer or the next of fast pointer
-</span><span style="color:#75715e"></span>        <span style="color:#75715e">// reaches to null, end this loop
-</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>fast <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;&amp;</span> fast<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        ListNode intersection <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>fast <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;&amp;</span> fast<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
             slow <span style="color:#f92672">=</span> slow<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">;</span>
             fast <span style="color:#f92672">=</span> fast<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">;</span>
             <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>slow <span style="color:#f92672">==</span> fast<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-                <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
+                intersection <span style="color:#f92672">=</span> fast<span style="color:#f92672">;</span>
+                <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>
             <span style="color:#f92672">}</span>
         <span style="color:#f92672">}</span>
-        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>intersection <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+        
+        <span style="color:#75715e">// phase 2: find the cycle entrance
+</span><span style="color:#75715e"></span>        ListNode ptr1 <span style="color:#f92672">=</span> head<span style="color:#f92672">;</span>
+        ListNode ptr2 <span style="color:#f92672">=</span> intersection<span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>ptr1 <span style="color:#f92672">!=</span> ptr2<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            ptr1 <span style="color:#f92672">=</span> ptr1<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">;</span>
+            ptr2 <span style="color:#f92672">=</span> ptr2<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+        <span style="color:#66d9ef">return</span> ptr1<span style="color:#f92672">;</span>
     <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
 </code></pre></div>
@@ -115,10 +139,7 @@ if (!doNotTrack) {
 
 <nav class="post-nav flex">
 	<div class="post-nav__item post-nav__item--prev">
-		<a class="post-nav__link" href="/leetcode/259.-3sum-smaller/" rel="prev"><span class="post-nav__caption">«&thinsp;Previous</span><p class="post-nav__post-title">259. 3Sum Smaller</p></a>
-	</div>
-	<div class="post-nav__item post-nav__item--next">
-		<a class="post-nav__link" href="/leetcode/19.-remove-nth-node-from-end-of-list/" rel="next"><span class="post-nav__caption">Next&thinsp;»</span><p class="post-nav__post-title">19. Remove Nth Node From End of List</p></a>
+		<a class="post-nav__link" href="/leetcode/25.-reverse-nodes-in-k-group/" rel="prev"><span class="post-nav__caption">«&thinsp;Previous</span><p class="post-nav__post-title">25. Reverse Nodes in k-Group</p></a>
 	</div>
 </nav>
 

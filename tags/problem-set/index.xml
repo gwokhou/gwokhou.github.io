@@ -6,19 +6,10 @@
     <description>Recent content in Problem Set on Guohao&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 15 Jan 2020 10:01:07 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 12 Jan 2020 13:42:29 +0800</lastBuildDate>
     
 	<atom:link href="/tags/problem-set/index.xml" rel="self" type="application/rss+xml" />
     
-    
-    <item>
-      <title>Problems of Slow and Fast Pointer in Linked List</title>
-      <link>/leetcode/problems-of-slow-and-fast-pointer-in-linked-list/</link>
-      <pubDate>Wed, 15 Jan 2020 10:01:07 +0800</pubDate>
-      
-      <guid>/leetcode/problems-of-slow-and-fast-pointer-in-linked-list/</guid>
-      <description>A problem set of Slow and Fast Pointer in Linked List problems.</description>
-    </item>
     
     <item>
       <title>Problems of 3Sum</title>

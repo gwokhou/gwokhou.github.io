@@ -6,10 +6,19 @@
     <description>Recent content in LeetCode on Guohao&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 02 Mar 2020 18:23:40 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 26 May 2020 15:20:31 +0800</lastBuildDate>
     
 	<atom:link href="/categories/leetcode/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>142. Linked List Cycle II</title>
+      <link>/leetcode/142.-linked-list-cycle-ii/</link>
+      <pubDate>Tue, 26 May 2020 15:20:31 +0800</pubDate>
+      
+      <guid>/leetcode/142.-linked-list-cycle-ii/</guid>
+      <description>No summary</description>
+    </item>
     
     <item>
       <title>25. Reverse Nodes in k-Group</title>
@@ -327,15 +336,6 @@
     </item>
     
     <item>
-      <title>Problems of Slow and Fast Pointer in Linked List</title>
-      <link>/leetcode/problems-of-slow-and-fast-pointer-in-linked-list/</link>
-      <pubDate>Wed, 15 Jan 2020 10:01:07 +0800</pubDate>
-      
-      <guid>/leetcode/problems-of-slow-and-fast-pointer-in-linked-list/</guid>
-      <description>A problem set of Slow and Fast Pointer in Linked List problems.</description>
-    </item>
-    
-    <item>
       <title>4. Median of Two Sorted Arrays</title>
       <link>/leetcode/4.-median-of-two-sorted-arrays/</link>
       <pubDate>Tue, 14 Jan 2020 10:43:23 +0800</pubDate>
@@ -359,7 +359,7 @@
       <pubDate>Mon, 13 Jan 2020 15:39:45 +0800</pubDate>
       
       <guid>/leetcode/287.-find-the-duplicate-number/</guid>
-      <description>The best solution of the problem is very tricky, which use cycle detection algorithm to find the duplicate number.</description>
+      <description>Fast &amp;amp; Slow Pointers and Binary Search Solutions</description>
     </item>
     
     <item>
@@ -521,7 +521,7 @@
       <pubDate>Wed, 08 Jan 2020 10:20:47 +0800</pubDate>
       
       <guid>/leetcode/19.-remove-nth-node-from-end-of-list/</guid>
-      <description>In this problem, I write some comments to visualize each step of the solution.</description>
+      <description>Drew some comments to visualize each step of the solution.</description>
     </item>
     
     <item>
@@ -530,7 +530,7 @@
       <pubDate>Wed, 08 Jan 2020 10:02:03 +0800</pubDate>
       
       <guid>/leetcode/141.-linked-list-cycle/</guid>
-      <description>No summary</description>
+      <description>Solving this problem with classic fast and slow pointers solution</description>
     </item>
     
     <item>
