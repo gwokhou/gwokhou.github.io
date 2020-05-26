@@ -4,7 +4,7 @@ date: 2020-02-23T19:12:29+08:00
 draft: false
 summary: "Classic backtracking problems"
 categories: ["LeetCode"]
-tags: ["Backtracking"]
+tags: ["Backtracking", "Problem Set"]
 ---
 
 ## Template
