@@ -1,7 +1,7 @@
 ---
 title: "Problems of Merge Intervals"
 date: 2020-01-12T13:39:00+08:00
-draft: false
+draft: true
 summary: "A problem set of Merge Intervals problems."
 categories: ["LeetCode"]
 tags: ["Merge Intervals", "Problem Set"]
