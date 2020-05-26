@@ -88,6 +88,11 @@
   </url>
   
   <url>
+    <loc>/tags/problem-set/</loc>
+    <lastmod>2020-02-23T19:12:29+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/leetcode/76.-minimum-window-substring/</loc>
     <lastmod>2020-02-23T15:17:22+08:00</lastmod>
   </url>
@@ -360,11 +365,6 @@
   <url>
     <loc>/leetcode/18.-4sum/</loc>
     <lastmod>2020-01-12T13:42:38+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/problem-set/</loc>
-    <lastmod>2020-01-12T13:42:29+08:00</lastmod>
   </url>
   
   <url>
