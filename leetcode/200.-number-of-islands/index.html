@@ -165,21 +165,22 @@ if (!doNotTrack) {
         <span style="color:#f92672">}</span>
         <span style="color:#66d9ef">int</span> m <span style="color:#f92672">=</span> grid<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">;</span>
         <span style="color:#66d9ef">int</span> n <span style="color:#f92672">=</span> grid<span style="color:#f92672">[</span>0<span style="color:#f92672">].</span><span style="color:#a6e22e">length</span><span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">int</span> count <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">int</span> islands <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span>
         <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> m<span style="color:#f92672">;</span> i<span style="color:#f92672">++)</span> <span style="color:#f92672">{</span>
             <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> j <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> j <span style="color:#f92672">&lt;</span> n<span style="color:#f92672">;</span> j<span style="color:#f92672">++)</span> <span style="color:#f92672">{</span>
                 <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>grid<span style="color:#f92672">[</span>i<span style="color:#f92672">][</span>j<span style="color:#f92672">]</span> <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;1&#39;</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-                    <span style="color:#75715e">// mark every reachable islands of (i, j)
+                    <span style="color:#75715e">// for all UNVISITED land, do a dfs
 </span><span style="color:#75715e"></span>                    dfs<span style="color:#f92672">(</span>i<span style="color:#f92672">,</span> j<span style="color:#f92672">,</span> grid<span style="color:#f92672">);</span>
-                    count<span style="color:#f92672">++;</span>
+                    islands<span style="color:#f92672">++;</span>
                 <span style="color:#f92672">}</span>
             <span style="color:#f92672">}</span>
         <span style="color:#f92672">}</span>
-        <span style="color:#66d9ef">return</span> count<span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">return</span> islands<span style="color:#f92672">;</span>
     <span style="color:#f92672">}</span>
 
     <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">dfs</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> j<span style="color:#f92672">,</span> <span style="color:#66d9ef">char</span><span style="color:#f92672">[][]</span> grid<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>i <span style="color:#f92672">&lt;</span> 0 <span style="color:#f92672">||</span> j <span style="color:#f92672">&lt;</span> 0 <span style="color:#f92672">||</span> i <span style="color:#f92672">&gt;=</span> grid<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span> <span style="color:#f92672">||</span> j <span style="color:#f92672">&gt;=</span> grid<span style="color:#f92672">[</span>0<span style="color:#f92672">].</span><span style="color:#a6e22e">length</span> <span style="color:#f92672">||</span> grid<span style="color:#f92672">[</span>i<span style="color:#f92672">][</span>j<span style="color:#f92672">]</span> <span style="color:#f92672">!=</span> <span style="color:#e6db74">&#39;1&#39;</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#75715e">// if (i, j) is out of bounds or (i, j) is not a land, return
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>i <span style="color:#f92672">&lt;</span> 0 <span style="color:#f92672">||</span> j <span style="color:#f92672">&lt;</span> 0 <span style="color:#f92672">||</span> i <span style="color:#f92672">&gt;=</span> grid<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span> <span style="color:#f92672">||</span> j <span style="color:#f92672">&gt;=</span> grid<span style="color:#f92672">[</span>0<span style="color:#f92672">].</span><span style="color:#a6e22e">length</span> <span style="color:#f92672">||</span> grid<span style="color:#f92672">[</span>i<span style="color:#f92672">][</span>j<span style="color:#f92672">]</span> <span style="color:#f92672">!=</span> <span style="color:#e6db74">&#39;1&#39;</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
             <span style="color:#66d9ef">return</span><span style="color:#f92672">;</span>
         <span style="color:#f92672">}</span>
         <span style="color:#75715e">// mark as visited
