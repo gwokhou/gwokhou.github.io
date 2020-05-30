@@ -66,7 +66,9 @@ if (!doNotTrack) {
 	</span>
 </div></div>
 		</header><div class="content post__content clearfix">
-			<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Solution</span> <span style="color:#f92672">{</span>
+			<p>这题的难点就在位数对齐。</p>
+<p>我们将两个字符串从低位对齐，从低到高获取每一位。较短字符串的指针在到达0以后不会停下，而是会继续扫描，直到较长的那个字符串也被扫描完毕。如果某个index变为负数，说明已经越过了较短字符串的最高位，这时为了便于计算，就要为较短字符串的高位补0。最后，如果最后一步的和的进位为1，还需补上这个进位。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Solution</span> <span style="color:#f92672">{</span>
     <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">addBinary</span><span style="color:#f92672">(</span>String a<span style="color:#f92672">,</span> String b<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
         StringBuilder builder <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> StringBuilder<span style="color:#f92672">();</span>
         <span style="color:#66d9ef">char</span> carry <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;0&#39;</span><span style="color:#f92672">;</span>
