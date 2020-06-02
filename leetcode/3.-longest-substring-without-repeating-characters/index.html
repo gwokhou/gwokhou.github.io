@@ -103,35 +103,34 @@ if (!doNotTrack) {
 <p>用Hashmap记录<code>begin</code>和<code>end</code>维持的窗口内每个字符出现的次数。遍历字符串，每访问一个字符有两部分操作。第一部分，判断窗口前沿元素<code>s[end]</code>是否出现过，向前移动前沿。第二部分，如果移动窗口前沿过程中发现有元素重复，向前移动窗口后沿，去除重复元素。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c++" data-lang="c++"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Solution</span> {
 <span style="color:#66d9ef">public</span><span style="color:#f92672">:</span>
-	<span style="color:#66d9ef">int</span> lengthOfLongestSubstring(string s) {
-		<span style="color:#66d9ef">if</span> (s.length() <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>) {
-			<span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
-		}
-		unordered_map<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">char</span>, <span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span> hash;
-		<span style="color:#66d9ef">int</span> begin <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>, end <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
-		<span style="color:#66d9ef">int</span> repeat <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
-		<span style="color:#66d9ef">int</span> max_length <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
-		<span style="color:#66d9ef">while</span> (end <span style="color:#f92672">&lt;</span> s.length()) {
-			<span style="color:#66d9ef">if</span> (hash[s[end]] <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span>) {
-				repeat<span style="color:#f92672">++</span>;
-			}
-			hash[s[end]]<span style="color:#f92672">++</span>;
-			end<span style="color:#f92672">++</span>;
-            
-			<span style="color:#66d9ef">while</span> (repeat <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span>) {
-				<span style="color:#66d9ef">if</span> (hash[s[begin]] <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">1</span>) {
-					repeat<span style="color:#f92672">--</span>;
-				}
-				hash[s[begin]]<span style="color:#f92672">--</span>;
-				begin<span style="color:#f92672">++</span>;
-			}
-            
-			<span style="color:#66d9ef">if</span> (end <span style="color:#f92672">-</span> begin <span style="color:#f92672">&gt;</span> max_length) {
-				max_length <span style="color:#f92672">=</span> end <span style="color:#f92672">-</span> begin;
-			}
-		}
-		<span style="color:#66d9ef">return</span> max_length;
-	}
+    <span style="color:#66d9ef">int</span> lengthOfLongestSubstring(string s) {
+        <span style="color:#66d9ef">if</span> (s.length() <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>) {
+            <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+        }
+        unordered_map<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">char</span>, <span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span> window;
+        <span style="color:#66d9ef">int</span> left <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>, right <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+        <span style="color:#66d9ef">int</span> repeat <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+        <span style="color:#66d9ef">int</span> maxLen <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+        <span style="color:#66d9ef">while</span> (right <span style="color:#f92672">&lt;</span> s.length()) {
+            <span style="color:#66d9ef">char</span> r <span style="color:#f92672">=</span> s[right];
+            window[r]<span style="color:#f92672">++</span>;
+            <span style="color:#66d9ef">if</span> (window[r] <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">1</span>) {
+                repeat<span style="color:#f92672">++</span>;
+            }
+            right<span style="color:#f92672">++</span>;
+
+            <span style="color:#66d9ef">while</span> (repeat <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span>) {
+                <span style="color:#66d9ef">char</span> l <span style="color:#f92672">=</span> s[left];
+                <span style="color:#66d9ef">if</span> (window[l] <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">1</span>) {
+                    repeat<span style="color:#f92672">--</span>;
+                }
+                window[l]<span style="color:#f92672">--</span>;
+                left<span style="color:#f92672">++</span>;
+            }
+            maxLen <span style="color:#f92672">=</span> max(maxLen, right <span style="color:#f92672">-</span> left);
+        }
+        <span style="color:#66d9ef">return</span> maxLen;
+    }
 };
 </code></pre></div><p>最后，这类substring问题有一个通用模板，遇到substring问题可以尝试套用：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c++" data-lang="c++"><span style="color:#75715e">/*
