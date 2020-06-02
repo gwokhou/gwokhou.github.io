@@ -66,36 +66,38 @@ if (!doNotTrack) {
 	</span>
 </div></div>
 		</header><div class="content post__content clearfix">
-			<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Solution</span> <span style="color:#f92672">{</span>
+			<ul>
+<li><code>nums[i]</code>的左乘积 = <code>nums[i]</code>左边元素的值 * <code>nums[i]</code>左边元素的左乘积</li>
+<li><code>nums[i]</code>的右乘积 = <code>nums[i]</code>右边元素的值 * <code>nums[i]</code>右边元素的右乘积</li>
+<li><code>nums[i]</code>的productExceptSelft = <code>nums[i]</code>的左乘积 * <code>nums[i]</code>的右乘积</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Solution</span> <span style="color:#f92672">{</span>
     <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span><span style="color:#f92672">[]</span> <span style="color:#a6e22e">productExceptSelf</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span><span style="color:#f92672">[]</span> nums<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
         <span style="color:#66d9ef">int</span> n <span style="color:#f92672">=</span> nums<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">;</span>
         <span style="color:#66d9ef">int</span><span style="color:#f92672">[]</span> res <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#66d9ef">int</span><span style="color:#f92672">[</span>n<span style="color:#f92672">];</span>
         
         <span style="color:#66d9ef">int</span><span style="color:#f92672">[]</span> leftProduct <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#66d9ef">int</span><span style="color:#f92672">[</span>n<span style="color:#f92672">];</span>
         <span style="color:#66d9ef">int</span><span style="color:#f92672">[]</span> rightProduct <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#66d9ef">int</span><span style="color:#f92672">[</span>n<span style="color:#f92672">];</span>
-        leftProduct<span style="color:#f92672">[</span>0<span style="color:#f92672">]</span> <span style="color:#f92672">=</span> 1<span style="color:#f92672">;</span>
-        rightProduct<span style="color:#f92672">[</span>n <span style="color:#f92672">-</span> 1<span style="color:#f92672">]</span> <span style="color:#f92672">=</span> 1<span style="color:#f92672">;</span>
         
+        leftProduct<span style="color:#f92672">[</span>0<span style="color:#f92672">]</span> <span style="color:#f92672">=</span> 1<span style="color:#f92672">;</span>
         <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 1<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> n<span style="color:#f92672">;</span> i<span style="color:#f92672">++)</span> <span style="color:#f92672">{</span>
             leftProduct<span style="color:#f92672">[</span>i<span style="color:#f92672">]</span> <span style="color:#f92672">=</span> nums<span style="color:#f92672">[</span>i <span style="color:#f92672">-</span> 1<span style="color:#f92672">]</span> <span style="color:#f92672">*</span> leftProduct<span style="color:#f92672">[</span>i <span style="color:#f92672">-</span> 1<span style="color:#f92672">];</span>
         <span style="color:#f92672">}</span>
+        
+        rightProduct<span style="color:#f92672">[</span>n <span style="color:#f92672">-</span> 1<span style="color:#f92672">]</span> <span style="color:#f92672">=</span> 1<span style="color:#f92672">;</span>
         <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> n <span style="color:#f92672">-</span> 2<span style="color:#f92672">;</span> i <span style="color:#f92672">&gt;=</span> 0<span style="color:#f92672">;</span> i<span style="color:#f92672">--)</span> <span style="color:#f92672">{</span>
             rightProduct<span style="color:#f92672">[</span>i<span style="color:#f92672">]</span> <span style="color:#f92672">=</span> nums<span style="color:#f92672">[</span>i <span style="color:#f92672">+</span> 1<span style="color:#f92672">]</span> <span style="color:#f92672">*</span> rightProduct<span style="color:#f92672">[</span>i <span style="color:#f92672">+</span> 1<span style="color:#f92672">];</span>
         <span style="color:#f92672">}</span>
+        
         <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> n<span style="color:#f92672">;</span> i<span style="color:#f92672">++)</span> <span style="color:#f92672">{</span>
             res<span style="color:#f92672">[</span>i<span style="color:#f92672">]</span> <span style="color:#f92672">=</span> leftProduct<span style="color:#f92672">[</span>i<span style="color:#f92672">]</span> <span style="color:#f92672">*</span> rightProduct<span style="color:#f92672">[</span>i<span style="color:#f92672">];</span>
         <span style="color:#f92672">}</span>
         <span style="color:#66d9ef">return</span> res<span style="color:#f92672">;</span>
     <span style="color:#f92672">}</span>
-    <span style="color:#75715e">// Example: nums = [1, 2, 3, 4]
-</span><span style="color:#75715e"></span>    <span style="color:#75715e">//
-</span><span style="color:#75715e"></span>    <span style="color:#75715e">// leftProduct -&gt;
-</span><span style="color:#75715e"></span>    <span style="color:#75715e">// [1, 1 * 1, 2 * 1, 3 * 2]
-</span><span style="color:#75715e"></span>    <span style="color:#75715e">//
-</span><span style="color:#75715e"></span>    <span style="color:#75715e">//           &lt;- rightProduct
-</span><span style="color:#75715e"></span>    <span style="color:#75715e">// [2 * 12, 3 * 4, 4 * 1, 1]
-</span><span style="color:#75715e"></span><span style="color:#f92672">}</span>
-</code></pre></div>
+<span style="color:#f92672">}</span>
+</code></pre></div><h2 id="reference">Reference</h2>
+<p><a href="https://leetcode-cn.com/problems/product-of-array-except-self/solution/gan-jue-da-bu-fen-ti-jie-du-shi-tie-dai-ma-jia-fu-/">https://leetcode-cn.com/problems/product-of-array-except-self/solution/gan-jue-da-bu-fen-ti-jie-du-shi-tie-dai-ma-jia-fu-/</a></p>
+
 		</div>
 		<footer class="post__footer">
 			
