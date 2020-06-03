@@ -71,18 +71,17 @@ if (!doNotTrack) {
         <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>n <span style="color:#f92672">==</span> 1<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
             <span style="color:#66d9ef">return</span> 1<span style="color:#f92672">;</span>
         <span style="color:#f92672">}</span>
-        <span style="color:#75715e">// 设f[i]为到达第i级楼梯的方式数，要到达第i级楼梯由两种方式：
+        <span style="color:#75715e">// 设dp[i]为到达第i级楼梯的方式数。要到达第i级楼梯由两种途径：
 </span><span style="color:#75715e"></span>        <span style="color:#75715e">// 一种是在第i - 2级跨两步，另一种是在第i - 1级跨一步。
-</span><span style="color:#75715e"></span>        <span style="color:#75715e">// f[i] = f[i - 2] + f[i - 1]
-</span><span style="color:#75715e"></span>        <span style="color:#75715e">// f[0] = 0, f[1] = 1, f[2] = 2
-</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">int</span><span style="color:#f92672">[]</span> f <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#66d9ef">int</span><span style="color:#f92672">[</span>n <span style="color:#f92672">+</span> 1<span style="color:#f92672">];</span>
-        f<span style="color:#f92672">[</span>0<span style="color:#f92672">]</span> <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span>
-        f<span style="color:#f92672">[</span>1<span style="color:#f92672">]</span> <span style="color:#f92672">=</span> 1<span style="color:#f92672">;</span>
-        f<span style="color:#f92672">[</span>2<span style="color:#f92672">]</span> <span style="color:#f92672">=</span> 2<span style="color:#f92672">;</span>
+</span><span style="color:#75715e"></span>        <span style="color:#75715e">// dp[i] = dp[i - 2] + dp[i - 1]
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">int</span><span style="color:#f92672">[]</span> dp <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#66d9ef">int</span><span style="color:#f92672">[</span>n <span style="color:#f92672">+</span> 1<span style="color:#f92672">];</span>
+        dp<span style="color:#f92672">[</span>0<span style="color:#f92672">]</span> <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span>
+        dp<span style="color:#f92672">[</span>1<span style="color:#f92672">]</span> <span style="color:#f92672">=</span> 1<span style="color:#f92672">;</span>
+        dp<span style="color:#f92672">[</span>2<span style="color:#f92672">]</span> <span style="color:#f92672">=</span> 2<span style="color:#f92672">;</span>
         <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 3<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;=</span> n<span style="color:#f92672">;</span> i<span style="color:#f92672">++)</span> <span style="color:#f92672">{</span>
-            f<span style="color:#f92672">[</span>i<span style="color:#f92672">]</span> <span style="color:#f92672">=</span> f<span style="color:#f92672">[</span>i <span style="color:#f92672">-</span> 2<span style="color:#f92672">]</span> <span style="color:#f92672">+</span> f<span style="color:#f92672">[</span>i <span style="color:#f92672">-</span> 1<span style="color:#f92672">];</span>
+            dp<span style="color:#f92672">[</span>i<span style="color:#f92672">]</span> <span style="color:#f92672">=</span> dp<span style="color:#f92672">[</span>i <span style="color:#f92672">-</span> 2<span style="color:#f92672">]</span> <span style="color:#f92672">+</span> dp<span style="color:#f92672">[</span>i <span style="color:#f92672">-</span> 1<span style="color:#f92672">];</span>
         <span style="color:#f92672">}</span>
-        <span style="color:#66d9ef">return</span> f<span style="color:#f92672">[</span>n<span style="color:#f92672">];</span>
+        <span style="color:#66d9ef">return</span> dp<span style="color:#f92672">[</span>n<span style="color:#f92672">];</span>
     <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
 </code></pre></div>
