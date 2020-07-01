@@ -69,13 +69,44 @@ if (!doNotTrack) {
 			<blockquote>
 <p>Given an array of meeting time intervals consisting of start and end times <code>[[s1,e1],[s2,e2],...]</code> (si &lt; ei), find the minimum number of conference rooms required.</p>
 </blockquote>
+<h2 id="counting-airplanes-solution">&ldquo;Counting Airplanes&rdquo; Solution</h2>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Solution</span> <span style="color:#f92672">{</span>
     <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">minMeetingRooms</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span><span style="color:#f92672">[][]</span> intervals<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>intervals <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">||</span> intervals<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span> <span style="color:#f92672">==</span> 0<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">return</span> 0<span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+        List<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">[]&gt;</span> list <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;&gt;(</span>intervals<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span> <span style="color:#f92672">*</span> 2<span style="color:#f92672">);</span>
+        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span><span style="color:#f92672">[]</span> i <span style="color:#f92672">:</span> intervals<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            list<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> <span style="color:#66d9ef">int</span><span style="color:#f92672">[]{</span>i<span style="color:#f92672">[</span>0<span style="color:#f92672">],</span> 1<span style="color:#f92672">});</span>
+            list<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> <span style="color:#66d9ef">int</span><span style="color:#f92672">[]{</span>i<span style="color:#f92672">[</span>1<span style="color:#f92672">],</span> <span style="color:#f92672">-</span>1<span style="color:#f92672">});</span>
+        <span style="color:#f92672">}</span>
+        list<span style="color:#f92672">.</span><span style="color:#a6e22e">sort</span><span style="color:#f92672">((</span>p1<span style="color:#f92672">,</span> p2<span style="color:#f92672">)</span> <span style="color:#f92672">-&gt;</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>p1<span style="color:#f92672">[</span>0<span style="color:#f92672">]</span> <span style="color:#f92672">==</span> p2<span style="color:#f92672">[</span>0<span style="color:#f92672">])</span> <span style="color:#f92672">{</span>
+                <span style="color:#66d9ef">return</span> p1<span style="color:#f92672">[</span>1<span style="color:#f92672">]</span> <span style="color:#f92672">-</span> p2<span style="color:#f92672">[</span>1<span style="color:#f92672">];</span>
+            <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+                <span style="color:#66d9ef">return</span> p1<span style="color:#f92672">[</span>0<span style="color:#f92672">]</span> <span style="color:#f92672">-</span> p2<span style="color:#f92672">[</span>0<span style="color:#f92672">];</span>
+            <span style="color:#f92672">}</span>
+        <span style="color:#f92672">});</span>
+        <span style="color:#66d9ef">int</span> rooms <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">int</span> count <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span><span style="color:#f92672">[]</span> p <span style="color:#f92672">:</span> list<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            count <span style="color:#f92672">+=</span> p<span style="color:#f92672">[</span>1<span style="color:#f92672">];</span>
+            rooms <span style="color:#f92672">=</span> Math<span style="color:#f92672">.</span><span style="color:#a6e22e">max</span><span style="color:#f92672">(</span>rooms<span style="color:#f92672">,</span> count<span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span>
+        <span style="color:#66d9ef">return</span> rooms<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h2 id="more-efficient-solution">More Efficient Solution</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Solution</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">minMeetingRooms</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span><span style="color:#f92672">[][]</span> intervals<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>intervals <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">return</span> 0<span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
         <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>intervals<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span> <span style="color:#f92672">&lt;=</span> 1<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
             <span style="color:#66d9ef">return</span> intervals<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">;</span>
         <span style="color:#f92672">}</span>
-        
-        <span style="color:#75715e">// sort the start time and the end time seperately
+
+        <span style="color:#75715e">// sort the start time and the end time separately
 </span><span style="color:#75715e"></span>        <span style="color:#66d9ef">int</span><span style="color:#f92672">[]</span> starts <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#66d9ef">int</span><span style="color:#f92672">[</span>intervals<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">];</span>
         <span style="color:#66d9ef">int</span><span style="color:#f92672">[]</span> ends <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#66d9ef">int</span><span style="color:#f92672">[</span>intervals<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">];</span>
         <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> intervals<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">;</span> i<span style="color:#f92672">++)</span> <span style="color:#f92672">{</span>
@@ -85,19 +116,19 @@ if (!doNotTrack) {
         Arrays<span style="color:#f92672">.</span><span style="color:#a6e22e">sort</span><span style="color:#f92672">(</span>starts<span style="color:#f92672">);</span>
         Arrays<span style="color:#f92672">.</span><span style="color:#a6e22e">sort</span><span style="color:#f92672">(</span>ends<span style="color:#f92672">);</span>
 
-        <span style="color:#66d9ef">int</span> startPtr <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">int</span> endPtr <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">int</span> sPtr <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">int</span> ePtr <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span>
         <span style="color:#66d9ef">int</span> usedRooms <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>startPtr <span style="color:#f92672">&lt;</span> intervals<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>sPtr <span style="color:#f92672">&lt;</span> intervals<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
             <span style="color:#75715e">// if a meeting is finished, reused a room
 </span><span style="color:#75715e"></span>            <span style="color:#75715e">// we don&#39;t care about which meeting is finished,
 </span><span style="color:#75715e"></span>            <span style="color:#75715e">// we care about it provided an available room.
-</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>starts<span style="color:#f92672">[</span>startPtr<span style="color:#f92672">]</span> <span style="color:#f92672">&gt;=</span> ends<span style="color:#f92672">[</span>endPtr<span style="color:#f92672">])</span> <span style="color:#f92672">{</span>
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>starts<span style="color:#f92672">[</span>sPtr<span style="color:#f92672">]</span> <span style="color:#f92672">&gt;=</span> ends<span style="color:#f92672">[</span>ePtr<span style="color:#f92672">])</span> <span style="color:#f92672">{</span>
                 usedRooms<span style="color:#f92672">--;</span>
-                endPtr<span style="color:#f92672">++;</span>
+                ePtr<span style="color:#f92672">++;</span>
             <span style="color:#f92672">}</span>
             usedRooms<span style="color:#f92672">++;</span>
-            startPtr<span style="color:#f92672">++;</span>
+            sPtr<span style="color:#f92672">++;</span>
         <span style="color:#f92672">}</span>
         <span style="color:#66d9ef">return</span> usedRooms<span style="color:#f92672">;</span>
     <span style="color:#f92672">}</span>

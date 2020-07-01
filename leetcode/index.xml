@@ -422,7 +422,7 @@
       <pubDate>Sun, 12 Jan 2020 13:38:19 +0800</pubDate>
       
       <guid>/leetcode/252.-meeting-rooms/</guid>
-      <description>No summary</description>
+      <description>We can sort the intervals by the start time, if those intervals have no overlap, then the person could attend all meetings.</description>
     </item>
     
     <item>
