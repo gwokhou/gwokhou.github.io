@@ -6,10 +6,12 @@ covering RDNA and CDNA. Other engineering topics can be added independently.
 
 ## Build and preview
 
-Install [Quarto 1.11.9](https://github.com/quarto-dev/quarto-cli/releases/tag/v1.11.9).
+Install [Quarto 1.11.9](https://github.com/quarto-dev/quarto-cli/releases/tag/v1.11.9)
+and Node.js 22.
 From this repository's root:
 
 ```bash
+npm ci
 quarto render
 quarto preview --host 127.0.0.1 --port 44178 --no-browser
 ```
@@ -71,3 +73,10 @@ Add new topics to the homepage and navigation once they contain useful material.
 List publishable pages explicitly under `project.render` in `_quarto.yml`.
 Keep the technical content in its topic directories; the shared site identity
 does not limit future topics to AMD GPUs.
+
+The post-render script `scripts/prepare-site.cjs` adds article breadcrumbs,
+related-reading links and current-page menu states. It uses each article's
+existing description for its page-level search summary; section entries retain
+the full content. This avoids indexing the duplicate body contents generated
+by Quarto's `left-body` layout. When adding another article, extend the article
+list in that script and provide a concise `description` in the page metadata.

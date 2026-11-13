@@ -4,7 +4,7 @@ subtitle: "Systems software, GPU computing, and compilers"
 description: "Personal engineering notes connecting architecture, source code, and practical development."
 toc: false
 page-layout: full
-body-classes: home-page
+body-classes: landing-page home-page
 ---
 
 I’m Guohao, a software engineer. These notes connect architecture and source code to practical engineering decisions, keeping the applicable conditions and supporting evidence close to each conclusion.
@@ -17,6 +17,10 @@ I’m Guohao, a software engineer. These notes connect architecture and source c
 Architecture comparisons and LLVM dependency analysis for RDNA and CDNA. Explore matrix instructions, lane layouts, memory movement, synchronization, and compiler behavior.
 
 [Explore the topic →](amd-gpu/index.qmd)
+:::
+
+::: {#how-to-read-these-notes .reading-guide}
+**Choose a reading path.** Start with an architecture comparison for hardware behavior, or go directly to a compiler article for LLVM handling. Each article states its targets, source revisions, and validation limits.
 :::
 
 ::: {.home-reading-grid}
@@ -41,8 +45,6 @@ Follow physical-register dependencies, wait-state accounting, and developer chec
 :::
 :::
 
-## How to read these notes
-
-Start with an architecture comparison for hardware behavior, or go directly to a compiler article for LLVM handling. Each article states its targets, source revisions, and validation limits. Source inspection, compilation, and GPU measurements are recorded separately.
+Source inspection, compilation, and GPU measurements are recorded separately.
 
 Corrections and discussion are welcome through the [source repository](https://github.com/gwokhou/gwokhou.github.io).

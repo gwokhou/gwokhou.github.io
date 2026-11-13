@@ -1,6 +1,8 @@
 project:
   type: website
   output-dir: _site
+  post-render:
+    - node scripts/prepare-site.cjs
   render:
     - index.qmd
     - amd-gpu/index.qmd
