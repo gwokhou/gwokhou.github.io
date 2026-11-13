@@ -1,0 +1,9 @@
+## 2. Operands and wait types {#dependency-background}
+
+For a matrix operation **D = A × B + C**, A/B are multiplicands, C is the accumulator input and D is the result. In a dependency pair, D refers to the preceding instruction; A/B/C refer to the following one. A register hazard is about overlapping **physical registers**, not merely equal matrix values. [ISA register-dependency conditions](../rdna-architecture-compare/index.qmd#register-dependencies).
+
+- **Register spacing:** an unseparated D → A/B overlap needs the applicable WMMA separator; RDNA 4 also has a sparse-index case. Scalar `S_NOP` and memory-counter waits do not provide the required intervening VALU. [ISA spacing and stall table](../rdna-architecture-compare/index.qmd#wmma-register-hazards).
+- **Memory readiness:** an asynchronous load that produces an operand needs its completion tracked separately. Memory counters do not provide a WMMA arithmetic-completion counter. [ISA completion rules](../rdna-architecture-compare/index.qmd#completion-waits).
+- **Optional ALU delay:** LLVM's delay calculation and the ISA's D → C stall conditions are separate. Absence of an inserted delay does not establish zero-stall execution. [C-only case](#llvm-wmma-c-only) · [Delay calculation](#llvm-alu-delay).
+
+The architecture comparison retains the [lane layouts](../rdna-architecture-compare/index.qmd#layout) and the [dependency-and-wait diagram](../rdna-architecture-compare/index.qmd#dependency-wait-overview).

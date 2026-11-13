@@ -1,0 +1,12 @@
+<p class="table-hint" id="cdna-formula-scroll-hint">Scroll horizontally to compare both K sizes. The operand label stays visible.</p>
+<div class="table-scroll formula-scroll" role="region" aria-label="Derived lane coordinates for the specified FP16 → FP32 operations" aria-describedby="cdna-formula-scroll-hint" tabindex="0">
+<table class="formulas">
+<caption>Derived lane coordinates for the specified FP16 → FP32 operations</caption>
+<thead><tr><th scope="col">Operand</th><th scope="col">K = 16 · CDNA 3 and CDNA 4</th><th scope="col">K = 32 · CDNA 4</th></tr></thead>
+<tbody>
+<tr><th scope="row">A item e</th><td><span class="mobile-cell-label">K = 16 · CDNA 3 and CDNA 4</span><code>A[t, 4q + e]</code>, <code>0 ≤ e &lt; 4</code></td><td><span class="mobile-cell-label">K = 32 · CDNA 4</span><code>A[t, 8q + e]</code>, <code>0 ≤ e &lt; 8</code></td></tr>
+<tr><th scope="row">B item e</th><td><span class="mobile-cell-label">K = 16 · CDNA 3 and CDNA 4</span><code>B[4q + e, t]</code>, <code>0 ≤ e &lt; 4</code></td><td><span class="mobile-cell-label">K = 32 · CDNA 4</span><code>B[8q + e, t]</code>, <code>0 ≤ e &lt; 8</code></td></tr>
+<tr><th scope="row">Input packing</th><td><span class="mobile-cell-label">K = 16 · CDNA 3 and CDNA 4</span><code>register = floor(e/2)</code><br><code>half = e mod 2</code><br>2 payload VGPRs per input.</td><td><span class="mobile-cell-label">K = 32 · CDNA 4</span><code>register = floor(e/2)</code><br><code>half = e mod 2</code><br>4 payload VGPRs per input.</td></tr>
+<tr><th scope="row">C / D item g</th><td><span class="mobile-cell-label">K = 16 · CDNA 3 and CDNA 4</span><code>C[4q + g, t]</code> / <code>D[4q + g, t]</code><br><code>0 ≤ g &lt; 4</code></td><td><span class="mobile-cell-label">K = 32 · CDNA 4</span><code>C[4q + g, t]</code> / <code>D[4q + g, t]</code><br><code>0 ≤ g &lt; 4</code></td></tr>
+</tbody></table>
+</div>

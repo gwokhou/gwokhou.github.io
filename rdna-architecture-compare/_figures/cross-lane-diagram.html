@@ -1,0 +1,146 @@
+<figure class="wmma-diagram cross-lane-diagram" aria-labelledby="cross-lane-title">
+<figcaption>
+<span id="cross-lane-title" class="visually-hidden">Cross-lane movement: who selects, and how far can data travel?</span>
+
+<p class="figure-lead">First compare the reachable lane range, then the source of each lane selector.</p>
+<p class="figure-scope">Examples: all EXEC lanes active; indices in range; ABS / NEG / OMOD = 0. Arrows carry the original 32-bit source value toward its destination.</p>
+</figcaption>
+<div class="wmma-legend" aria-label="Cross-lane diagram legend"><span><span class="wmma-key wmma-key-zero" aria-hidden="true"></span>Source value</span><span><span class="wmma-key wmma-key-one" aria-hidden="true"></span>Destination result</span></div>
+<h4>1. VALU gather: stay in a row, or select from its partner</h4>
+<p class="note">Wave32 examples use selector <code>3</code> for destinations L5 and L21. The routing applies to the RDNA 3 / 3.5 scalar forms and the additional RDNA 4 <code>_VAR</code> forms compared here. For the scalar examples, FI and BOUND_CTRL are both zero.</p>
+<div class="wmma-panels">
+<section class="wmma-panel lane-transfer-panel" aria-labelledby="lane-within-heading">
+<div class="lane-description">
+<h4 id="lane-within-heading">Within each 16-lane row</h4>
+<p><code>V_PERMLANE16_B32</code><br><code>V_PERMLANE16_VAR_B32</code></p>
+</div>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 194" role="img" aria-labelledby="lane-within-title lane-within-desc">
+<title id="lane-within-title">Gather within two separate 16-lane rows</title>
+<desc id="lane-within-desc">Source lane 3 sends x3 to destination lane 5 in row 0. Source lane 19 sends x19 to destination lane 21 in row 1. Each destination selects offset 3 within its own row.</desc>
+<defs><marker id="lane-within-arrow" viewBox="0 0 7 7" refX="6" refY="3.5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L7 3.5 L0 7 Z" fill="#245a91"/></marker></defs>
+<g font-size="15"><text x="12" y="19">Source SRC0</text><text x="214" y="19">Destination</text>
+<rect class="lane-row" x="1" y="30" width="318" height="64" rx="5"/><text x="10" y="48">Row 0 · lanes 0–15</text>
+<rect class="lane-row" x="1" y="120" width="318" height="64" rx="5"/><text x="10" y="138">Row 1 · lanes 16–31</text></g>
+<g font-size="16" text-anchor="middle">
+<rect class="lane-zero" x="12" y="58" width="90" height="28"/><text x="57" y="77">L3: x3</text>
+<rect class="lane-one" x="214" y="58" width="94" height="28"/><text x="261" y="77">L5: x3</text>
+<rect class="lane-zero" x="12" y="148" width="90" height="28"/><text x="57" y="167">L19: x19</text>
+<rect class="lane-one" x="214" y="148" width="94" height="28"/><text x="261" y="167">L21: x19</text></g>
+<path class="lane-transfer" d="M106 72 H208" marker-end="url(#lane-within-arrow)"/>
+<path class="lane-transfer" d="M106 162 H208" marker-end="url(#lane-within-arrow)"/>
+</svg>
+<div class="lane-caption">
+<p><code>src_lane = 16 × row + selector</code></p>
+</div>
+</section>
+<section class="wmma-panel lane-transfer-panel" aria-labelledby="lane-paired-heading">
+<div class="lane-description">
+<h4 id="lane-paired-heading">From the paired 16-lane row</h4>
+<p><code>V_PERMLANEX16_B32</code><br><code>V_PERMLANEX16_VAR_B32</code></p>
+</div>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 194" role="img" aria-labelledby="lane-paired-title lane-paired-desc">
+<title id="lane-paired-title">Gather from the paired row</title>
+<desc id="lane-paired-desc">Lane 5 selects source lane 19 from row 1. Lane 21 selects source lane 3 from row 0. Arrows carry x19 and x3 across the row boundary.</desc>
+<defs><marker id="lane-paired-arrow" viewBox="0 0 7 7" refX="6" refY="3.5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L7 3.5 L0 7 Z" fill="#245a91"/></marker></defs>
+<g font-size="15"><text x="12" y="19">Source SRC0</text><text x="214" y="19">Destination</text>
+<rect class="lane-row" x="1" y="30" width="318" height="64" rx="5"/><text x="10" y="48">Row 0 · lanes 0–15</text>
+<rect class="lane-row" x="1" y="120" width="318" height="64" rx="5"/><text x="10" y="138">Row 1 · lanes 16–31</text></g>
+<g font-size="16" text-anchor="middle">
+<rect class="lane-zero" x="12" y="58" width="90" height="28"/><text x="57" y="77">L3: x3</text>
+<rect class="lane-one" x="214" y="58" width="94" height="28"/><text x="261" y="77">L5: x19</text>
+<rect class="lane-zero" x="12" y="148" width="90" height="28"/><text x="57" y="167">L19: x19</text>
+<rect class="lane-one" x="214" y="148" width="94" height="28"/><text x="261" y="167">L21: x3</text></g>
+<path class="lane-transfer" d="M106 72 H150 L190 162 H208" marker-end="url(#lane-paired-arrow)"/>
+<path class="lane-transfer" d="M106 162 H150 L190 72 H208" marker-end="url(#lane-paired-arrow)"/>
+</svg>
+<div class="lane-caption">
+<p><code>src_lane = 16 × (row XOR 1) + selector</code></p>
+</div>
+</section>
+</div>
+<p class="note"><code>row = floor(destination_lane / 16)</code>. In wave64 the same rule also pairs rows 2 ↔ 3; X16 does not select from an arbitrary row.</p>
+<p class="figure-scope"><strong>Selector difference:</strong> the RDNA 3 / 3.5 scalar forms share a 16-slot pattern; RDNA 4 VAR forms use a selector from each destination lane’s VGPR.</p>
+<details class="figure-notes"><summary>2. Selector-source examples: shared pattern vs per-lane VGPR</summary>
+<h4>2. Selector source: shared scalar pattern or per-lane VGPR</h4>
+<div class="wmma-panels">
+<section class="wmma-panel" aria-labelledby="lane-scalar-heading">
+<h4 id="lane-scalar-heading">RDNA 3 / 3.5 · scalar forms</h4>
+<p>SRC1/SRC2 hold sixteen 4-bit selectors. L5 and L21 use the same slot, <code>s[5]</code>, because both have row offset 5.</p>
+<div class="lane-pair"><code>s[5] = 3</code><span>→ same-row gather</span></div>
+<div class="lane-pair"><code>L3 → L5</code><span>and</span><code>L19 → L21</code></div>
+<details class="source-details"><summary>Sources</summary>
+<p class="refs"><a href="https://gpuopen.com/download/rdna3-shader-instruction-set-architecture-feb-2023.pdf#page=432">RDNA 3 pp.432–433</a> · <a href="https://gpuopen.com/download/rdna35_instruction_set_architecture.pdf#page=458">RDNA 3.5 pp.458–459</a></p>
+</details>
+</section>
+<section class="wmma-panel" aria-labelledby="lane-variable-heading">
+<h4 id="lane-variable-heading">RDNA 4 · additional VAR forms</h4>
+<p>Each destination reads its own SRC1 VGPR’s low four bits. Matching row offsets can choose different source offsets; the row-routing rules above still apply.</p>
+<div class="lane-pair"><code>SRC1[L5] &amp; 15 = 3</code><span>→</span><code>L3 → L5</code></div>
+<div class="lane-pair"><code>SRC1[L21] &amp; 15 = 7</code><span>→</span><code>L23 → L21</code></div>
+<p>These two examples use the same-row form.</p>
+<details class="source-details"><summary>Sources</summary>
+<p class="refs"><a href="https://gpuopen.com/download/rdna4-instruction-set-architecture.pdf#page=513">RDNA 4 pp.513–514</a></p>
+</details>
+</section>
+</div>
+
+</details>
+<h4>3. DS gather in wave64: the same index reaches different lanes</h4>
+<p class="note"><code>DS_BPERMUTE_B32</code> example: destination L40 supplies byte index <code>ADDR = 28 = 4 × 7</code>, with <code>offset0 = 0</code>. Only the selected transfer is drawn.</p>
+<div class="wmma-panels">
+<section class="wmma-panel lane-transfer-panel" aria-labelledby="lane-ds-halves-heading">
+<div class="lane-description">
+<h4 id="lane-ds-halves-heading">RDNA 3 / 3.5 · two 32-lane halves</h4>
+</div>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 204" role="img" aria-labelledby="lane-ds-halves-title lane-ds-halves-desc">
+<title id="lane-ds-halves-title">Lane 40 gathers lane 39 within the upper half-wave</title>
+<desc id="lane-ds-halves-desc">Index 7 is relative to lane 40's own 32-lane half. It selects source lane 32 plus 7, lane 39. Lane 7 in the other half is not selected.</desc>
+<defs><marker id="lane-ds-halves-arrow" viewBox="0 0 7 7" refX="6" refY="3.5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L7 3.5 L0 7 Z" fill="#245a91"/></marker></defs>
+<g font-size="15"><rect class="lane-row" x="1" y="1" width="318" height="84" rx="5"/><text x="10" y="23">Half 0 · lanes 0–31</text>
+<rect class="lane-row" x="1" y="114" width="318" height="84" rx="5"/><text x="10" y="136">Half 1 · lanes 32–63</text>
+<path class="lane-boundary" d="M1 99 H319"/>
+<text x="124" y="62">Not selected</text></g>
+<g font-size="16" text-anchor="middle">
+<rect class="register-other" x="12" y="40" width="90" height="32"/><text x="57" y="62">L7: x7</text>
+<rect class="lane-zero" x="12" y="153" width="90" height="32"/><text x="57" y="175">L39: x39</text>
+<rect class="lane-one" x="214" y="153" width="94" height="32"/><text x="261" y="175">L40: x39</text></g>
+<path class="lane-transfer" d="M106 169 H208" marker-end="url(#lane-ds-halves-arrow)"/>
+</svg>
+<div class="lane-caption">
+<p><code>32 + 7 = 39</code>: L40 receives <code>x39</code>.</p>
+<details class="source-details"><summary>Sources</summary>
+<p class="refs"><a href="https://gpuopen.com/download/rdna3-shader-instruction-set-architecture-feb-2023.pdf#page=137">RDNA 3 pp.137–138</a> · <a href="https://gpuopen.com/download/rdna35_instruction_set_architecture.pdf#page=139">RDNA 3.5 pp.139–140</a></p>
+</details>
+</div>
+</section>
+<section class="wmma-panel lane-transfer-panel" aria-labelledby="lane-ds-wave-heading">
+<div class="lane-description">
+<h4 id="lane-ds-wave-heading">RDNA 4 · all 64 lanes</h4>
+</div>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 204" role="img" aria-labelledby="lane-ds-wave-title lane-ds-wave-desc">
+<title id="lane-ds-wave-title">Lane 40 gathers lane 7 across the half-wave boundary</title>
+<desc id="lane-ds-wave-desc">Index 7 selects absolute wave lane 7. The x7 value crosses from lanes 0–31 to destination lane 40. Lane 39 is not selected.</desc>
+<defs><marker id="lane-ds-wave-arrow" viewBox="0 0 7 7" refX="6" refY="3.5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L7 3.5 L0 7 Z" fill="#245a91"/></marker></defs>
+<g font-size="15"><rect class="lane-row" x="1" y="1" width="318" height="197" rx="5"/><text x="10" y="23">Wave64 · lanes 0–63</text>
+<text x="12" y="144">Not selected</text></g>
+<g font-size="16" text-anchor="middle">
+<rect class="lane-zero" x="12" y="40" width="90" height="32"/><text x="57" y="62">L7: x7</text>
+<rect class="register-other" x="12" y="153" width="90" height="32"/><text x="57" y="175">L39: x39</text>
+<rect class="lane-one" x="214" y="153" width="94" height="32"/><text x="261" y="175">L40: x7</text></g>
+<path class="lane-transfer" d="M106 56 C168 56 156 169 208 169" marker-end="url(#lane-ds-wave-arrow)"/>
+</svg>
+<div class="lane-caption">
+<p>L40 receives <code>x7</code> from the other half of the wave.</p>
+<details class="source-details"><summary>Sources</summary>
+<p class="refs"><a href="https://gpuopen.com/download/rdna4-instruction-set-architecture.pdf#page=163">RDNA 4 p.163</a></p>
+</details>
+</div>
+</section>
+</div>
+
+<p class="note"><strong>EXEC and controls:</strong> the active-lane examples do not illustrate inactive-source or suppressed-write cases. The original comparison below retains the scalar FI / BOUND_CTRL controls and the RDNA 4 <code>DS_BPERMUTE_FI_B32</code> exception. See the cited instruction definitions for masked-lane behavior and index wrapping.</p>
+<details class="figure-notes"><summary>Diagram conventions and gather / scatter semantics</summary>
+<p class="note"><strong>Reading the examples:</strong> <code>Lk</code> is lane k; <code>xk</code> is its original 32-bit source value. Arrows point from source data to the destination. All lanes are active in EXEC, indices are in range, and ABS / NEG / OMOD are zero. These are independent examples of instruction semantics, not physical wiring or timing diagrams.</p>
+<p class="note"><strong>Gather versus scatter:</strong> the DS panels show <code>DS_BPERMUTE_B32</code>, where the destination selects its source. With <code>DS_PERMUTE_B32</code>, the source selects its destination; the same generation-specific lane ranges apply. These operations use LDS hardware without allocating LDS storage. Wave32 uses 32 lanes on all three generations.</p>
+</details>
+</figure>

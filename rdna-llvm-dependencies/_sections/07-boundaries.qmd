@@ -1,0 +1,77 @@
+## 7. Developer checks and optional controls {#developer-boundaries}
+
+Inspect the **actual target and emitted instruction sequence** in this order:
+
+1. **Target and pipeline:** match the processor, compiler revision, function attributes and options to the [target scope](#llvm-wmma-handling) and [reviewed pass pipeline](#llvm-pass-pipeline).
+2. **Register overlap and spacing:** identify physical D → A/B overlap and, on RDNA 4, the sparse-index input; inspect the intervening VALU or inserted vector no-op. Check D → C stall conditions separately. [Overlap handling](#llvm-wmma-spacing) · [C-only handling](#llvm-wmma-c-only).
+3. **Memory readiness:** identify the operand's producer, pending dependencies and emitted wait counters. A memory-counter wait does not supply the WMMA register separator. [Operand readiness](#llvm-memory-readiness) · [Counter selection](#llvm-memory-counters).
+4. **Inline assembly:** check the exposed register operands and the internal instruction sequence; do not assume LLVM repairs dependencies hidden inside the string. [Coverage boundary](#llvm-inline-asm).
+5. **Optional controls:** check [ALU-delay eligibility](#llvm-alu-delay) and whether supported [GFX12 expert scheduling](#expert-scheduling) is enabled. Absence of an optional delay does not remove mandatory spacing or establish zero-stall execution.
+
+### Inline assembly {#llvm-inline-asm .compiler-case}
+
+```{=html}
+<dl class="rule-details">
+<div><dt>Compiler handling</dt><dd><p><strong>WMMA fix:</strong> requires recognized WMMA/SWMMAC opcodes; its backward scan skips inline assembly.</p><p><strong>Other handling:</strong> the dedicated inline-assembly checker limits its coverage; wait insertion analyzes modeled register operands and events.</p></dd></div>
+<div><dt>Boundary</dt><dd><p>These paths do not establish automatic repair of dependencies hidden inside an assembly string.</p><p>Checking exposed operands is distinct from analyzing internal instructions. The ISA rules inside the string remain unchanged.</p></dd></div>
+</dl>
+```
+
+```{=html}
+<details class="source-details"><summary>Sources by check</summary>
+<ul class="case-sources"><li><strong>Compiler handling</strong><p class="refs"><a href="https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/GCNHazardRecognizer.cpp#L2658-L2667" title="Opcode gate">LLVM: opcodes</a> · <a href="https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/GCNHazardRecognizer.cpp#L1124-L1133" title="Inline-assembly scan behavior">LLVM: asm scan</a> · <a href="https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/GCNHazardRecognizer.cpp#L1831-L1837" title="Stated coverage limit">LLVM: asm limits</a> · <a href="https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/SIInsertWaitcnts.cpp#L2544-L2604" title="Modeled operands">LLVM: operands</a></p></li><li><strong>Boundary</strong><p class="refs"><a href="https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/GCNHazardRecognizer.cpp#L1831-L1837" title="Inline-assembly coverage limit">LLVM: asm limits</a> · <a href="https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/SIInsertWaitcnts.cpp#L2544-L2604" title="Operand-based wait analysis">LLVM: operands</a></p></li></ul>
+</details>
+```
+
+### Optional S\_DELAY\_ALU and C reuse {#llvm-alu-delay .compiler-case}
+
+```{=html}
+<dl class="rule-details">
+<div><dt>Pass eligibility</dt><dd><p>Requires <code>hasDelayAlu()</code>; skips functions with a maximum of one wave per execution unit.</p></dd></div>
+<div><dt>C-reuse calculation</dt><dd><p>Excludes a tied explicit source equal to the remembered preceding WMMA/SWMMAC destination from delay calculation.</p><p><strong>Predicate:</strong> register equality and current instruction class; no opcode-type or SRC2-modifier comparison.</p></dd></div>
+<div><dt>Tracking</dt><dd><p>Another processed instruction that is neither WMMA nor SWMMAC clears the remembered destination.</p></dd></div>
+<div><dt>Hardware boundary</dt><dd><p><strong>Meaning:</strong> an optional compiler delay calculation, not a broader hardware-forwarding guarantee.</p><p>Neither the exclusion nor absence of <code>S_DELAY_ALU</code> removes mandatory WMMA spacing or ISA D → C stall conditions.</p></dd></div>
+</dl>
+```
+
+```{=html}
+<details class="source-details"><summary>Sources by check</summary>
+<ul class="case-sources"><li><strong>Pass eligibility</strong><p class="refs"><a href="https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/AMDGPUInsertDelayAlu.cpp#L571-L578" title="Pass eligibility">LLVM: eligibility</a></p></li><li><strong>C-reuse calculation</strong><p class="refs"><a href="https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/AMDGPUInsertDelayAlu.cpp#L466-L481" title="C-reuse predicate">LLVM: C reuse</a></p></li><li><strong>Tracking</strong><p class="refs"><a href="https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/AMDGPUInsertDelayAlu.cpp#L545-L552" title="Destination tracking">LLVM: tracking</a></p></li><li><strong>Hardware boundary</strong><p class="refs"><a href="https://gpuopen.com/download/rdna35_instruction_set_architecture.pdf#page=54" title="Optional delay semantics">ISA p.54</a> · <a href="https://gpuopen.com/download/rdna35_instruction_set_architecture.pdf#page=86" title="RDNA 3.5 scheduling">ISA p.86</a> · <a href="https://gpuopen.com/download/rdna4-instruction-set-architecture.pdf#page=101" title="RDNA 4 scheduling">ISA p.101</a></p></li></ul>
+</details>
+```
+
+### GFX12 expert-scheduling exception {#expert-scheduling}
+
+:::: {.reading-block}
+
+::: {.note}
+
+**GFX12 expert-scheduling exception:** `SIInsertWaitcnts` is not exclusively a memory-wait pass in every mode.
+
+:::
+
+::: {.note}
+
+<strong class="reading-label">Enabled mode</strong>With supported expert scheduling enabled by the option/function-attribute selection, LLVM also tracks VALU VGPR reads/writes and memory-instruction VGPR source reads, and can emit `S_WAITCNT_DEPCTR`.
+
+:::
+
+::: {.note}
+
+<strong class="reading-label">VALU consumers</strong>Its `VA_VDST` waits are cleared before VALU consumers because the source identifies that dependency class as hardware-handled.
+
+:::
+
+::: {.note}
+
+<strong class="reading-label">Dependency fields</strong>These extra dependency fields are separate from the memory-completion counters above and from `fixWMMAHazards`.
+
+:::
+
+::: {.note}
+
+<strong class="reading-label">Sources for this note</strong>[GFX12+ support gate](https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/GCNSubtarget.h#L708-L711) · [Enablement](https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/AMDGPUWaitcntUtils.cpp#L17-L22) · [Extra events](https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/AMDGPUHWEvents.cpp#L23-L57) · [DEPCTR emission](https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/SIInsertWaitcnts.cpp#L2346-L2358) · [VALU-consumer exception](https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/SIInsertWaitcnts.cpp#L2642-L2649).
+
+:::
+
+::::

@@ -1,0 +1,33 @@
+## 2. Matrix instructions {#matrix}
+
+**Choose the instruction before choosing the tile layout.** A generation label does not fix K, input packing, output register count or sparse metadata. The selected families below are an entry point, not an exhaustive opcode inventory.
+
+```{=html}
+{{< include /cdna-architecture-compare/_tables/matrix.html >}}
+```
+
+Evidence for the shape rows: [CDNA 3 dense instruction table](https://www.amd.com/content/dam/amd/en/documents/instinct-tech-docs/instruction-set-architectures/amd-instinct-mi300-cdna3-instruction-set-architecture.pdf#page=50), [CDNA 4 dense instruction table](https://www.amd.com/content/dam/amd/en/documents/instinct-tech-docs/instruction-set-architectures/amd-instinct-cdna4-instruction-set-architecture.pdf#page=51), [CDNA 4 sparse instruction table](https://www.amd.com/content/dam/amd/en/documents/instinct-tech-docs/instruction-set-architectures/amd-instinct-cdna4-instruction-set-architecture.pdf#page=68), and the pinned [LLVM MFMA definitions](https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/VOP3PInstructions.td).
+
+### Wider K is an instruction choice {#wider-k}
+
+For FP16 inputs and FP32 accumulation, the shared `16×16×16` operation needs **4 FP16 values per lane per input**. CDNA 4's `16×16×32` needs **8**. Each still produces **4 FP32 outputs per lane**, because M and N did not change. The compiler signatures expose exactly these vector lengths. [Common builtin](https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/clang/include/clang/Basic/BuiltinsAMDGPU.td#L699) · [Wider builtin](https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/clang/include/clang/Basic/BuiltinsAMDGPU.td#L762).
+
+Keeping the original opcode does not automatically use the wider instruction. Larger K may reduce instruction count for a full dot product, but also changes loading, registers and tail handling. Whether that improves a kernel is a measurement question.
+
+### Block scaling is part of the operand contract {#block-scaling}
+
+CDNA 4's `mfma_scale_*_f8f6f4` interface takes packed A/B payloads, format selectors and separate scales. FP4 is E2M1; FP6 can be E2M3 or E3M2. [AMD scaled-MFMA explanation](https://rocm.blogs.amd.com/software-tools-optimization/matrix-cores-cdna/README.html#builtin-amdgcn-mfma-scale-f32-32x32x64-f8f8).
+
+**One scale covers 32 elements along K.** For A with shape `M×K` and B with shape `K×N`, each A row and B column is divided into 32-element segments, each with its own scale. With K=128, that means four scales per A row and four per B column. This scaling block is distinct from an MFMA output block. [ISA §7.2–7.2.1](https://www.amd.com/content/dam/amd/en/documents/instinct-tech-docs/instruction-set-architectures/amd-instinct-cdna4-instruction-set-architecture.pdf#page=63).
+
+**The scale byte encodes an exponent.** E8M0 uses `scale = 2^(b−127)` for encoded byte values `b=0…254`; `0xFF` encodes NaN. Thus the byte `0x7F` (decimal 127) represents a multiplier of **1**, not 127. Scale encoding is separate from the FP8/FP6/FP4 element format. [ISA scale encoding](https://www.amd.com/content/dam/amd/en/documents/instinct-tech-docs/instruction-set-architectures/amd-instinct-cdna4-instruction-set-architecture.pdf#page=63).
+
+::: {.note}
+**Packing boundary:** Clang's scaled builtins accept an 8×32-bit vector for each A/B argument, even for smaller payload formats. This interface width is not evidence that every format consumes eight hardware payload VGPRs. Use the selected ISA format's packing and the emitted code. [Clang signatures](https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/clang/include/clang/Basic/BuiltinsAMDGPU.td#L759-L760) · [ISA §7.1.5](https://www.amd.com/content/dam/amd/en/documents/instinct-tech-docs/instruction-set-architectures/amd-instinct-cdna4-instruction-set-architecture.pdf#page=58).
+:::
+
+### FP64 and product peak limits {#fp64-peaks}
+
+**A newer generation does not raise every datatype's peak.** AMD lists matrix FP64 at **163.4 TFLOP/s for MI300X** and **78.6 TFLOP/s for MI355X**. These are theoretical peaks for those specific products. [MI300 table](https://rocm.docs.amd.com/en/latest/reference/gpu-arch/mi300.html) · [MI350 table](https://rocm.docs.amd.com/en/latest/reference/gpu-arch/mi350.html#performance).
+
+They are not measurements of the same kernel, and their ratio does not establish an application speedup or slowdown. Compare the required datatype and actual workload before carrying a performance expectation from one generation to the other.

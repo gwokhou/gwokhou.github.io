@@ -1,0 +1,10 @@
+<div class="table-scroll" role="region" aria-label="MFMA dependency questions for both CDNA generations" tabindex="0">
+<table class="comparison-table">
+<caption>MFMA register dependencies · both generations, with instruction-specific conditions</caption>
+<thead><tr><th scope="col">Relationship</th><th scope="col">What must be checked</th><th scope="col">Reading path</th></tr></thead>
+<tbody>
+<tr><th scope="row">D → A/B<span class="row-detail">Read after write</span></th><td><span class="mobile-cell-label">What must be checked</span>The next multiplicand overlaps the producer's result. Its wait depends on the producer family and instruction variant.</td><td><span class="mobile-cell-label">Reading path</span><a href="../cdna-llvm-dependencies/index.html#mfma-compiler-cases">Selected LLVM thresholds</a>; accumulator reuse does not cover this relationship.</td></tr>
+<tr><th scope="row">D → C<span class="row-detail">Accumulator reuse</span></th><td><span class="mobile-cell-label">What must be checked</span>Distinguish an exact accumulator chain from partial overlap or a changed matrix instruction.</td><td><span class="mobile-cell-label">Reading path</span><a href="../cdna-llvm-dependencies/index.html#mfma-c-reuse">Full versus partial C reuse</a>, including short-operation and FP64 exceptions.</td></tr>
+<tr><th scope="row">MFMA reads C → VALU overwrites C<span class="row-detail">Write after read</span></th><td><span class="mobile-cell-label">What must be checked</span>The old accumulator input must remain available until the matrix operation has read it.</td><td><span class="mobile-cell-label">Reading path</span><a href="../cdna-llvm-dependencies/index.html#mfma-write-hazards">Input overwrite and result access</a>; this is separate from memory completion.</td></tr>
+</tbody></table>
+</div>

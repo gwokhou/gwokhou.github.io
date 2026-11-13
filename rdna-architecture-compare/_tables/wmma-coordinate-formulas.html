@@ -1,0 +1,15 @@
+<div class="table-scroll formula-scroll" role="region" aria-label="WMMA coordinate formulas" tabindex="0" aria-describedby="formula-scroll-hint-1">
+<table class="formulas">
+<caption>Each generation column is sourced by the official references in its heading.</caption>
+<thead><tr><th scope="col">Mapping</th><th scope="col">RDNA 3 / RDNA 3.5<br><span class="refs"><a href="https://gpuopen.com/download/rdna3-shader-instruction-set-architecture-feb-2023.pdf#page=84" title="RDNA 3 p.84">ISA p.84</a> · <a href="https://rocm-handbook.amd.com/projects/amd-rocm-optimization-guide/en/latest/compiler-builtins/rdna/rdna3-dense-wmma-builtins.html#fragment-layouts">AMD RDNA 3 / 3.5 layouts</a></span></th><th scope="col">RDNA 4<br><span class="refs"><a href="https://gpuopen.com/download/rdna4-instruction-set-architecture.pdf#page=101" title="A: p.101">ISA p.101</a> · <a href="https://gpuopen.com/download/rdna4-instruction-set-architecture.pdf#page=102" title="B/C/D: p.102">ISA p.102</a></span></th></tr></thead>
+<tbody>
+<tr><th scope="row">Input element index</th><td><code>e = 0…15</code></td><td><code>e = 0…7</code></td></tr>
+<tr><th scope="row">Input storage</th><td>VGPR offset <code>floor(e / 2)</code>, halfword <code>e % 2</code>.</td><td>VGPR offset <code>floor(e / 2)</code>, halfword <code>e % 2</code>.</td></tr>
+<tr><th scope="row">K coordinate</th><td><code>k = e</code></td><td><code>k = 4q + 8 floor(e / 4) + (e % 4)</code></td></tr>
+<tr><th scope="row">Input A</th><td><code>A[t, k]</code></td><td><code>A[t, k]</code></td></tr>
+<tr><th scope="row">Input B</th><td><code>B[k, t]</code></td><td><code>B[k, t]</code></td></tr>
+<tr><th scope="row">Input relationship between lanes t and t+16</th><td>Identical A values and identical B values at every input slot <code>e</code>.</td><td>Disjoint K positions at corresponding input slots; the two lanes together cover K=0…15.</td></tr>
+<tr><th scope="row">FP32 C / D at VGPR offset g</th><td><code>C[2g + q, t]</code><br><code>D[2g + q, t]</code></td><td><code>C[8q + g, t]</code><br><code>D[8q + g, t]</code></td></tr>
+</tbody>
+</table>
+</div>

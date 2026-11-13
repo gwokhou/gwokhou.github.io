@@ -1,0 +1,26 @@
+## 8. Evidence and validation {#compiler-evidence}
+
+**Reviewed revision:** LLVM `4e9d349ab86dc0a913db3cba11aa2763d6985aff`. All source and regression-test links for the WMMA handling analysis use this commit. **Source-review date:** November 13, 2026. This is an independently organized analysis.
+
+### Completed checks {#completed-checks}
+
+**Source inspected:** target and feature bindings, the [shown pass pipelines](#llvm-pass-pipeline), [WMMA overlap handling](#llvm-dependency-cases), [memory waits](#memory-waits), and [optional controls and inline-assembly boundaries](#developer-boundaries).
+
+Target coverage follows the processor bindings, shared feature sets and recognizer's common code path; it is not a per-chip execution result. The underlying bindings are recorded in the [RDNA architecture article, Appendix A](../rdna-architecture-compare/index.qmd#native-isa-check).
+
+**Regression expectations inspected:** pinned post-RA cases cover [GFX11 D → A/B and intervening VALU](https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/test/CodeGen/AMDGPU/wmma-hazards.mir#L1-L66), [GFX12 wave32 D → A/B/C](https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/test/CodeGen/AMDGPU/wmma-hazards-gfx12-w32.mir#L1-L53), [GFX12 sparse index](https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/test/CodeGen/AMDGPU/wmma-hazards-gfx12-w32.mir#L197-L215), and [GFX12 wave64](https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/test/CodeGen/AMDGPU/wmma-hazards-gfx12-w64.mir#L1-L53). These are checked-in expectations, not locally executed test results. Wave-size conditions remain specific to each case.
+
+**Document checked:** site rendering, local links and legacy fragments, disclosure behavior, and desktop/narrow-screen layout. These checks validate the document's presentation and navigation.
+
+### Applicability and validation limits {#compiler-boundaries}
+
+**Not performed:** kernel compilation, LLVM regression execution, GPU execution, or GPU correctness/performance benchmarking for this analysis. No result here depends on those tests having passed.
+
+Compiler actions apply to recognized machine instructions in the reviewed pipelines. This source snapshot does not establish behavior for every ROCm release, downstream compiler or custom pipeline. Dependencies hidden inside an assembly string remain subject to the [inline-assembly boundary](#llvm-inline-asm).
+
+```{=html}
+<details class="reading-details">
+<summary id="evidence-conventions">Evidence labels and scope</summary>
+{{< include /_includes/evidence-labels.html >}}
+</details>
+```

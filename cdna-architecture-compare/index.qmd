@@ -1,0 +1,35 @@
+---
+title: "CDNA 3 and CDNA 4"
+subtitle: "Kernel and compiler reference · gfx942 → gfx950"
+description: "An evidence-based comparison of AMD CDNA 3 and CDNA 4: MFMA, numeric formats, lane layouts, LDS, data movement and synchronization."
+---
+
+A comparison for GPU kernel and compiler development, with instruction-specific conditions and primary sources.
+
+::: {.meta}
+Research snapshot: November 13, 2026. Independently organized from AMD documentation and LLVM source; not an AMD publication. No GPU benchmark results are included.
+:::
+
+{{< include /cdna-architecture-compare/_sections/00-overview.qmd >}}
+
+{{< include /cdna-architecture-compare/_sections/01-scope.qmd >}}
+
+{{< include /cdna-architecture-compare/_sections/02-matrix.qmd >}}
+
+{{< include /cdna-architecture-compare/_sections/03-layout.qmd >}}
+
+{{< include /cdna-architecture-compare/_sections/04-arithmetic.qmd >}}
+
+{{< include /cdna-architecture-compare/_sections/05-memory.qmd >}}
+
+{{< include /cdna-architecture-compare/_sections/06-execution.qmd >}}
+
+{{< include /cdna-architecture-compare/_sections/07-compiler.qmd >}}
+
+{{< include /cdna-architecture-compare/_sections/08-migration.qmd >}}
+
+{{< include /cdna-architecture-compare/_sections/09-sources.qmd >}}
+
+::: {.document-footer}
+Source review and CPU indexing checks are separate from GPU validation. Diagrams illustrate logical ownership and data paths; they do not assert undocumented physical wiring. See the [RDNA comparison](../rdna-architecture-compare/index.qmd) for its separate target and wave-size conditions.
+:::

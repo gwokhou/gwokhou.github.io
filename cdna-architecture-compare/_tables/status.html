@@ -1,0 +1,13 @@
+<div class="table-scroll" role="region" aria-label="Evidence found and its limits" tabindex="0">
+<table class="comparison-table">
+<caption>Evidence found and its limits</caption>
+<thead><tr><th scope="col">Topic</th><th scope="col">Evidence found</th><th scope="col">Evidence limits</th></tr></thead>
+<tbody>
+<tr><th scope="row">Native instruction support</th><td><span class="mobile-cell-label">Evidence found</span><strong>ISA:</strong> the specified instruction forms. <strong>LLVM:</strong> the pinned declarations and default target features.</td><td><span class="mobile-cell-label">Evidence limits</span>Compatibility with every compiler release, library dispatch or runtime environment.</td></tr>
+<tr><th scope="row">Register layout</th><td><span class="mobile-cell-label">Evidence found</span><strong>Derived:</strong> dense FP16 single-block formulas. <strong>CPU checked:</strong> coordinate coverage for the illustrated layouts.</td><td><span class="mobile-cell-label">Evidence limits</span>All MFMA shapes, sparse metadata layouts, or a GPU-executed kernel.</td></tr>
+<tr><th scope="row">MFMA dependencies</th><td><span class="mobile-cell-label">Evidence found</span><strong>Source inspected:</strong> ISA dependency categories, pinned LLVM hazard rules and gfx942/gfx950 regression expectations. <a href="../cdna-llvm-dependencies/index.html#mfma-compiler-cases">Selected cases</a>.</td><td><span class="mobile-cell-label">Evidence limits</span><strong>LLVM regression execution: Not executed.</strong> No compiled-kernel or GPU confirmation; arbitrary inline assembly is outside the automatic-handling claim.</td></tr>
+<tr><th scope="row">LDS capacity and banks</th><td><span class="mobile-cell-label">Evidence found</span><strong>ISA:</strong> documented geometry. <strong>LLVM:</strong> allocation granularity.</td><td><span class="mobile-cell-label">Evidence limits</span>A universally optimal swizzle or identical service groups for every DS instruction.</td></tr>
+<tr><th scope="row">Performance</th><td><span class="mobile-cell-label">Evidence found</span>Architectural capabilities and clearly labeled product peak examples.</td><td><span class="mobile-cell-label">Evidence limits</span><strong>GPU benchmarks: Not executed.</strong> Application speedup, measured latency, energy efficiency and optimal tile size remain unmeasured.</td></tr>
+<tr><th scope="row">Numerics</th><td><span class="mobile-cell-label">Evidence found</span>FP8 encodings differ; explicit format selection is required.</td><td><span class="mobile-cell-label">Evidence limits</span><strong>GPU accuracy tests: Not executed.</strong> Bitwise equality and model accuracy after requantization are not established.</td></tr>
+</tbody></table>
+</div>

@@ -1,0 +1,37 @@
+## Appendix A. Evidence snapshots and checks {#evidence-appendix}
+
+This appendix records how the comparison was checked. It retains the artifact metadata and source bindings needed to revisit the results alongside the native-availability comparisons.
+
+### Compiler revision and regression scope {#compiler-evidence}
+
+The [LLVM companion evidence section](../rdna-llvm-dependencies/index.qmd#compiler-evidence) records the full revision and inspected WMMA regression expectations, including their wave-size conditions. These tests were not executed.
+
+### Native instruction availability: XML and LLVM cross-check {#native-isa-check}
+
+The SWMMAC, FP32-to-FP8/BF8 conversion, and packed 16-bit global-atomic rows use two separate checks: AMD XML instruction names and encodings, and LLVM’s processor-feature inheritance plus instruction predicates. LLVM status refers to default instruction features for the exact processors in this page’s scope, not forced feature overrides, software implementations of the same operation, or GPU execution tests.
+
+:::: {.reading-block}
+
+The [AMD XML archive](https://gpuopen.com/download/AMD_GPU_MR_ISA_XML_2026_08_06.zip) was retrieved on November 12, 2026.
+
+The three files `amdgpu_isa_rdna3.xml`, `amdgpu_isa_rdna3_5.xml`, and `amdgpu_isa_rdna4.xml` each declare release date `2026-02-20` and schema version `1.1.1`. They contain 1,148, 1,208, and 1,264 instruction entries respectively.
+
+The linked archive is the dated `2026-08-06` package; its SHA-256 is `82404f1126761b7877595b622afa7e1f311f2f41e89a3abe9aaf8ad045c082e2`.
+
+::::
+
+```{=html}
+<ul>
+<li><strong>SWMMAC:</strong> 0 / 0 / 11 instruction entries in the RDNA 3 / 3.5 / 4 files. The RDNA 4 entries use <code>ENC_VOP3P</code>, opcodes <code>0x50–0x5a</code>. <a href="https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/VOP3PInstructions.td#L2765-L2789">LLVM SWMMAC predicates and matching encodings</a>.</li>
+<li><strong>FP32 → FP8/BF8:</strong> 0 / 0 / 4 entries for the four named forward conversions. RDNA 4 <code>ENC_VOP3</code> opcodes are <code>0x369–0x36c</code>. Reverse conversions are outside this count. <a href="https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/VOP3Instructions.td#L829-L860">LLVM conversion predicates</a> · <a href="https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/VOP3Instructions.td#L2562-L2567">Matching encodings</a>.</li>
+<li><strong>Packed global atomic add:</strong> 0 / 0 / 2 entries. RDNA 4 <code>ENC_VGLOBAL</code> opcodes are <code>0x59</code> (F16) and <code>0x5a</code> (BF16). LLVM’s F16 non-return predicate also accepts the return-capable feature, enabling both forms. <a href="https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/FLATInstructions.td#L3579-L3580">Matching encodings</a> · <a href="https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/AMDGPU.td#L526-L528">F16 non-return predicate</a>.</li>
+</ul>
+```
+
+:::: {.reading-block}
+
+LLVM source is pinned to `4e9d349ab86dc0a913db3cba11aa2763d6985aff`. [RDNA 3 / 3.5 processor bindings](https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/GCNProcessors.td#L234-L264) and [RDNA 4 bindings](https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/GCNProcessors.td#L297-L303) map the named processors to their feature sets. The [shared GFX11 feature set](https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/GCNFeatures.td#L2312-L2338) and [inherited generation features](https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/GCNFeatures.td#L1851-L1884) do not supply the missing instruction gates. The per-target additions are [gfx1100–1103 and gfx1150–1153](https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/GCNFeatures.td#L2357-L2406) and [gfx1200/1201](https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/GCNFeatures.td#L2428-L2466).
+
+These conclusions do not extend to all GFX11 processors: the same revision enables FP8 conversion and SWMMAC features for [gfx1170’s feature set](https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/GCNFeatures.td#L2408-L2422), outside this comparison.
+
+::::

@@ -1,0 +1,22 @@
+## 1. Scope and source revisions {#scope}
+
+This reference follows **kernel-visible differences**, with product details used only to put the architecture in context. The target scope is deliberately limited to `gfx942` and `gfx950`; it does not cover every `gfx9` target, CDNA 5, or RDNA.
+
+::: {.reading-block}
+**Default layout example:** wave64, dense **16×16×16 FP16 → FP32 MFMA**, one output block, `CBSZ=ABID=BLGP=0`. The wider-K example changes K to 32 on CDNA 4. Sparse, FP64 and scaled operations have separate layouts and conditions.
+:::
+
+```{=html}
+{{< include /cdna-architecture-compare/_tables/scope.html >}}
+```
+
+The [CDNA 3 ISA](https://www.amd.com/content/dam/amd/en/documents/instinct-tech-docs/instruction-set-architectures/amd-instinct-mi300-cdna3-instruction-set-architecture.pdf) and [CDNA 4 ISA](https://www.amd.com/content/dam/amd/en/documents/instinct-tech-docs/instruction-set-architectures/amd-instinct-cdna4-instruction-set-architecture.pdf) reviewed here both carry **5 August 2025** on their covers. LLVM/Clang source checks use commit [`4e9d349ab86d`](https://github.com/llvm/llvm-project/tree/4e9d349ab86dc0a913db3cba11aa2763d6985aff). Web sources were checked on **13 November 2026**. PDF links use physical file pages, counted from 1.
+
+```{=html}
+<details class="reading-details">
+<summary id="evidence-conventions">Evidence labels and scope</summary>
+{{< include /_includes/evidence-labels.html >}}
+<p>A product peak, a source declaration and a runtime result answer different questions. Compiler availability does not establish a library's dispatch or supported deployment. This page does not claim binary compatibility between targets.</p>
+<p>Capacity is reported in KiB where the documented bank geometry gives a binary size. Per-CU LDS capacity does not itself establish the maximum allocation for one workgroup in a particular runtime.</p>
+</details>
+```

@@ -1,0 +1,37 @@
+## 7. Compiler support and behavior {#compiler}
+
+**Compile for the exact processor and verify the emitted path.** The full analysis is now in [LLVM on CDNA: MFMA dependencies and waits](../cdna-llvm-dependencies/index.qmd).
+
+### Target support and tools {#compiler-target-lookup}
+
+Scope: CDNA 3 `gfx942` and CDNA 4 `gfx950`. The common FP16 builtin is enabled for both; the wider FP16, scaled MFMA and transpose-load interfaces require the reviewed `gfx950` features. [Default target support and builtin contracts](../cdna-llvm-dependencies/index.qmd#compiler-target-lookup).
+
+### Compiler takeaways {#compiler-summary}
+
+- **MFMA spacing depends on the operand role and physical overlap.** Exact C reuse, partial C overlap and result reuse as A/B take different paths. [Shared FP16 example and conditions](../cdna-llvm-dependencies/index.qmd#mfma-compiler-cases).
+- **Memory completion is separate.** Direct-to-LDS writes need pending-write tracking before later LDS access. [Wait-counter handling](../cdna-llvm-dependencies/index.qmd#llvm-copy-completion).
+- **Hidden inline-assembly dependencies need an explicit audit.** Recognized machine instructions and visible operands define the automatic handling boundary. [Developer checks](../cdna-llvm-dependencies/index.qmd#mfma-compiler-scope).
+
+### Applicability and validation limits {#compiler-boundaries}
+
+The analysis is pinned to LLVM `4e9d349ab86d`. Its wait-state thresholds are not measured GPU latency. Source and regression expectations were inspected; kernel compilation, LLVM regression execution and GPU execution were not performed. [Full revision, coverage and limits](../cdna-llvm-dependencies/index.qmd#compiler-evidence).
+
+```{=html}
+<details class="reading-details">
+<summary>Detailed compiler topics</summary>
+<ul>
+<li><a id="compiler-behavior" data-moved-fragment href="../cdna-llvm-dependencies/index.html#compiler-behavior">Findings and scope</a></li>
+<li><a id="compiler-contracts" data-moved-fragment href="../cdna-llvm-dependencies/index.html#compiler-contracts">Builtin contracts and source gates</a></li>
+<li><a href="../cdna-llvm-dependencies/index.html#llvm-pass-pipeline">Pass pipeline at the reviewed revision</a></li>
+<li><a id="mfma-compiler-cases" data-moved-fragment href="../cdna-llvm-dependencies/index.html#mfma-compiler-cases">One shared instruction, three dependency cases</a></li>
+<li><a id="mfma-c-reuse" data-moved-fragment href="../cdna-llvm-dependencies/index.html#mfma-c-reuse">Why exact C reuse needs conditions</a></li>
+<li><a id="mfma-write-hazards" data-moved-fragment href="../cdna-llvm-dependencies/index.html#mfma-write-hazards">Input overwrite and result access</a></li>
+<li><a href="../cdna-llvm-dependencies/index.html#llvm-copy-completion">Memory-produced operands</a></li>
+<li><a id="mfma-compiler-scope" data-moved-fragment href="../cdna-llvm-dependencies/index.html#mfma-compiler-scope">Compiler coverage and developer checks</a></li>
+<li><a id="mfma-asm-warning" data-moved-fragment href="../cdna-llvm-dependencies/index.html#mfma-asm-warning">Inline assembly needs an explicit dependency audit</a></li>
+<li><a id="mfma-asm-boundary" data-moved-fragment href="../cdna-llvm-dependencies/index.html#mfma-asm-boundary">Why inline-assembly coverage is limited</a></li>
+<li><a id="mfma-scheduling-controls" data-moved-fragment href="../cdna-llvm-dependencies/index.html#mfma-scheduling-controls">Optional scheduling controls</a></li>
+<li><a id="mfma-regression-evidence" data-moved-fragment href="../cdna-llvm-dependencies/index.html#mfma-regression-evidence">Regression expectations inspected, not executed</a></li>
+</ul>
+</details>
+```

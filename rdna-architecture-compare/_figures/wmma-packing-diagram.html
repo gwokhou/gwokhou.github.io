@@ -1,0 +1,110 @@
+<figure class="wmma-diagram" aria-labelledby="wmma-packing-title">
+<figcaption>
+<span id="wmma-packing-title" class="visually-hidden">Eight 16-bit results: selected halves versus packed pairs</span>
+<p class="figure-scope"><strong>Scope:</strong> wave32, dense 16×16×16 WMMA, with matching A/B and C/D formats: all FP16 or all BF16. The diagram follows one lane; <code>u=0…7</code> labels its logical results, and <code>V[r]</code> is a VGPR offset within the C or D operand.</p>
+</figcaption>
+<p class="note">Each register is drawn <strong>high halfword on the left (bits 31:16), low halfword on the right (bits 15:0)</strong>. Blue cells hold the selected results. Gray cells mark unselected halfwords, not additional results of this operation.</p>
+<div class="wmma-panels packing-panels">
+<section class="wmma-panel" aria-labelledby="packing-low-heading">
+<h5 id="packing-low-heading">RDNA 3 / RDNA 3.5</h5>
+<p><strong>OPSEL[2]=0 · low halfword</strong></p>
+<svg viewBox="0 0 280 314" role="img" aria-labelledby="packing-low-title" aria-describedby="packing-low-desc" xmlns="http://www.w3.org/2000/svg">
+<title id="packing-low-title">RDNA 3 / 3.5: OPSEL[2]=0, low halfword selected</title>
+<desc id="packing-low-desc">Results u=0 through 7 occupy eight registers, one result in the low halfword of each register. Gray halfwords are unselected. High bits 31:16 are drawn on the left; low bits 15:0 on the right. C reads and D writes use this same map.</desc>
+<g aria-hidden="true">
+<text x="2" y="21" font-size="16">VGPR</text><text x="121" y="21" text-anchor="middle" font-size="16">31…16</text><text x="219" y="21" text-anchor="middle" font-size="16">15…0</text>
+<text x="2" y="55" font-size="17">V[0]</text>
+<g><title>V[0][1]: unselected</title><rect class="register-other" x="72" y="34" width="98" height="28"/><text x="121" y="55" text-anchor="middle" font-size="18">–</text></g>
+<g><title>V[0][0]: u=0</title><rect class="register-active" x="170" y="34" width="98" height="28"/><text x="219" y="55" text-anchor="middle" font-size="18">u=0</text></g>
+<text x="2" y="89" font-size="17">V[1]</text>
+<g><title>V[1][1]: unselected</title><rect class="register-other" x="72" y="68" width="98" height="28"/><text x="121" y="89" text-anchor="middle" font-size="18">–</text></g>
+<g><title>V[1][0]: u=1</title><rect class="register-active" x="170" y="68" width="98" height="28"/><text x="219" y="89" text-anchor="middle" font-size="18">u=1</text></g>
+<text x="2" y="123" font-size="17">V[2]</text>
+<g><title>V[2][1]: unselected</title><rect class="register-other" x="72" y="102" width="98" height="28"/><text x="121" y="123" text-anchor="middle" font-size="18">–</text></g>
+<g><title>V[2][0]: u=2</title><rect class="register-active" x="170" y="102" width="98" height="28"/><text x="219" y="123" text-anchor="middle" font-size="18">u=2</text></g>
+<text x="2" y="157" font-size="17">V[3]</text>
+<g><title>V[3][1]: unselected</title><rect class="register-other" x="72" y="136" width="98" height="28"/><text x="121" y="157" text-anchor="middle" font-size="18">–</text></g>
+<g><title>V[3][0]: u=3</title><rect class="register-active" x="170" y="136" width="98" height="28"/><text x="219" y="157" text-anchor="middle" font-size="18">u=3</text></g>
+<text x="2" y="191" font-size="17">V[4]</text>
+<g><title>V[4][1]: unselected</title><rect class="register-other" x="72" y="170" width="98" height="28"/><text x="121" y="191" text-anchor="middle" font-size="18">–</text></g>
+<g><title>V[4][0]: u=4</title><rect class="register-active" x="170" y="170" width="98" height="28"/><text x="219" y="191" text-anchor="middle" font-size="18">u=4</text></g>
+<text x="2" y="225" font-size="17">V[5]</text>
+<g><title>V[5][1]: unselected</title><rect class="register-other" x="72" y="204" width="98" height="28"/><text x="121" y="225" text-anchor="middle" font-size="18">–</text></g>
+<g><title>V[5][0]: u=5</title><rect class="register-active" x="170" y="204" width="98" height="28"/><text x="219" y="225" text-anchor="middle" font-size="18">u=5</text></g>
+<text x="2" y="259" font-size="17">V[6]</text>
+<g><title>V[6][1]: unselected</title><rect class="register-other" x="72" y="238" width="98" height="28"/><text x="121" y="259" text-anchor="middle" font-size="18">–</text></g>
+<g><title>V[6][0]: u=6</title><rect class="register-active" x="170" y="238" width="98" height="28"/><text x="219" y="259" text-anchor="middle" font-size="18">u=6</text></g>
+<text x="2" y="293" font-size="17">V[7]</text>
+<g><title>V[7][1]: unselected</title><rect class="register-other" x="72" y="272" width="98" height="28"/><text x="121" y="293" text-anchor="middle" font-size="18">–</text></g>
+<g><title>V[7][0]: u=7</title><rect class="register-active" x="170" y="272" width="98" height="28"/><text x="219" y="293" text-anchor="middle" font-size="18">u=7</text></g>
+</g>
+</svg>
+<p><strong>8 results · 8 VGPRs.</strong><br><code>u → V[u][0]</code></p>
+</section>
+<section class="wmma-panel" aria-labelledby="packing-high-heading">
+<h5 id="packing-high-heading">RDNA 3 / RDNA 3.5</h5>
+<p><strong>OPSEL[2]=1 · high halfword</strong></p>
+<svg viewBox="0 0 280 314" role="img" aria-labelledby="packing-high-title" aria-describedby="packing-high-desc" xmlns="http://www.w3.org/2000/svg">
+<title id="packing-high-title">RDNA 3 / 3.5: OPSEL[2]=1, high halfword selected</title>
+<desc id="packing-high-desc">Results u=0 through 7 occupy eight registers, one result in the high halfword of each register. Gray halfwords are unselected. High bits 31:16 are drawn on the left; low bits 15:0 on the right. C reads and D writes use this same map.</desc>
+<g aria-hidden="true">
+<text x="2" y="21" font-size="16">VGPR</text><text x="121" y="21" text-anchor="middle" font-size="16">31…16</text><text x="219" y="21" text-anchor="middle" font-size="16">15…0</text>
+<text x="2" y="55" font-size="17">V[0]</text>
+<g><title>V[0][1]: u=0</title><rect class="register-active" x="72" y="34" width="98" height="28"/><text x="121" y="55" text-anchor="middle" font-size="18">u=0</text></g>
+<g><title>V[0][0]: unselected</title><rect class="register-other" x="170" y="34" width="98" height="28"/><text x="219" y="55" text-anchor="middle" font-size="18">–</text></g>
+<text x="2" y="89" font-size="17">V[1]</text>
+<g><title>V[1][1]: u=1</title><rect class="register-active" x="72" y="68" width="98" height="28"/><text x="121" y="89" text-anchor="middle" font-size="18">u=1</text></g>
+<g><title>V[1][0]: unselected</title><rect class="register-other" x="170" y="68" width="98" height="28"/><text x="219" y="89" text-anchor="middle" font-size="18">–</text></g>
+<text x="2" y="123" font-size="17">V[2]</text>
+<g><title>V[2][1]: u=2</title><rect class="register-active" x="72" y="102" width="98" height="28"/><text x="121" y="123" text-anchor="middle" font-size="18">u=2</text></g>
+<g><title>V[2][0]: unselected</title><rect class="register-other" x="170" y="102" width="98" height="28"/><text x="219" y="123" text-anchor="middle" font-size="18">–</text></g>
+<text x="2" y="157" font-size="17">V[3]</text>
+<g><title>V[3][1]: u=3</title><rect class="register-active" x="72" y="136" width="98" height="28"/><text x="121" y="157" text-anchor="middle" font-size="18">u=3</text></g>
+<g><title>V[3][0]: unselected</title><rect class="register-other" x="170" y="136" width="98" height="28"/><text x="219" y="157" text-anchor="middle" font-size="18">–</text></g>
+<text x="2" y="191" font-size="17">V[4]</text>
+<g><title>V[4][1]: u=4</title><rect class="register-active" x="72" y="170" width="98" height="28"/><text x="121" y="191" text-anchor="middle" font-size="18">u=4</text></g>
+<g><title>V[4][0]: unselected</title><rect class="register-other" x="170" y="170" width="98" height="28"/><text x="219" y="191" text-anchor="middle" font-size="18">–</text></g>
+<text x="2" y="225" font-size="17">V[5]</text>
+<g><title>V[5][1]: u=5</title><rect class="register-active" x="72" y="204" width="98" height="28"/><text x="121" y="225" text-anchor="middle" font-size="18">u=5</text></g>
+<g><title>V[5][0]: unselected</title><rect class="register-other" x="170" y="204" width="98" height="28"/><text x="219" y="225" text-anchor="middle" font-size="18">–</text></g>
+<text x="2" y="259" font-size="17">V[6]</text>
+<g><title>V[6][1]: u=6</title><rect class="register-active" x="72" y="238" width="98" height="28"/><text x="121" y="259" text-anchor="middle" font-size="18">u=6</text></g>
+<g><title>V[6][0]: unselected</title><rect class="register-other" x="170" y="238" width="98" height="28"/><text x="219" y="259" text-anchor="middle" font-size="18">–</text></g>
+<text x="2" y="293" font-size="17">V[7]</text>
+<g><title>V[7][1]: u=7</title><rect class="register-active" x="72" y="272" width="98" height="28"/><text x="121" y="293" text-anchor="middle" font-size="18">u=7</text></g>
+<g><title>V[7][0]: unselected</title><rect class="register-other" x="170" y="272" width="98" height="28"/><text x="219" y="293" text-anchor="middle" font-size="18">–</text></g>
+</g>
+</svg>
+<p><strong>8 results · 8 VGPRs.</strong><br><code>u → V[u][1]</code></p>
+</section>
+<section class="wmma-panel" aria-labelledby="packing-pairs-heading">
+<h5 id="packing-pairs-heading">RDNA 4</h5>
+<p><strong>Two results per VGPR</strong></p>
+<svg viewBox="0 0 280 178" role="img" aria-labelledby="packing-pairs-title" aria-describedby="packing-pairs-desc" xmlns="http://www.w3.org/2000/svg">
+<title id="packing-pairs-title">RDNA 4: two 16-bit results per VGPR</title>
+<desc id="packing-pairs-desc">Results u=0 through 7 occupy four registers: even u in the low halfword, odd u in the high halfword. High bits 31:16 are drawn on the left; low bits 15:0 on the right. C reads and D writes use this same map.</desc>
+<g aria-hidden="true">
+<text x="2" y="21" font-size="16">VGPR</text><text x="121" y="21" text-anchor="middle" font-size="16">31…16</text><text x="219" y="21" text-anchor="middle" font-size="16">15…0</text>
+<text x="2" y="55" font-size="17">V[0]</text>
+<g><title>V[0][1]: u=1</title><rect class="register-active" x="72" y="34" width="98" height="28"/><text x="121" y="55" text-anchor="middle" font-size="18">u=1</text></g>
+<g><title>V[0][0]: u=0</title><rect class="register-active" x="170" y="34" width="98" height="28"/><text x="219" y="55" text-anchor="middle" font-size="18">u=0</text></g>
+<text x="2" y="89" font-size="17">V[1]</text>
+<g><title>V[1][1]: u=3</title><rect class="register-active" x="72" y="68" width="98" height="28"/><text x="121" y="89" text-anchor="middle" font-size="18">u=3</text></g>
+<g><title>V[1][0]: u=2</title><rect class="register-active" x="170" y="68" width="98" height="28"/><text x="219" y="89" text-anchor="middle" font-size="18">u=2</text></g>
+<text x="2" y="123" font-size="17">V[2]</text>
+<g><title>V[2][1]: u=5</title><rect class="register-active" x="72" y="102" width="98" height="28"/><text x="121" y="123" text-anchor="middle" font-size="18">u=5</text></g>
+<g><title>V[2][0]: u=4</title><rect class="register-active" x="170" y="102" width="98" height="28"/><text x="219" y="123" text-anchor="middle" font-size="18">u=4</text></g>
+<text x="2" y="157" font-size="17">V[3]</text>
+<g><title>V[3][1]: u=7</title><rect class="register-active" x="72" y="136" width="98" height="28"/><text x="121" y="157" text-anchor="middle" font-size="18">u=7</text></g>
+<g><title>V[3][0]: u=6</title><rect class="register-active" x="170" y="136" width="98" height="28"/><text x="219" y="157" text-anchor="middle" font-size="18">u=6</text></g>
+</g>
+</svg>
+<p><strong>8 results · 4 VGPRs.</strong><br><code>u → V[floor(u / 2)][u % 2]</code></p>
+<p>Even-indexed results occupy the low halfword; odd-indexed results occupy the high halfword.</p>
+</section>
+</div>
+<p class="note">The two RDNA 3 / 3.5 panels are alternative OPSEL settings for the same eight logical results. C reads and D writes use the same selected halfword. Changing OPSEL changes the storage halfword while preserving the result’s matrix coordinates; those coordinates remain in the formula table below.</p>
+<details class="source-details"><summary>Sources</summary>
+<p class="refs">Derived storage schematic. <strong>RDNA 3:</strong> <a href="https://gpuopen.com/download/rdna3-shader-instruction-set-architecture-feb-2023.pdf#page=75">ISA p.75</a> · <strong>RDNA 3.5:</strong> <a href="https://gpuopen.com/download/rdna35_instruction_set_architecture.pdf#page=77">ISA p.77</a> · <strong>RDNA 3 / 3.5 register count:</strong> <a href="https://rocm-handbook.amd.com/projects/amd-rocm-optimization-guide/en/latest/compiler-builtins/rdna/rdna3-dense-wmma-builtins.html#builtin-amdgcn-wmma-f16-16x16x16-f16-w32">FP16 builtin</a> · <strong>RDNA 4:</strong> <a href="https://gpuopen.com/download/rdna4-instruction-set-architecture.pdf#page=104">ISA p.104</a> · <a href="https://rocm-handbook.amd.com/projects/amd-rocm-optimization-guide/en/latest/compiler-builtins/rdna/rdna4-dense-wmma-builtins.html#builtin-amdgcn-wmma-f16-16x16x16-f16-w32-gfx12">FP16 builtin</a>.</p>
+</details>
+</figure>

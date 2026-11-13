@@ -1,0 +1,9 @@
+## 2. Operands and wait types {#dependency-background}
+
+For **D = A × B + C**, A/B are multiplicands, C is the accumulator input and D is the result. In the cases below, D belongs to the producer; A/B/C belong to the consumer. Physical register overlap is different from equal matrix values, and MFMA can continue reading inputs after issue. [ISA dependency background](../cdna-architecture-compare/index.qmd#mfma-dependencies).
+
+`v[0:3]` names four physical VGPRs, v0–v3. Exact reuse means the same register tuple, including its extent. A shared starting register or equal values alone do not establish exact reuse. [Opcode and tuple conditions](#mfma-c-reuse).
+
+**Three checks remain separate:** MFMA register dependencies use instruction-specific scheduling; memory counters track asynchronous producers; a workgroup barrier coordinates participating waves. A barrier instruction does not implicitly drain outstanding memory counters. [ISA completion and barrier conditions](../cdna-architecture-compare/index.qmd#copy-completion).
+
+The architecture comparison retains the [wave64 lane layouts](../cdna-architecture-compare/index.qmd#layout) and the [dependency overview diagram](../cdna-architecture-compare/index.qmd#execution). The [dependency-threshold table in §5](#mfma-wait-thresholds) uses **wait states from LLVM's distance model**, not a GPU timing measurement.

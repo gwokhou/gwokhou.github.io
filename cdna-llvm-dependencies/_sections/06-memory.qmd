@@ -1,0 +1,7 @@
+## 6. Memory-produced operands {#llvm-copy-completion}
+
+A direct VMEM-to-LDS operation produces an LDS value without producing a payload VGPR. Waiting only for ordinary LDS operations is therefore insufficient. The pinned LLVM wait pass tracks these pending writes through the VM counter and LDS aliasing when deciding whether a later LDS access needs a wait. [SIInsertWaitcnts, LDS DMA tracking](https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/SIInsertWaitcnts.cpp#L1050-L1092) · [LDS dependency checks](https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/SIInsertWaitcnts.cpp#L2501-L2538).
+
+For a load returning an MFMA input, the wait pass tracks modeled register uses and pending events separately from MFMA register spacing. [Load-result dependency tracking](https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/SIInsertWaitcnts.cpp#L2544-L2604).
+
+For cross-wave use of the resulting LDS tile, also follow the architecture article's [copy-completion and barrier conditions](../cdna-architecture-compare/index.qmd#copy-completion). The memory protocol and the MFMA wait-state table answer different dependency questions.

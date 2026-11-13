@@ -1,0 +1,79 @@
+## 5. Memory and data movement {#memory}
+
+Start with the payload path between global memory, LDS, and VGPRs, then check whether the named instruction or builtin is available for your target. RDNA 4 transpose loads place data in VGPRs; global-to-LDS builtins have their own target conditions. The later tables cover cache controls, addressing, and atomics as separate choices.
+
+### Data movement interfaces {#data-movement-interfaces}
+
+#### Global, LDS, and VGPR: follow the data payload {#memory-path-diagram}
+
+```{=html}
+{{< include /rdna-architecture-compare/_figures/memory-path-diagram.html >}}
+```
+
+```{=html}
+{{< include /rdna-architecture-compare/_tables/data-movement-interfaces.html >}}
+```
+
+:::: {.note}
+
+**RDNA 4 transpose-load ISA behavior:** Global-memory loads transpose data into VGPRs. The ISA defines `GLOBAL_LOAD_TR_B128` and `GLOBAL_LOAD_TR_B64`. [ISA pp.152–153](https://gpuopen.com/download/rdna4-instruction-set-architecture.pdf#page=152 "ISA §11.6, pp.152–153").
+
+::::
+
+:::: {.note #global-lds-builtin-scope}
+
+The availability row reports AMD’s builtin table, not a prohibition on every possible hardware memory-to-LDS path. It refers specifically to `__builtin_amdgcn_global_load_lds`, `__builtin_amdgcn_load_to_lds`, `__builtin_amdgcn_raw_ptr_buffer_load_lds`, and `__builtin_amdgcn_struct_ptr_buffer_load_lds`. Clang lists `vmem-to-lds-load-insts` as their required target feature. [Global](https://clang.llvm.org/docs/AMDGPUBuiltinReference.html#builtin-amdgcn-global-load-lds) · [Generic](https://clang.llvm.org/docs/AMDGPUBuiltinReference.html#builtin-amdgcn-load-to-lds) · [Raw buffer](https://clang.llvm.org/docs/AMDGPUBuiltinReference.html#builtin-amdgcn-raw-ptr-buffer-load-lds) · [Structured buffer](https://clang.llvm.org/docs/AMDGPUBuiltinReference.html#builtin-amdgcn-struct-ptr-buffer-load-lds).
+
+::::
+
+### Memory-system features {#memory-features}
+
+```{=html}
+{{< include /rdna-architecture-compare/_tables/memory-system-feature-evidence.html >}}
+```
+
+:::: {.note}
+
+The compression row concerns memory resources and data paths, separately from the register-write suppression below. The cited presentations do not identify the RDNA 3.5 compression changes as identical to RDNA 3’s DCC behavior or RDNA 4’s centralized scheme. The Radeon 700M memory statement is product-specific.
+
+::::
+
+### Cache controls and addressing {#memory-controls}
+
+```{=html}
+{{< include /rdna-architecture-compare/_tables/cache-controls-and-addressing.html >}}
+```
+
+:::: {.note}
+
+**RDNA 4 deferred atomic scope:** `TH[2]` controls deferred scope for non-returning cascading atomics. Their full scope is realized at a subsequent release of matching or higher scope. [ISA p.51](https://gpuopen.com/download/rdna4-instruction-set-architecture.pdf#page=51).
+
+::::
+
+### Packed global atomics {#packed-global-atomics}
+
+```{=html}
+{{< include /rdna-architecture-compare/_tables/packed-global-atomic-availability.html >}}
+```
+
+:::: {.note}
+
+**LLVM instruction definitions for the availability row:** [LLVM: F16](https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/FLATInstructions.td#L1361-L1372 "LLVM F16 gates") · [LLVM: BF16](https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/FLATInstructions.td#L1070-L1071 "LLVM BF16 gate") · [LLVM: encodings](https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/FLATInstructions.td#L3579-L3580 "LLVM encodings"). These pinned predicates and encodings are shared references for the three processor columns above.
+
+::::
+
+### RDNA 4 packed atomic-add semantics
+
+```{=html}
+{{< include /rdna-architecture-compare/_tables/rdna-4-packed-atomic-add-semantics.html >}}
+```
+
+### Instruction and platform scope
+
+```{=html}
+<ul>
+<li><strong>Transpose EXEC semantics:</strong> EXEC=0 makes the transpose-load instructions no-ops; any other EXEC value must have all bits set, otherwise behavior is undefined. <a href="https://gpuopen.com/download/rdna4-instruction-set-architecture.pdf#page=152">ISA §11.6.2</a>.</li>
+<li><strong>LDS direct load:</strong> <code>DS_DIRECT_LOAD</code> reads LDS into VGPRs and is restricted to CU mode. <a href="https://gpuopen.com/download/rdna4-instruction-set-architecture.pdf#page=160">ISA §12.4</a>.</li>
+<li><strong>RDNA 3.5 APUs:</strong> AMD’s system guide describes per-process GPUVM address spaces for Ryzen APUs with <code>gfx1150</code>, <code>gfx1151</code>, and <code>gfx1152</code>. <a href="https://rocm.docs.amd.com/en/docs-10.1.0/reference/system-optimization/rdna3-5.html#memory-settings">ROCm 10.1 memory settings</a>.</li>
+</ul>
+```

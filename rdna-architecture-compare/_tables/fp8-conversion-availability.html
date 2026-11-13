@@ -1,0 +1,29 @@
+<div class="table-scroll" role="region" aria-label="FP8 conversion availability" tabindex="0">
+<table class="comparison-table" role="table">
+<caption>Four packed / stochastic FP32 → FP8/BF8 conversions. LLVM status uses default target features at revision <code>4e9d349ab86d</code>; XML omissions do not establish hardware absence. <a href="#evidence-conventions">Evidence scope</a> · <a href="#native-isa-check">Snapshot details</a>.</caption>
+<thead role="rowgroup"><tr role="row"><th scope="col" id="comparison-8-column-0" role="columnheader">Check</th><th scope="col" id="fp8-availability-arch-1" role="columnheader">RDNA 3</th><th scope="col" id="fp8-availability-arch-2" role="columnheader">RDNA 3.5</th><th scope="col" id="fp8-availability-arch-3" role="columnheader">RDNA 4</th></tr></thead>
+<tbody role="rowgroup">
+<tr role="row">
+<th scope="row" id="fp8-availability-targets" role="rowheader">Targets</th>
+<td colspan="2" headers="fp8-availability-targets fp8-availability-arch-1 fp8-availability-arch-2" role="cell"><span class="mobile-cell-label" aria-hidden="true">RDNA 3 / RDNA 3.5</span><div class="cell-scope">RDNA 3 and RDNA 3.5</div><code>gfx1100–gfx1103</code> (RDNA 3); <code>gfx1150–gfx1153</code> (RDNA 3.5).</td>
+<td headers="fp8-availability-targets fp8-availability-arch-3" role="cell"><span class="mobile-cell-label" aria-hidden="true">RDNA 4</span><code>gfx1200/1201</code>.</td>
+</tr>
+<tr role="row">
+<th scope="row" id="fp8-availability-row-1" role="rowheader">LLVM native instructions</th>
+<td colspan="2" headers="fp8-availability-row-1 fp8-availability-arch-1 fp8-availability-arch-2" role="cell"><span class="mobile-cell-label" aria-hidden="true">RDNA 3 / RDNA 3.5</span><div class="cell-scope">RDNA 3 and RDNA 3.5</div><strong>Not enabled</strong> for the four named conversions.</td>
+<td headers="fp8-availability-row-1 fp8-availability-arch-3" role="cell"><span class="mobile-cell-label" aria-hidden="true">RDNA 4</span><strong>Enabled</strong> for the four named conversions.</td>
+</tr>
+<tr role="row">
+<th scope="row" id="fp8-availability-xml" role="rowheader">AMD XML inventory</th>
+<td colspan="2" headers="fp8-availability-xml fp8-availability-arch-1 fp8-availability-arch-2" role="cell"><span class="mobile-cell-label" aria-hidden="true">RDNA 3 / RDNA 3.5</span><div class="cell-scope">RDNA 3 and RDNA 3.5</div><strong>Not listed.</strong> No corresponding instruction entries in the reviewed RDNA 3 / 3.5 files.</td>
+<td headers="fp8-availability-xml fp8-availability-arch-3" role="cell"><span class="mobile-cell-label" aria-hidden="true">RDNA 4</span><strong>Listed.</strong> The four corresponding instruction entries appear in the reviewed file.</td>
+</tr>
+<tr role="row">
+<th scope="row" id="fp8-availability-sources" role="rowheader">Sources</th>
+<td colspan="2" headers="fp8-availability-sources fp8-availability-arch-1 fp8-availability-arch-2" role="cell"><span class="mobile-cell-label" aria-hidden="true">RDNA 3 / RDNA 3.5</span><div class="cell-scope">RDNA 3 and RDNA 3.5</div><details class="evidence-details"><summary>RDNA 3 / 3.5 sources</summary><p class="refs"><span class="source-group"><strong>RDNA 3:</strong> <a href="https://gpuopen.com/download/AMD_GPU_MR_ISA_XML_2026_08_06.zip" title="AMD XML archive">AMD XML</a> · <a href="https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/GCNFeatures.td#L2357-L2383" title="LLVM target features">LLVM: targets</a> · <a href="https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/VOP3Instructions.td#L829-L860" title="LLVM conversion gates">LLVM: gates</a></span> <span class="source-group"><strong>RDNA 3.5:</strong> <a href="https://gpuopen.com/download/AMD_GPU_MR_ISA_XML_2026_08_06.zip" title="AMD XML archive">AMD XML</a> · <a href="https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/GCNFeatures.td#L2385-L2406" title="LLVM target features">LLVM: targets</a> · <a href="https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/VOP3Instructions.td#L829-L860" title="LLVM conversion gates">LLVM: gates</a></span></p></details></td>
+<td headers="fp8-availability-sources fp8-availability-arch-3" role="cell"><span class="mobile-cell-label" aria-hidden="true">RDNA 4</span><details class="evidence-details"><summary>RDNA 4 sources</summary><p class="refs"><a href="https://gpuopen.com/download/AMD_GPU_MR_ISA_XML_2026_08_06.zip" title="AMD XML archive">AMD XML</a> · <a href="https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/GCNFeatures.td#L2428-L2466" title="LLVM target features">LLVM: targets</a> · <a href="https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/VOP3Instructions.td#L829-L860" title="LLVM conversion gates">LLVM: gates</a> · <a href="https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/VOP3Instructions.td#L2562-L2567" title="LLVM encodings">LLVM: encodings</a></p></details></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p class="note">Instruction names and semantics are listed below.</p>

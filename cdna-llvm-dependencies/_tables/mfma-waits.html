@@ -1,0 +1,10 @@
+<div id="mfma-wait-thresholds" class="table-scroll" role="region" aria-label="Selected FP16 MFMA dependency thresholds at the pinned LLVM revision" tabindex="0">
+<table class="comparison-table numeric-comparison">
+<caption>Shared FP16 16×16×16 · P = 4 · LLVM wait-state thresholds</caption>
+<thead><tr><th scope="col">Dependency on the producer's D</th><th scope="col">CDNA 3 · gfx942</th><th scope="col">CDNA 4 · gfx950</th></tr></thead>
+<tbody>
+<tr><th scope="row">Exact D → C reuse<span class="row-detail"><a href="#mfma-c-reuse">Same normalized MFMA</a>; identical register range</span><div class="register-example"><code>D=v[0:3] → C=v[0:3]</code></div></th><td><span class="mobile-cell-label">CDNA 3 · gfx942</span><strong>0</strong> for this dependency</td><td><span class="mobile-cell-label">CDNA 4 · gfx950</span><strong>0</strong> for this dependency</td></tr>
+<tr><th scope="row">Partial D → C overlap<span class="row-detail">XDL consumer; overlapping, unequal register ranges</span><div class="register-example"><code>D=v[0:3] → C=v[2:5]</code></div></th><td><span class="mobile-cell-label">CDNA 3 · gfx942</span><strong>5</strong> = P + 1</td><td><span class="mobile-cell-label">CDNA 4 · gfx950</span><strong>6</strong> = P + 2</td></tr>
+<tr><th scope="row">D → A/B overlap<span class="row-detail">The result becomes a multiplicand input</span><div class="register-example"><code>D=v[0:3] → A=v[2:3]</code></div></th><td><span class="mobile-cell-label">CDNA 3 · gfx942</span><strong>7</strong> = P + 3</td><td><span class="mobile-cell-label">CDNA 4 · gfx950</span><strong>8</strong> = P + 4</td></tr>
+</tbody></table>
+</div>

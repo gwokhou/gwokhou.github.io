@@ -1,0 +1,114 @@
+<figure class="wmma-diagram" aria-labelledby="wmma-diagram-title">
+<figcaption>
+<span id="wmma-diagram-title" class="visually-hidden">WMMA layout at a glance</span>
+<p class="figure-scope"><strong>Scope:</strong> wave32, dense 16×16×16 WMMA, FP16/BF16 A/B inputs, FP32 C/D. Follow one lane pair: <code>t</code> and <code>t+16</code>, with <code>t=0…15</code>.</p>
+</figcaption>
+<div class="wmma-legend" aria-label="Lane-group legend"><span><span class="wmma-key wmma-key-zero" aria-hidden="true"></span><strong>q=0</strong> · lane t (0–15)</span><span><span class="wmma-key wmma-key-one" aria-hidden="true"></span><strong>q=1</strong> · lane t+16 (16–31)</span></div>
+<p class="note">Inputs show K positions for both <code>A[t,k]</code> and <code>B[k,t]</code>: each filled block holds four values; empty blocks are absent from that lane. Each numbered output tile is a <code>C/D[row,t]</code> row coordinate. All three generations have <strong>8 FP32 outputs per lane</strong>.</p>
+<div class="wmma-panels">
+<section class="wmma-panel" aria-labelledby="wmma-panel-3">
+<h4 id="wmma-panel-3">RDNA 3 / RDNA 3.5</h4>
+<h5>Input K positions · replicated</h5>
+<svg viewBox="0 0 300 126" role="img" aria-labelledby="wmma-input-3-title" aria-describedby="wmma-input-3-desc" xmlns="http://www.w3.org/2000/svg">
+<title id="wmma-input-3-title">RDNA 3 / 3.5: replicated input fragments</title>
+<desc id="wmma-input-3-desc">Both lane t and lane t+16 hold all sixteen K positions, 0 to 15. The two lanes supply identical fragments, with sixteen elements in eight VGPRs per input operand. The same K coordinates apply to A[t,k] and B[k,t].</desc>
+<g aria-hidden="true">
+<text x="87.5" y="19" text-anchor="middle" font-size="16">0–3</text>
+<text x="146.5" y="19" text-anchor="middle" font-size="16">4–7</text>
+<text x="205.5" y="19" text-anchor="middle" font-size="16">8–11</text>
+<text x="264.5" y="19" text-anchor="middle" font-size="16">12–15</text>
+<text x="2" y="56" font-size="17">q=0</text>
+<g><title>q=0, K=0–3: 4 input elements</title><rect class="lane-zero" x="60" y="34" width="55" height="32" rx="3"/><path class="element-divider" d="M 73.75 36 v 28"/><path class="element-divider" d="M 87.5 36 v 28"/><path class="element-divider" d="M 101.25 36 v 28"/></g>
+<g><title>q=0, K=4–7: 4 input elements</title><rect class="lane-zero" x="119" y="34" width="55" height="32" rx="3"/><path class="element-divider" d="M 132.75 36 v 28"/><path class="element-divider" d="M 146.5 36 v 28"/><path class="element-divider" d="M 160.25 36 v 28"/></g>
+<g><title>q=0, K=8–11: 4 input elements</title><rect class="lane-zero" x="178" y="34" width="55" height="32" rx="3"/><path class="element-divider" d="M 191.75 36 v 28"/><path class="element-divider" d="M 205.5 36 v 28"/><path class="element-divider" d="M 219.25 36 v 28"/></g>
+<g><title>q=0, K=12–15: 4 input elements</title><rect class="lane-zero" x="237" y="34" width="55" height="32" rx="3"/><path class="element-divider" d="M 250.75 36 v 28"/><path class="element-divider" d="M 264.5 36 v 28"/><path class="element-divider" d="M 278.25 36 v 28"/></g>
+<text x="2" y="104" font-size="17">q=1</text>
+<g><title>q=1, K=0–3: 4 input elements</title><rect class="lane-one" x="60" y="82" width="55" height="32" rx="3"/><path class="element-divider" d="M 73.75 84 v 28"/><path class="element-divider" d="M 87.5 84 v 28"/><path class="element-divider" d="M 101.25 84 v 28"/></g>
+<g><title>q=1, K=4–7: 4 input elements</title><rect class="lane-one" x="119" y="82" width="55" height="32" rx="3"/><path class="element-divider" d="M 132.75 84 v 28"/><path class="element-divider" d="M 146.5 84 v 28"/><path class="element-divider" d="M 160.25 84 v 28"/></g>
+<g><title>q=1, K=8–11: 4 input elements</title><rect class="lane-one" x="178" y="82" width="55" height="32" rx="3"/><path class="element-divider" d="M 191.75 84 v 28"/><path class="element-divider" d="M 205.5 84 v 28"/><path class="element-divider" d="M 219.25 84 v 28"/></g>
+<g><title>q=1, K=12–15: 4 input elements</title><rect class="lane-one" x="237" y="82" width="55" height="32" rx="3"/><path class="element-divider" d="M 250.75 84 v 28"/><path class="element-divider" d="M 264.5 84 v 28"/><path class="element-divider" d="M 278.25 84 v 28"/></g>
+</g>
+</svg>
+<p><strong>16 elements · 8 VGPRs</strong> per lane, per A/B operand.</p>
+<p>Both lanes hold the same K=0–15 fragment.</p>
+<h5>FP32 C/D rows · alternating</h5>
+<svg viewBox="0 0 300 112" role="img" aria-labelledby="wmma-output-3-title" aria-describedby="wmma-output-3-desc" xmlns="http://www.w3.org/2000/svg">
+<title id="wmma-output-3-title">RDNA 3 / 3.5: alternating FP32 C/D rows</title>
+<desc id="wmma-output-3-desc">At column t, lane t owns even rows 0, 2, 4, 6, 8, 10, 12, 14, and lane t+16 owns odd rows 1, 3, 5, 7, 9, 11, 13, 15. Each numbered tile is a row coordinate, with eight outputs per lane. C and D use the same mapping.</desc>
+<g aria-hidden="true">
+<g><title>Row 0: q=0, VGPR offset g=0</title><rect class="lane-zero" x="8" y="6" width="32" height="40" rx="3"/><text x="24" y="32" text-anchor="middle" font-size="18">0</text></g>
+<g><title>Row 1: q=1, VGPR offset g=0</title><rect class="lane-one" x="44" y="6" width="32" height="40" rx="3"/><text x="60" y="32" text-anchor="middle" font-size="18">1</text></g>
+<g><title>Row 2: q=0, VGPR offset g=1</title><rect class="lane-zero" x="80" y="6" width="32" height="40" rx="3"/><text x="96" y="32" text-anchor="middle" font-size="18">2</text></g>
+<g><title>Row 3: q=1, VGPR offset g=1</title><rect class="lane-one" x="116" y="6" width="32" height="40" rx="3"/><text x="132" y="32" text-anchor="middle" font-size="18">3</text></g>
+<g><title>Row 4: q=0, VGPR offset g=2</title><rect class="lane-zero" x="152" y="6" width="32" height="40" rx="3"/><text x="168" y="32" text-anchor="middle" font-size="18">4</text></g>
+<g><title>Row 5: q=1, VGPR offset g=2</title><rect class="lane-one" x="188" y="6" width="32" height="40" rx="3"/><text x="204" y="32" text-anchor="middle" font-size="18">5</text></g>
+<g><title>Row 6: q=0, VGPR offset g=3</title><rect class="lane-zero" x="224" y="6" width="32" height="40" rx="3"/><text x="240" y="32" text-anchor="middle" font-size="18">6</text></g>
+<g><title>Row 7: q=1, VGPR offset g=3</title><rect class="lane-one" x="260" y="6" width="32" height="40" rx="3"/><text x="276" y="32" text-anchor="middle" font-size="18">7</text></g>
+<g><title>Row 8: q=0, VGPR offset g=4</title><rect class="lane-zero" x="8" y="66" width="32" height="40" rx="3"/><text x="24" y="92" text-anchor="middle" font-size="18">8</text></g>
+<g><title>Row 9: q=1, VGPR offset g=4</title><rect class="lane-one" x="44" y="66" width="32" height="40" rx="3"/><text x="60" y="92" text-anchor="middle" font-size="18">9</text></g>
+<g><title>Row 10: q=0, VGPR offset g=5</title><rect class="lane-zero" x="80" y="66" width="32" height="40" rx="3"/><text x="96" y="92" text-anchor="middle" font-size="18">10</text></g>
+<g><title>Row 11: q=1, VGPR offset g=5</title><rect class="lane-one" x="116" y="66" width="32" height="40" rx="3"/><text x="132" y="92" text-anchor="middle" font-size="18">11</text></g>
+<g><title>Row 12: q=0, VGPR offset g=6</title><rect class="lane-zero" x="152" y="66" width="32" height="40" rx="3"/><text x="168" y="92" text-anchor="middle" font-size="18">12</text></g>
+<g><title>Row 13: q=1, VGPR offset g=6</title><rect class="lane-one" x="188" y="66" width="32" height="40" rx="3"/><text x="204" y="92" text-anchor="middle" font-size="18">13</text></g>
+<g><title>Row 14: q=0, VGPR offset g=7</title><rect class="lane-zero" x="224" y="66" width="32" height="40" rx="3"/><text x="240" y="92" text-anchor="middle" font-size="18">14</text></g>
+<g><title>Row 15: q=1, VGPR offset g=7</title><rect class="lane-one" x="260" y="66" width="32" height="40" rx="3"/><text x="276" y="92" text-anchor="middle" font-size="18">15</text></g>
+</g>
+</svg>
+<p><strong>q=0:</strong> even rows 0, 2, …, 14.<br><strong>q=1:</strong> odd rows 1, 3, …, 15.</p>
+</section>
+<section class="wmma-panel" aria-labelledby="wmma-panel-4">
+<h4 id="wmma-panel-4">RDNA 4</h4>
+<h5>Input K positions · partitioned</h5>
+<svg viewBox="0 0 300 126" role="img" aria-labelledby="wmma-input-4-title" aria-describedby="wmma-input-4-desc" xmlns="http://www.w3.org/2000/svg">
+<title id="wmma-input-4-title">RDNA 4: partitioned input fragments</title>
+<desc id="wmma-input-4-desc">Lane t holds K positions 0 to 3 and 8 to 11; lane t+16 holds K positions 4 to 7 and 12 to 15. Each lane holds eight elements in four VGPRs per input operand. The same K coordinates apply to A[t,k] and B[k,t].</desc>
+<g aria-hidden="true">
+<text x="87.5" y="19" text-anchor="middle" font-size="16">0–3</text>
+<text x="146.5" y="19" text-anchor="middle" font-size="16">4–7</text>
+<text x="205.5" y="19" text-anchor="middle" font-size="16">8–11</text>
+<text x="264.5" y="19" text-anchor="middle" font-size="16">12–15</text>
+<text x="2" y="56" font-size="17">q=0</text>
+<g><title>q=0, K=0–3: 4 input elements</title><rect class="lane-zero" x="60" y="34" width="55" height="32" rx="3"/><path class="element-divider" d="M 73.75 36 v 28"/><path class="element-divider" d="M 87.5 36 v 28"/><path class="element-divider" d="M 101.25 36 v 28"/></g>
+<g><title>q=0, K=4–7: not held by this lane</title><rect class="lane-empty" x="119" y="34" width="55" height="32" rx="3"/><text x="146.5" y="56" font-size="18" text-anchor="middle">–</text></g>
+<g><title>q=0, K=8–11: 4 input elements</title><rect class="lane-zero" x="178" y="34" width="55" height="32" rx="3"/><path class="element-divider" d="M 191.75 36 v 28"/><path class="element-divider" d="M 205.5 36 v 28"/><path class="element-divider" d="M 219.25 36 v 28"/></g>
+<g><title>q=0, K=12–15: not held by this lane</title><rect class="lane-empty" x="237" y="34" width="55" height="32" rx="3"/><text x="264.5" y="56" font-size="18" text-anchor="middle">–</text></g>
+<text x="2" y="104" font-size="17">q=1</text>
+<g><title>q=1, K=0–3: not held by this lane</title><rect class="lane-empty" x="60" y="82" width="55" height="32" rx="3"/><text x="87.5" y="104" font-size="18" text-anchor="middle">–</text></g>
+<g><title>q=1, K=4–7: 4 input elements</title><rect class="lane-one" x="119" y="82" width="55" height="32" rx="3"/><path class="element-divider" d="M 132.75 84 v 28"/><path class="element-divider" d="M 146.5 84 v 28"/><path class="element-divider" d="M 160.25 84 v 28"/></g>
+<g><title>q=1, K=8–11: not held by this lane</title><rect class="lane-empty" x="178" y="82" width="55" height="32" rx="3"/><text x="205.5" y="104" font-size="18" text-anchor="middle">–</text></g>
+<g><title>q=1, K=12–15: 4 input elements</title><rect class="lane-one" x="237" y="82" width="55" height="32" rx="3"/><path class="element-divider" d="M 250.75 84 v 28"/><path class="element-divider" d="M 264.5 84 v 28"/><path class="element-divider" d="M 278.25 84 v 28"/></g>
+</g>
+</svg>
+<p><strong>8 elements · 4 VGPRs</strong> per lane, per A/B operand.</p>
+<p>The two lanes hold disjoint K positions.</p>
+<h5>FP32 C/D rows · contiguous halves</h5>
+<svg viewBox="0 0 300 112" role="img" aria-labelledby="wmma-output-4-title" aria-describedby="wmma-output-4-desc" xmlns="http://www.w3.org/2000/svg">
+<title id="wmma-output-4-title">RDNA 4: contiguous FP32 C/D rows</title>
+<desc id="wmma-output-4-desc">At column t, lane t owns rows 0 to 7, and lane t+16 owns rows 8 to 15. Each numbered tile is a row coordinate, with eight outputs per lane. C and D use the same mapping.</desc>
+<g aria-hidden="true">
+<g><title>Row 0: q=0, VGPR offset g=0</title><rect class="lane-zero" x="8" y="6" width="32" height="40" rx="3"/><text x="24" y="32" text-anchor="middle" font-size="18">0</text></g>
+<g><title>Row 1: q=0, VGPR offset g=1</title><rect class="lane-zero" x="44" y="6" width="32" height="40" rx="3"/><text x="60" y="32" text-anchor="middle" font-size="18">1</text></g>
+<g><title>Row 2: q=0, VGPR offset g=2</title><rect class="lane-zero" x="80" y="6" width="32" height="40" rx="3"/><text x="96" y="32" text-anchor="middle" font-size="18">2</text></g>
+<g><title>Row 3: q=0, VGPR offset g=3</title><rect class="lane-zero" x="116" y="6" width="32" height="40" rx="3"/><text x="132" y="32" text-anchor="middle" font-size="18">3</text></g>
+<g><title>Row 4: q=0, VGPR offset g=4</title><rect class="lane-zero" x="152" y="6" width="32" height="40" rx="3"/><text x="168" y="32" text-anchor="middle" font-size="18">4</text></g>
+<g><title>Row 5: q=0, VGPR offset g=5</title><rect class="lane-zero" x="188" y="6" width="32" height="40" rx="3"/><text x="204" y="32" text-anchor="middle" font-size="18">5</text></g>
+<g><title>Row 6: q=0, VGPR offset g=6</title><rect class="lane-zero" x="224" y="6" width="32" height="40" rx="3"/><text x="240" y="32" text-anchor="middle" font-size="18">6</text></g>
+<g><title>Row 7: q=0, VGPR offset g=7</title><rect class="lane-zero" x="260" y="6" width="32" height="40" rx="3"/><text x="276" y="32" text-anchor="middle" font-size="18">7</text></g>
+<g><title>Row 8: q=1, VGPR offset g=0</title><rect class="lane-one" x="8" y="66" width="32" height="40" rx="3"/><text x="24" y="92" text-anchor="middle" font-size="18">8</text></g>
+<g><title>Row 9: q=1, VGPR offset g=1</title><rect class="lane-one" x="44" y="66" width="32" height="40" rx="3"/><text x="60" y="92" text-anchor="middle" font-size="18">9</text></g>
+<g><title>Row 10: q=1, VGPR offset g=2</title><rect class="lane-one" x="80" y="66" width="32" height="40" rx="3"/><text x="96" y="92" text-anchor="middle" font-size="18">10</text></g>
+<g><title>Row 11: q=1, VGPR offset g=3</title><rect class="lane-one" x="116" y="66" width="32" height="40" rx="3"/><text x="132" y="92" text-anchor="middle" font-size="18">11</text></g>
+<g><title>Row 12: q=1, VGPR offset g=4</title><rect class="lane-one" x="152" y="66" width="32" height="40" rx="3"/><text x="168" y="92" text-anchor="middle" font-size="18">12</text></g>
+<g><title>Row 13: q=1, VGPR offset g=5</title><rect class="lane-one" x="188" y="66" width="32" height="40" rx="3"/><text x="204" y="92" text-anchor="middle" font-size="18">13</text></g>
+<g><title>Row 14: q=1, VGPR offset g=6</title><rect class="lane-one" x="224" y="66" width="32" height="40" rx="3"/><text x="240" y="92" text-anchor="middle" font-size="18">14</text></g>
+<g><title>Row 15: q=1, VGPR offset g=7</title><rect class="lane-one" x="260" y="66" width="32" height="40" rx="3"/><text x="276" y="92" text-anchor="middle" font-size="18">15</text></g>
+</g>
+</svg>
+<p><strong>q=0:</strong> rows 0–7.<br><strong>q=1:</strong> rows 8–15.</p>
+</section>
+</div>
+<p class="note">Tiles follow matrix-coordinate order. The formulas below specify VGPR offsets; for <code>t=0</code>, the diagram matches the lane 0 / lane 16 examples.</p>
+<details class="source-details"><summary>Sources</summary>
+<p class="refs">Derived schematic, using the same sources as the formulas: <strong>RDNA 3:</strong> <a href="https://gpuopen.com/download/rdna3-shader-instruction-set-architecture-feb-2023.pdf#page=84">ISA p.84</a> · <strong>RDNA 3.5:</strong> <a href="https://rocm-handbook.amd.com/projects/amd-rocm-optimization-guide/en/latest/compiler-builtins/rdna/rdna3-dense-wmma-builtins.html#fragment-layouts">AMD fragment layouts</a> · <strong>RDNA 4:</strong> <a href="https://gpuopen.com/download/rdna4-instruction-set-architecture.pdf#page=101">ISA p.101</a> · <a href="https://gpuopen.com/download/rdna4-instruction-set-architecture.pdf#page=102">ISA p.102</a>.</p>
+</details>
+</figure>

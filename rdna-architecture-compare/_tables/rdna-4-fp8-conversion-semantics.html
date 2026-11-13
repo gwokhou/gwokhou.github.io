@@ -1,0 +1,11 @@
+<div class="table-scroll" role="region" aria-label="RDNA 4 FP8 conversion semantics" tabindex="0">
+<table class="comparison-table" role="table">
+<caption>RDNA 4 instruction semantics for the four conversions above.</caption>
+<thead role="rowgroup"><tr role="row"><th scope="col" id="comparison-9-column-0" role="columnheader">Property</th><th scope="col" id="comparison-9-column-1" role="columnheader">RDNA 4</th></tr></thead>
+<tbody role="rowgroup">
+<tr role="row"><th scope="row" id="comparison-9-row-1" role="rowheader">Round-to-nearest-even</th><td headers="comparison-9-row-1 comparison-9-column-1" role="cell"><span class="mobile-cell-label" aria-hidden="true">RDNA 4</span><p><code>V_CVT_PK_FP8_F32</code> / <code>V_CVT_PK_BF8_F32</code></p><p>Converts two FP32 values.</p><p class="refs"><a href="https://gpuopen.com/download/rdna4-instruction-set-architecture.pdf#page=528" title="Packed / stochastic conversions: pp.528–529">ISA pp.528–529</a></p></td></tr>
+<tr role="row"><th scope="row" id="comparison-9-row-2" role="rowheader">Stochastic rounding</th><td headers="comparison-9-row-2 comparison-9-column-1" role="cell"><span class="mobile-cell-label" aria-hidden="true">RDNA 4</span><p><code>V_CVT_SR_FP8_F32</code> / <code>V_CVT_SR_BF8_F32</code></p><p>Seed data is supplied by the second input.</p><p class="refs"><a href="https://gpuopen.com/download/rdna4-instruction-set-architecture.pdf#page=528" title="Packed / stochastic conversions: pp.528–529">ISA pp.528–529</a></p></td></tr>
+<tr role="row"><th scope="row" id="comparison-9-row-3" role="rowheader">Overflow</th><td headers="comparison-9-row-3 comparison-9-column-1" role="cell"><span class="mobile-cell-label" aria-hidden="true">RDNA 4</span><p><code>FP16_OVFL=1</code>: signed finite saturation.</p><p><code>FP16_OVFL=0</code>: NaN for FP8; signed infinity for BF8.</p><p class="refs"><a href="https://gpuopen.com/download/rdna4-instruction-set-architecture.pdf#page=89" title="Overflow table: p.89">ISA p.89</a></p></td></tr>
+</tbody>
+</table>
+</div>

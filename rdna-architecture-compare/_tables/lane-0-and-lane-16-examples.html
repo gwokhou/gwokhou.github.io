@@ -1,0 +1,14 @@
+<div class="table-scroll formula-scroll" role="region" aria-label="Lane 0 and lane 16 examples" tabindex="0" aria-describedby="formula-scroll-hint-2">
+<table class="formulas">
+<caption>Derived examples: substitution of L=0 and L=16 into the formulas above.</caption>
+<thead><tr><th scope="col">Lane and operand</th><th scope="col">RDNA 3 / RDNA 3.5<br><span class="refs"><a href="https://gpuopen.com/download/rdna3-shader-instruction-set-architecture-feb-2023.pdf#page=84" title="RDNA 3 p.84">ISA p.84</a> · <a href="https://rocm-handbook.amd.com/projects/amd-rocm-optimization-guide/en/latest/compiler-builtins/rdna/rdna3-dense-wmma-builtins.html#fragment-layouts">AMD RDNA 3 / 3.5 layouts</a></span></th><th scope="col">RDNA 4<br><span class="refs"><a href="https://gpuopen.com/download/rdna4-instruction-set-architecture.pdf#page=101" title="A: p.101">ISA p.101</a> · <a href="https://gpuopen.com/download/rdna4-instruction-set-architecture.pdf#page=102" title="B/C/D: p.102">ISA p.102</a></span></th></tr></thead>
+<tbody>
+<tr><th scope="row">Lane 0: A</th><td>Row 0, K=0–15.</td><td>Row 0, K={0–3, 8–11}.</td></tr>
+<tr><th scope="row">Lane 16: A</th><td>Row 0, K=0–15.</td><td>Row 0, K={4–7, 12–15}.</td></tr>
+<tr><th scope="row">Lane 0: B</th><td>Column 0, K=0–15.</td><td>Column 0, K={0–3, 8–11}.</td></tr>
+<tr><th scope="row">Lane 16: B</th><td>Column 0, K=0–15.</td><td>Column 0, K={4–7, 12–15}.</td></tr>
+<tr><th scope="row">Lane 0: FP32 D</th><td>Column 0, rows {0, 2, 4, 6, 8, 10, 12, 14}.</td><td>Column 0, rows 0–7.</td></tr>
+<tr><th scope="row">Lane 16: FP32 D</th><td>Column 0, rows {1, 3, 5, 7, 9, 11, 13, 15}.</td><td>Column 0, rows 8–15.</td></tr>
+</tbody>
+</table>
+</div>

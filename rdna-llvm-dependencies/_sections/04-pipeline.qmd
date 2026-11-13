@@ -1,0 +1,7 @@
+## 4. Pass pipeline {#llvm-pass-pipeline}
+
+:::: {.reading-block}
+
+The shown AMDGPU pipelines include `SIInsertWaitcnts` followed by the standalone post-register-allocation hazard recognizer at every optimization level; `AMDGPUInsertDelayAlu` is separately conditional. The AMDGPU recognizer calls `fixWMMAHazards`. [Legacy pipeline](https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/AMDGPUTargetMachine.cpp#L1838-L1875) · [New pass-manager pipeline](https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/AMDGPUTargetMachine.cpp#L2593-L2633) · [WMMA fix invocation](https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/GCNHazardRecognizer.cpp#L1945-L1959).
+
+::::

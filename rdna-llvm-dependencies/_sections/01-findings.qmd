@@ -1,0 +1,13 @@
+## 1. Findings and scope {#llvm-wmma-handling}
+
+**Targets:** RDNA 3 `gfx1100–gfx1103`, RDNA 3.5 `gfx1150–gfx1153`, and RDNA 4 `gfx1200/1201`; `gfx1170` is outside scope. Wave-size conditions follow each case.
+
+**Basis:** LLVM [4e9d349ab86d](#compiler-evidence), source review of recognized instructions in the shown pipelines. Compilation, regression tests and GPU execution were **not performed**.
+
+- **Overlapping WMMA registers:** an unseparated D → A/B dependency gets one vector no-op; GFX12 also checks the current sparse index. D → C alone does not trigger that fix, and its hardware stall conditions still apply. [Overlap handling](#llvm-wmma-spacing) · [C-only handling](#llvm-wmma-c-only).
+
+- **Memory-produced operands:** wait insertion uses modeled register dependencies and pending events. It can emit no new wait or a thresholded wait, rather than always waiting for all memory operations. [Operand readiness](#llvm-memory-readiness) · [Counter selection](#llvm-memory-counters).
+
+- **Optional ALU delays:** delay insertion requires `hasDelayAlu()` and skips functions limited to one wave per execution unit. Its C-reuse calculation does not relax the ISA spacing or stall conditions. [Eligibility and calculation](#llvm-alu-delay).
+
+**Check these boundaries when applying the result:** dependencies hidden inside an [inline-assembly string](#llvm-inline-asm) are not established as automatically repaired. Supported [GFX12 expert scheduling](#expert-scheduling) also tracks extra dependency fields and can emit `S_WAITCNT_DEPCTR`.

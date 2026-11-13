@@ -1,0 +1,36 @@
+---
+title: "AMD GPU Architecture Notes"
+subtitle: "RDNA and CDNA references for kernel and compiler development"
+toc: false
+---
+
+Architecture differences are useful only with their applicable targets, instruction variants, and evidence. These references keep those conditions next to the conclusions, with diagrams for the mappings and data paths that benefit from a visual explanation.
+
+## RDNA: architecture and LLVM
+
+[**RDNA 3, RDNA 3.5, and RDNA 4**](../rdna-architecture-compare/index.qmd) compares matrix instructions, lane and register layouts, cross-lane operations, memory movement, and synchronization.
+
+- [Quick comparison](../rdna-architecture-compare/index.qmd#overview)
+- [WMMA layouts and formulas](../rdna-architecture-compare/index.qmd#layout)
+- [Global, LDS, and VGPR data paths](../rdna-architecture-compare/index.qmd#memory)
+- [Evidence status and limits](../rdna-architecture-compare/index.qmd#unconfirmed)
+
+[**LLVM on RDNA: WMMA dependencies and waits**](../rdna-llvm-dependencies/index.qmd) follows the compiler's register-overlap fixes, memory waits, optional ALU delays and inline-assembly boundaries at a pinned revision. Start with the [findings and scope](../rdna-llvm-dependencies/index.qmd#llvm-wmma-handling), then use the [dependency cases](../rdna-llvm-dependencies/index.qmd#llvm-dependency-cases) for a specific sequence.
+
+## CDNA: architecture and LLVM
+
+[**CDNA 3 and CDNA 4**](../cdna-architecture-compare/index.qmd) compares `gfx942` and `gfx950`, with particular attention to MFMA shapes, FNUZ versus OCP FP8, LDS resources, data movement, and synchronization.
+
+- [Quick comparison](../cdna-architecture-compare/index.qmd#overview)
+- [MFMA lane and register layouts](../cdna-architecture-compare/index.qmd#layout)
+- [Memory paths and copy stride](../cdna-architecture-compare/index.qmd#memory)
+- [Evidence status and limits](../cdna-architecture-compare/index.qmd#unconfirmed)
+- [Migration priorities](../cdna-architecture-compare/index.qmd#migration-priorities)
+
+[**LLVM on CDNA: MFMA dependencies and waits**](../cdna-llvm-dependencies/index.qmd) covers target interfaces, physical register overlap, wait-state accounting, memory readiness and developer checks. Start with the [findings and scope](../cdna-llvm-dependencies/index.qmd#compiler-behavior), then read the [shared FP16 dependency cases](../cdna-llvm-dependencies/index.qmd#mfma-compiler-cases).
+
+## Research scope
+
+This topic covers AMD's RDNA and CDNA architectures. The two families have separate target scopes and evidence. Shared presentation does not imply shared hardware behavior.
+
+Each document distinguishes ISA requirements, compiler behavior at a pinned revision, and properties confirmed only at the presentation level. Source review is separate from compilation, GPU execution, and performance validation.

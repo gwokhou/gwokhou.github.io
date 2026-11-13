@@ -1,0 +1,9 @@
+---
+title: "Page not found"
+toc: false
+search: false
+---
+
+This address is not part of the current site.
+
+[Go to the homepage](/index.qmd) or browse [AMD GPU Architecture Notes](/amd-gpu/index.qmd).

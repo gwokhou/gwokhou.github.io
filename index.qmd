@@ -1,0 +1,48 @@
+---
+title: "Guohao's Engineering Notes"
+subtitle: "Systems software, GPU computing, and compilers"
+description: "Personal engineering notes connecting architecture, source code, and practical development."
+toc: false
+page-layout: full
+body-classes: home-page
+---
+
+I’m Guohao, a software engineer. These notes connect architecture and source code to practical engineering decisions, keeping the applicable conditions and supporting evidence close to each conclusion.
+
+## Topics
+
+::: {.topic-intro}
+### [AMD GPU Architecture Notes](amd-gpu/index.qmd)
+
+Architecture comparisons and LLVM dependency analysis for RDNA and CDNA. Explore matrix instructions, lane layouts, memory movement, synchronization, and compiler behavior.
+
+[Explore the topic →](amd-gpu/index.qmd)
+:::
+
+::: {.home-reading-grid}
+::: {.home-reading-group}
+### RDNA
+
+[**RDNA 3, RDNA 3.5, and RDNA 4**](rdna-architecture-compare/index.qmd)\
+Compare WMMA layouts, cross-lane operations, data paths, and synchronization.
+
+[**LLVM on RDNA: WMMA dependencies and waits**](rdna-llvm-dependencies/index.qmd)\
+Trace register-overlap handling, memory waits, and the limits of automatic repair.
+:::
+
+::: {.home-reading-group}
+### CDNA
+
+[**CDNA 3 and CDNA 4**](cdna-architecture-compare/index.qmd)\
+Compare MFMA, numeric formats, lane layouts, LDS resources, and data movement.
+
+[**LLVM on CDNA: MFMA dependencies and waits**](cdna-llvm-dependencies/index.qmd)\
+Follow physical-register dependencies, wait-state accounting, and developer checks.
+:::
+:::
+
+## How to read these notes
+
+Start with an architecture comparison for hardware behavior, or go directly to a compiler article for LLVM handling. Each article states its targets, source revisions, and validation limits. Source inspection, compilation, and GPU measurements are recorded separately.
+
+Corrections and discussion are welcome through the [source repository](https://github.com/gwokhou/gwokhou.github.io).

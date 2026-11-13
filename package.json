@@ -1,0 +1,13 @@
+{
+  "name": "guohao-engineering-notes",
+  "private": true,
+  "scripts": {
+    "check": "node scripts/check-site.cjs"
+  },
+  "devDependencies": {
+    "playwright": "1.65.0"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

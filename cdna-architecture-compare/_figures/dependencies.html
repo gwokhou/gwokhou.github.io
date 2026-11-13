@@ -1,0 +1,12 @@
+<figure class="wmma-diagram" aria-labelledby="cdna-dependency-caption">
+<figcaption id="cdna-dependency-caption"><p class="figure-lead"><strong>Ask what the next operation depends on.</strong></p></figcaption>
+<p class="figure-scope">Both targets. These are dependency categories, not three interchangeable instruction sequences.</p>
+<div class="dependency-start">A consumer needs a value or a shared tile</div>
+<ol class="dependency-paths">
+<li class="dependency-path"><h4>1. Is its memory producer complete?</h4><p>Global → VGPR or global → LDS: track <strong>VMcnt</strong>.</p><p>LDS → register: track the relevant <strong>LGKMcnt</strong> dependency.</p><p class="dependency-rule">A wait follows the producer's counter, even when a global load writes LDS.</p></li>
+<li class="dependency-path"><h4>2. Must other waves rendezvous?</h4><p>For a tile shared across waves, complete producer work and synchronize the participating workgroup.</p><p class="dependency-rule">An ISA <code>S_BARRIER</code> alone does not drain pending memory.</p></li>
+<li class="dependency-path"><h4>3. Is it an MFMA register dependency?</h4><p>Identify the exact producer and consumer opcodes and the input or accumulator overlap.</p><p class="dependency-rule">Use MFMA-specific scheduling rules; a memory wait is not a generic arithmetic completion counter.</p></li>
+</ol>
+<p class="dependency-boundary">Independent work may overlap outstanding operations. The required waits depend on the actual instruction stream; this diagram does not prescribe an unconditional full wait after every operation.</p>
+<p class="refs"><a href="https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/SIInsertWaitcnts.cpp#L1050-L1092">LLVM LDS DMA tracking</a> · <a href="https://www.amd.com/content/dam/amd/en/documents/instinct-tech-docs/instruction-set-architectures/amd-instinct-cdna4-instruction-set-architecture.pdf">ISA §4.4 and S_BARRIER</a> · <a href="https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/GCNHazardRecognizer.cpp">MFMA hazard handling</a>.</p>
+</figure>

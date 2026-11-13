@@ -1,0 +1,55 @@
+<figure class="wmma-diagram" aria-labelledby="wmma-dependency-title">
+<figcaption>
+<span id="wmma-dependency-title" class="visually-hidden">Register overlap determines the spacing rule</span>
+<p class="figure-scope"><strong>Scope:</strong> the ISA register-dependency rules for the covered RDNA 3 / 3.5 WMMA instructions and RDNA 4 WMMA / SWMMAC instructions. <code>D</code> belongs to the preceding instruction; <code>A/B/C</code> belong to the following instruction. RDNA 4 also checks the following sparse-index input.</p>
+</figcaption>
+<p class="note">Blue shading marks shared VGPR locations. Bars illustrate range relationships; their lengths do not prescribe operand sizes. Arrows in the instruction sequence show program order.</p>
+<div class="wmma-panels">
+<section class="wmma-panel" aria-labelledby="hazard-ab-heading">
+<h5 id="hazard-ab-heading">D → A/B overlap</h5>
+<svg viewBox="0 0 300 132" role="img" aria-labelledby="hazard-ab-overlap-title" aria-describedby="hazard-ab-overlap-desc" xmlns="http://www.w3.org/2000/svg">
+<title id="hazard-ab-overlap-title">D overlaps a following A/B source</title>
+<desc id="hazard-ab-overlap-desc">The preceding D and following A/B ranges partially overlap. The common register locations are highlighted in blue. Bar lengths are schematic; no operand size or register allocation is prescribed.</desc>
+<g aria-hidden="true">
+<text x="2" y="36" font-size="17">D</text><rect class="register-other" x="72" y="16" width="160" height="26"/>
+<rect class="register-active" x="132" y="16" width="100" height="26"/>
+<text x="2" y="96" font-size="17">A/B</text><rect class="register-other" x="132" y="76" width="160" height="26"/>
+<rect class="register-active" x="132" y="76" width="100" height="26"/>
+<path class="range-guide" d="M 132 8 V 110 M 232 8 V 110"/>
+</g>
+</svg>
+<ol class="instruction-flow" aria-label="Instruction order for an A/B overlap">
+<li><strong>Producer matrix instruction</strong>Writes the D register range.</li>
+<li class="required-separator"><strong>Required separator</strong><code>V_NOP</code> or an independent VALU instruction.</li>
+<li><strong>Following matrix instruction</strong>Reads an A/B range overlapping that D.</li>
+</ol>
+<p>Identical or partially overlapping ranges trigger the rule. RDNA 4 also applies it when D overlaps the following sparse-index range.</p>
+<p><strong>RDNA 3 / 3.5:</strong> one intervening instruction.<br><strong>RDNA 4:</strong> at least one intervening instruction.</p>
+</section>
+<section class="wmma-panel" aria-labelledby="hazard-c-heading">
+<h5 id="hazard-c-heading">D → C only</h5>
+<svg viewBox="0 0 300 132" role="img" aria-labelledby="hazard-c-only-title" aria-describedby="hazard-c-only-desc" xmlns="http://www.w3.org/2000/svg">
+<title id="hazard-c-only-title">D overlaps only C</title>
+<desc id="hazard-c-only-desc">The preceding D and following C use the same illustrated register range; other sources are disjoint. This example satisfies the C-only condition. Bar lengths are schematic; no operand size or register allocation is prescribed.</desc>
+<g aria-hidden="true">
+<text x="2" y="36" font-size="17">D</text><rect class="register-other" x="72" y="16" width="160" height="26"/>
+<rect class="register-active" x="72" y="16" width="160" height="26"/>
+<text x="2" y="76" font-size="17">C</text><rect class="register-other" x="72" y="56" width="160" height="26"/>
+<rect class="register-active" x="72" y="56" width="160" height="26"/>
+<text x="2" y="116" font-size="17">Other</text><rect class="register-other" x="242" y="96" width="50" height="26"/>
+<path class="range-guide" d="M 72 8 V 90 M 232 8 V 90"/>
+</g>
+</svg>
+<ol class="instruction-flow" aria-label="Instruction order for a C-only overlap">
+<li><strong>Producer matrix instruction</strong>Writes the D register range.</li>
+<li><strong>Following matrix instruction</strong>Reads an overlapping C range; A/B and any RDNA 4 sparse-index input are disjoint from D.</li>
+</ol>
+<p><strong>No additional <code>V_NOP</code> gap is specified for this relation.</strong> The illustration uses identical D/C ranges; the C-only condition also covers partial D/C overlap.</p>
+<p><strong>Hardware stalls may still occur.</strong> The table below retains the generation-specific range, instruction-type, and SRC2-modifier conditions. The RDNA 3 source gives no separate D → C stall table or fixed dependency latency.</p>
+</section>
+</div>
+<p class="note"><strong>Combined overlap:</strong> if D overlaps both C and A/B (or the RDNA 4 sparse-index input), the required-separator rule still applies. A scalar <code>S_NOP</code> or memory-counter wait is not a specified substitute for that separator. <a href="#completion-waits">Memory completion</a> is a separate dependency; <code>V_NOP</code> does not establish that a memory read has completed.</p>
+<details class="source-details"><summary>Sources</summary>
+<p class="refs">Derived instruction-order schematic. <strong>RDNA 3:</strong> <a href="https://gpuopen.com/download/rdna3-shader-instruction-set-architecture-feb-2023.pdf#page=82">ISA p.82</a> · <strong>RDNA 3.5:</strong> <a href="https://gpuopen.com/download/rdna35_instruction_set_architecture.pdf#page=86">ISA p.86</a> · <strong>RDNA 4:</strong> <a href="https://gpuopen.com/download/rdna4-instruction-set-architecture.pdf#page=100">ISA p.100</a> · <a href="https://gpuopen.com/download/rdna4-instruction-set-architecture.pdf#page=101">ISA p.101</a>.</p>
+</details>
+</figure>

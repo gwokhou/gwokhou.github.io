@@ -1,0 +1,29 @@
+## 6. Execution and synchronization {#execution}
+
+**Track the producer and the consumer.** Both target families use `S_WAITCNT` counter-based completion. A barrier coordinates waves in a workgroup; MFMA dependencies require instruction-specific scheduling. They are not substitutes for each other.
+
+```{=html}
+{{< include /cdna-architecture-compare/_figures/dependencies.html >}}
+```
+
+### Direct-to-LDS needs a memory wait {#copy-completion}
+
+A direct VMEM-to-LDS operation produces an LDS value without producing a payload VGPR. Waiting only for ordinary LDS operations is therefore insufficient. The [LLVM companion](../cdna-llvm-dependencies/index.qmd#llvm-copy-completion) explains how the reviewed wait pass tracks pending VMEM-to-LDS writes and later LDS accesses.
+
+For a tile produced and consumed by multiple waves, account for both copy completion and a convergent workgroup synchronization point. At the ISA level, `S_BARRIER` does not implicitly drain outstanding memory counters. A language-level synchronization primitive may lower to a sequence that includes waits; inspect the emitted code rather than equating the primitive to one machine instruction. [CDNA 3 S_BARRIER](https://www.amd.com/content/dam/amd/en/documents/instinct-tech-docs/instruction-set-architectures/amd-instinct-mi300-cdna3-instruction-set-architecture.pdf#page=141) · [CDNA 4 S_BARRIER](https://www.amd.com/content/dam/amd/en/documents/instinct-tech-docs/instruction-set-architectures/amd-instinct-cdna4-instruction-set-architecture.pdf#page=153).
+
+### MFMA dependencies need their own analysis {#mfma-dependencies}
+
+**Identify the physical registers and the consumer's operand role.** Here D is a preceding MFMA's destination; A/B and C are a following instruction's multiplicands and accumulator. Register overlap is distinct from equal matrix values. MFMA can expose partially written results and can continue reading its inputs after issue. [CDNA 3 matrix-core introduction](https://www.amd.com/content/dam/amd/en/documents/instinct-tech-docs/instruction-set-architectures/amd-instinct-mi300-cdna3-instruction-set-architecture.pdf#page=48) · [CDNA 4 matrix-core introduction](https://www.amd.com/content/dam/amd/en/documents/instinct-tech-docs/instruction-set-architectures/amd-instinct-cdna4-instruction-set-architecture.pdf#page=49).
+
+```{=html}
+{{< include /cdna-architecture-compare/_tables/mfma-dependencies.html >}}
+```
+
+The ISA tables distinguish producer families, pass counts and register ranges. Both list a required-wait entry of **2** for a non-dot VALU register write followed by an MFMA read, and **4** for `V_CMPX` updating EXEC before MFMA. These entries are not a universal wait after every matrix operation. [CDNA 3 §7.5, pp.63–66](https://www.amd.com/content/dam/amd/en/documents/instinct-tech-docs/instruction-set-architectures/amd-instinct-mi300-cdna3-instruction-set-architecture.pdf#page=63) · [CDNA 4 §7.6, pp.74–77](https://www.amd.com/content/dam/amd/en/documents/instinct-tech-docs/instruction-set-architectures/amd-instinct-cdna4-instruction-set-architecture.pdf#page=74).
+
+The [LLVM companion cases](../cdna-llvm-dependencies/index.qmd#mfma-compiler-cases) show selected target-specific thresholds and inspected regression expectations. Keep those compiler rules separate from the ISA contract and from measured instruction latency.
+
+::: {.note}
+**Operand storage matters:** these examples do not collapse VGPRs and accumulator registers into one universal rule. Match the actual opcode, register file, register range and modifiers; sparse metadata, FP64 and scaled operations require their own applicable paths. A memory counter does not track MFMA arithmetic completion. For [inline assembly](../cdna-llvm-dependencies/index.qmd#mfma-asm-boundary), make dependencies visible and audit the instruction sequence.
+:::

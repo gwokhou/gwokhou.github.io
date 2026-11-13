@@ -1,0 +1,29 @@
+## 5. Memory and data movement {#memory}
+
+**Revisit both the tile storage and its loading path.** CDNA 4 offers more LDS capacity, a different bank count and additional load forms. These are opportunities to retune a kernel, not a prediction that its existing LDS layout will be faster.
+
+```{=html}
+{{< include /cdna-architecture-compare/_tables/memory.html >}}
+```
+
+Evidence: ISA §2.2.1 for [CDNA 3](https://www.amd.com/content/dam/amd/en/documents/instinct-tech-docs/instruction-set-architectures/amd-instinct-mi300-cdna3-instruction-set-architecture.pdf#page=14) and [CDNA 4](https://www.amd.com/content/dam/amd/en/documents/instinct-tech-docs/instruction-set-architectures/amd-instinct-cdna4-instruction-set-architecture.pdf#page=14); [LLVM target features](https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/GCNFeatures.td#L2177-L2212); [global-to-LDS reference](https://rocm-handbook.amd.com/projects/amd-rocm-optimization-guide/en/latest/compiler-builtins/cross-arch/direct-to-lds-builtins.html); [Clang transpose-load declarations](https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/clang/include/clang/Basic/BuiltinsAMDGPU.td#L787-L792).
+
+### Logical data paths {#data-paths}
+
+```{=html}
+{{< include /cdna-architecture-compare/_figures/data-paths.html >}}
+```
+
+Direct loads remove the payload's intermediate VGPR staging. Address registers and other kernel registers still exist. The diagram deliberately omits cache levels and physical wiring. [Global-to-LDS semantics](https://rocm-handbook.amd.com/projects/amd-rocm-optimization-guide/en/latest/compiler-builtins/cross-arch/direct-to-lds-builtins.html).
+
+### Copy size is not destination stride {#lds-addressing}
+
+With the immediate offset set to zero, the reviewed interface places lane `L` at `LDS base + L×stride`: stride is 4 bytes for 1/2/4-byte transfers and 16 bytes for 12/16-byte transfers. Thus a 12-byte transfer writes three DWORDs in a four-DWORD slot. Packing the next lane at `base+12` would describe a different layout. Respect the interface's wave-uniform LDS base, alignment, bounds and target-specific size constraints. [Builtin parameters and destination addressing](https://rocm-handbook.amd.com/projects/amd-rocm-optimization-guide/en/latest/compiler-builtins/cross-arch/direct-to-lds-builtins.html).
+
+For bank reasoning, a useful address-level calculation is `bank = floor(byte_address/4) mod bank_count`. Addresses 0 and 128 therefore name the same bank under 32 banks and different banks under 64 banks. This arithmetic alone does **not** prove a conflict or a speedup: the instruction's access width, simultaneously serviced lanes and broadcast behavior still matter.
+
+### Transpose during an LDS read {#transpose-loads}
+
+The CDNA 4 `ds_read_tr*` builtin family helps transform a suitable LDS tile into matrix operand fragments. Select the element width and pointer pattern together; one load is not a generic transpose of an arbitrary matrix. In particular, `__builtin_amdgcn_ds_read_tr16_b64_v4f16` returns four FP16 values and has a `__fp16`-based pointer signature at the pinned revision. [Clang declaration](https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/clang/include/clang/Basic/BuiltinsAMDGPU.td#L791) · [AMD transpose-load guide](https://rocm-handbook.amd.com/projects/amd-rocm-optimization-guide/en/latest/compiler-builtins/cdna/cdna4-mfma-lds-builtins.html).
+
+Keep this transformation separate from both ordinary `ds_read` and the wider global-to-LDS copy. A pipeline can use one, both or neither, depending on the required layout.

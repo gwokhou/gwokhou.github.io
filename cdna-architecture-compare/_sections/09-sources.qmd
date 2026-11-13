@@ -1,0 +1,29 @@
+## 9. Sources {#sources}
+
+The links within each section identify the relevant instruction, table or source lines. These are the main reference entry points.
+
+::: {.sources}
+1. [AMD CDNA 3 ISA, 5 August 2025](https://www.amd.com/content/dam/amd/en/documents/instinct-tech-docs/instruction-set-architectures/amd-instinct-mi300-cdna3-instruction-set-architecture.pdf) — matrix operations, LDS and synchronization semantics.
+2. [AMD CDNA 4 ISA, 5 August 2025](https://www.amd.com/content/dam/amd/en/documents/instinct-tech-docs/instruction-set-architectures/amd-instinct-cdna4-instruction-set-architecture.pdf) — wider/scaled MFMA, register layouts and memory instruction additions.
+3. [MI300 microarchitecture](https://rocm.docs.amd.com/en/latest/reference/gpu-arch/mi300.html) and [MI350 microarchitecture](https://rocm.docs.amd.com/en/latest/reference/gpu-arch/mi350.html) — product context and theoretical peaks.
+4. [AMD Matrix Core Programming, 30 September 2025](https://rocm.blogs.amd.com/software-tools-optimization/matrix-cores-cdna/README.html) — concrete MFMA layout examples and low-precision programming.
+5. [ROCm precision support](https://rocm.docs.amd.com/en/latest/reference/precision-support.html), [HIP low-precision types](https://rocm.docs.amd.com/projects/HIP/en/latest/reference/low_fp_types.html) and [ONNX float8 specification](https://onnx.ai/onnx/technical/float8.html) — format names, representations and interface distinctions.
+6. [Global-to-LDS builtins](https://rocm-handbook.amd.com/projects/amd-rocm-optimization-guide/en/latest/compiler-builtins/cross-arch/direct-to-lds-builtins.html) and [CDNA 4 transpose-load builtins](https://rocm-handbook.amd.com/projects/amd-rocm-optimization-guide/en/latest/compiler-builtins/cdna/cdna4-mfma-lds-builtins.html) — programming interfaces; cross-checked against pinned compiler declarations.
+7. [LLVM/Clang at 4e9d349ab86d](https://github.com/llvm/llvm-project/tree/4e9d349ab86dc0a913db3cba11aa2763d6985aff) — target bindings, builtin types, instruction gates and wait tracking.
+8. [AMD Matrix Instruction Calculator at 94b1f16bf3a2](https://github.com/ROCm/amd_matrix_instruction_calculator/tree/94b1f16bf3a2c7089f0f3ec0b3eb303396a18776) — a useful CDNA 3 reference; this snapshot does not list CDNA 4 support.
+:::
+
+## Appendix A. Evidence and validation {#evidence}
+
+**Completed:** primary-source review; pinned compiler declaration, target-feature and MFMA hazard checks; inspection of gfx942/gfx950 regression expectations; CPU enumeration of the two illustrated dense FP16 layouts; site rendering and browser layout checks. The accompanying [source audit](source-audit.md) records locators and source conflicts; the [MFMA compiler audit](../cdna-llvm-dependencies/mfma-compiler-audit.md) records dependency formulas, pipeline coverage and test-case boundaries.
+
+**Not performed:** compilation of a CDNA kernel, LLVM regression execution, GPU execution, or performance/accuracy benchmarking. No claim in this page depends on those tests having passed.
+
+```{=html}
+<details class="reading-details">
+<summary id="source-conflicts">How conflicting or overly broad source descriptions were handled</summary>
+<p>The general accumulator discussion in the current dense-MFMA handbook can be read as assigning multiple blocks to every packed-input operation. The ISA lists the 16×16×16 FP16 instruction as one block, and the concrete builtin has four FP32 outputs per lane. This page uses those instruction-specific definitions.</p>
+<p>The CDNA 4 LDS chapter contains legacy-looking access-count wording alongside its 64-bank description. This page uses the explicit capacity/bank geometry, corroborated by the resource definitions, and does not infer a universal service group or cycle count from that paragraph.</p>
+<p>A high-level TF32 support mark can include emulation. The page distinguishes that status from the presence of a native XF32 instruction.</p>
+</details>
+```

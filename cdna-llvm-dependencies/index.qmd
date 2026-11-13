@@ -1,0 +1,23 @@
+---
+title: "LLVM on CDNA: MFMA dependencies and waits"
+subtitle: "CDNA 3 / 4 · gfx942 / gfx950 · Pinned compiler analysis"
+description: "How the reviewed LLVM revision handles MFMA dependencies, memory readiness and compiler-visible hazards, with conditions and source evidence."
+---
+
+Read the compiler's decisions alongside their target, instruction and visibility conditions. The companion [architecture comparison](../cdna-architecture-compare/index.qmd) covers ISA rules, lane layouts, data movement and hardware differences.
+
+{{< include /cdna-llvm-dependencies/_sections/01-findings.qmd >}}
+
+{{< include /cdna-llvm-dependencies/_sections/02-background.qmd >}}
+
+{{< include /cdna-llvm-dependencies/_sections/03-targets.qmd >}}
+
+{{< include /cdna-llvm-dependencies/_sections/04-pipeline.qmd >}}
+
+{{< include /cdna-llvm-dependencies/_sections/05-dependencies.qmd >}}
+
+{{< include /cdna-llvm-dependencies/_sections/06-memory.qmd >}}
+
+{{< include /cdna-llvm-dependencies/_sections/07-boundaries.qmd >}}
+
+{{< include /cdna-llvm-dependencies/_sections/08-evidence.qmd >}}

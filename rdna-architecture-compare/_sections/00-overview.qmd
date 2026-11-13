@@ -1,0 +1,24 @@
+::::: {.overview}
+
+## Quick comparison {#overview}
+
+```{=html}
+<span id="overview-heading"></span>
+```
+
+:::: {.note}
+
+Covered targets: RDNA 3 `gfx1100–gfx1103`, RDNA 3.5 `gfx1150–gfx1153`, and RDNA 4 `gfx1200/1201`. The links below lead to the full conditions and sources.
+
+::::
+
+```{=html}
+<ul class="overview-list">
+  <li><strong>WMMA input fragments change on RDNA 4.</strong><p>For wave32, dense 16×16×16 WMMA with FP16/BF16 A/B, each input operand uses 16 elements / 8 VGPRs per lane on RDNA 3 / 3.5, versus 8 elements / 4 VGPRs on RDNA 4. Replicated lane-group inputs become complementary K positions. <a href="#matrix-operands-row-1">Operand comparison</a>.</p></li>
+  <li><strong>The same output count has a different layout.</strong><p>With FP32 C/D in that wave32 configuration, all three generations have 8 outputs per lane. RDNA 3 / 3.5 lane groups own alternating rows; RDNA 4 groups own rows 0–7 and 8–15. <a href="#layout">Formulas and lane examples</a>.</p></li>
+  <li><strong>Memory completion and WMMA spacing are separate rules.</strong><p>Global / buffer loads use <code>S_WAITCNT</code> / VMcnt on RDNA 3 / 3.5 and <code>S_WAIT_LOADCNT</code> / LOADcnt on RDNA 4. The counter follows the memory producer; it does not track WMMA arithmetic completion. <a href="#completion-waits">Counter families</a> · <a href="#register-dependencies">Register-overlap rules</a>.</p></li>
+  <li><strong>Feature confirmation and implementation details are separate.</strong><p>AMD confirms RDNA 3.5 LPDDR5 awareness, improved compression, and single-use VGPR write suppression. The cited slide leaves implementation details unspecified; cross-generation equivalence is not established by those feature names. <a href="#unconfirmed">Support and evidence limits</a>.</p></li>
+</ul>
+```
+
+:::::

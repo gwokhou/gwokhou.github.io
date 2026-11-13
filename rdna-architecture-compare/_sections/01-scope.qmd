@@ -1,0 +1,38 @@
+## 1. Scope and source revisions {#scope}
+
+This comparison follows the specific targets and source revisions below. Use the target list when applying a result to a kernel: a generation label alone does not establish coverage of every processor in that family.
+
+:::: {.reading-block #default-wmma-configuration}
+
+**Default WMMA example:** fragment counts and coordinate examples use **wave32, 16×16×16 dense WMMA, FP16/BF16 inputs, and FP32 accumulation**. The 16-bit packing subsection and sparse-operation rows state their different configurations locally.
+
+::::
+
+AMD’s RDNA documentation index links separate ISA references for RDNA 3, RDNA 3.5, and RDNA 4. This page organizes facts from those manuals and the official programming references. [AMD documentation index](https://rocm.docs.amd.com/en/latest/reference/gpu-arch/rdna.html).
+
+```{=html}
+{{< include /rdna-architecture-compare/_tables/architecture-targets-and-source-revisions.html >}}
+```
+
+:::: {.note}
+
+The target list defines this page’s scope; it is not an exhaustive family inventory. Product-specific cache capacity, memory bandwidth, clocks, platform/driver support, and GFX12.5 are outside this comparison.
+
+::::
+
+```{=html}
+<details class="reading-details">
+<summary id="evidence-conventions">Evidence labels and scope</summary>
+{{< include /_includes/evidence-labels.html >}}
+<div class="reading-block">
+<p class="note"><strong>Comparison cells:</strong> a merged cell shares only the stated property or evidence result, not complete ISA or microarchitectural equivalence. All applicable generations are named, and generation-specific references remain labeled.</p>
+<p class="note"><strong>Citation placement:</strong> cell-level links support that comparison. Generation-heading links support entries in their column, including merged cells, NaN results, layout formulas, and derived examples. Evidence-column links in Section 8 support the entire row.</p>
+<p class="note"><strong>Source roles:</strong> AMD sources describe hardware and programming interfaces; LLVM sources describe compiler targets and semantics. Builtin availability, ISA behavior, and presentation-level claims remain separate evidence categories.</p>
+<p class="note">Native-instruction availability uses the default features of the exact targets at the pinned revision. Forced feature overrides, software implementations, and GPU execution tests are outside that check. The three such comparisons also report the AMD XML result; see the <a href="#native-isa-check">evidence snapshot</a>.</p>
+</div>
+<div class="reading-block">
+<p class="note">These distinctions are collected in the <a href="#unconfirmed">support-status and unresolved-details table</a>.</p>
+<p class="note">PDF page numbers throughout this page are physical file positions, counted from 1, rather than printed page numbers.</p>
+</div>
+</details>
+```

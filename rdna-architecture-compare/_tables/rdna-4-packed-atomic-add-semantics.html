@@ -1,0 +1,10 @@
+<div class="table-scroll" role="region" aria-label="RDNA 4 packed atomic-add semantics" tabindex="0">
+<table class="comparison-table" role="table">
+<thead role="rowgroup"><tr role="row"><th scope="col" id="comparison-15-column-0" role="columnheader">Aspect</th><th scope="col" id="comparison-15-column-1" role="columnheader">RDNA 4 behavior</th></tr></thead>
+<tbody role="rowgroup">
+<tr role="row"><th scope="row" id="comparison-15-row-1" role="rowheader">Packed addition</th><td headers="comparison-15-row-1 comparison-15-column-1" role="cell"><span class="mobile-cell-label" aria-hidden="true">RDNA 4 behavior</span><p><code>GLOBAL_ATOMIC_PK_ADD_F16</code> and <code>GLOBAL_ATOMIC_PK_ADD_BF16</code> perform component-wise additions of two packed FP16 or BF16 values in a 32-bit memory word.</p><p class="refs"><a href="https://gpuopen.com/download/rdna4-instruction-set-architecture.pdf#page=707">ISA p.707</a></p></td></tr>
+<tr role="row"><th scope="row" id="comparison-15-row-2" role="rowheader">Return control</th><td headers="comparison-15-row-2 comparison-15-column-1" role="cell"><span class="mobile-cell-label" aria-hidden="true">RDNA 4 behavior</span><p><code>TH[0]</code> controls whether the original value is returned.</p><p class="refs"><a href="https://gpuopen.com/download/rdna4-instruction-set-architecture.pdf#page=51">TH fields: p.51</a></p></td></tr>
+<tr role="row"><th scope="row" id="comparison-15-row-3" role="rowheader">Temporal reuse hint</th><td headers="comparison-15-row-3 comparison-15-column-1" role="cell"><span class="mobile-cell-label" aria-hidden="true">RDNA 4 behavior</span><p><code>TH[1]</code> separately selects the temporal reuse hint.</p><p class="refs"><a href="https://gpuopen.com/download/rdna4-instruction-set-architecture.pdf#page=51">TH fields: p.51</a></p></td></tr>
+</tbody>
+</table>
+</div>

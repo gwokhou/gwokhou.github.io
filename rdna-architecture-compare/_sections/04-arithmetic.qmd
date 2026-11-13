@@ -1,0 +1,45 @@
+## 4. Arithmetic and cross-lane operations {#arithmetic}
+
+An instruction’s availability and its edge-case behavior answer different questions. Start with the NaN cases and FP8/BF8 target support, then use the cross-lane diagram to compare who selects the source value and how far it can travel; EXEC conditions remain attached to the relevant operations.
+
+### FP32 minimum / maximum {#fp32-minmax}
+
+```{=html}
+{{< include /rdna-architecture-compare/_tables/fp32-nan-behavior.html >}}
+```
+
+:::: {.note}
+
+**RDNA 4 signaling-NaN exception:** with one numeric input, one signaling NaN, and `CLAMP=0`, either listed instruction family sets `TRAPSTS.INVALID`. [ISA pp.304–305](https://gpuopen.com/download/rdna4-instruction-set-architecture.pdf#page=304 "Numeric preference: pp.304–305") · [ISA pp.525–526](https://gpuopen.com/download/rdna4-instruction-set-architecture.pdf#page=525 "NaN propagation: pp.525–526").
+
+::::
+
+### FP32 → FP8 / BF8 {#fp8-conversions}
+
+```{=html}
+{{< include /rdna-architecture-compare/_tables/fp8-conversion-availability.html >}}
+```
+
+```{=html}
+{{< include /rdna-architecture-compare/_tables/rdna-4-fp8-conversion-semantics.html >}}
+```
+
+### Cross-lane operations {#cross-lane-operations}
+
+#### Cross-lane movement: who selects, and how far can data travel? {#cross-lane-diagram}
+
+```{=html}
+{{< include /rdna-architecture-compare/_figures/cross-lane-diagram.html >}}
+```
+
+### Cross-lane instruction comparison {#cross-lane-instructions}
+
+```{=html}
+{{< include /rdna-architecture-compare/_tables/cross-lane-instructions.html >}}
+```
+
+:::: {.note}
+
+**RDNA 4 additional permute instruction:** `DS_BPERMUTE_FI_B32` reads source lanes regardless of EXEC; EXEC still controls destination writes. [ISA p.163](https://gpuopen.com/download/rdna4-instruction-set-architecture.pdf#page=163).
+
+::::

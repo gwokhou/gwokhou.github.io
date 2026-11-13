@@ -1,0 +1,43 @@
+---
+title: "RDNA 3, RDNA 3.5, and RDNA 4"
+subtitle: "Kernel and compiler reference"
+description: "A comparison of AMD RDNA 3, RDNA 3.5, and RDNA 4 for GPU kernel and compiler developers, with official references."
+---
+
+```{=html}
+<span id="compare"></span>
+```
+
+A factual comparison of architecture features relevant to GPU kernels and compilers.
+
+::: {.meta}
+Architecture sources rechecked: November 12, 2026; LLVM WMMA handling: November 13, 2026. This is an independently organized reference based on official documentation, not an AMD publication.
+:::
+
+{{< include /rdna-architecture-compare/_sections/00-overview.qmd >}}
+
+{{< include /rdna-architecture-compare/_sections/01-scope.qmd >}}
+
+{{< include /rdna-architecture-compare/_sections/02-matrix.qmd >}}
+
+{{< include /rdna-architecture-compare/_sections/03-layout.qmd >}}
+
+{{< include /rdna-architecture-compare/_sections/04-arithmetic.qmd >}}
+
+{{< include /rdna-architecture-compare/_sections/05-memory.qmd >}}
+
+{{< include /rdna-architecture-compare/_sections/06-execution.qmd >}}
+
+{{< include /rdna-architecture-compare/_sections/07-compiler.qmd >}}
+
+{{< include /rdna-architecture-compare/_sections/08-unconfirmed.qmd >}}
+
+{{< include /rdna-architecture-compare/_sections/09-sources.qmd >}}
+
+{{< include /rdna-architecture-compare/_sections/10-evidence.qmd >}}
+
+::: {.document-footer}
+The generated site includes local styles, diagrams, and scripts. External source documents require an internet connection. Document content and the on-page contents remain readable without JavaScript; search and automatic highlighting require JavaScript.
+
+This reference contains no GPU benchmark results and does not claim complete ISA or binary compatibility between generations.
+:::

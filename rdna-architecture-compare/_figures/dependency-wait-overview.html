@@ -1,0 +1,56 @@
+<figure class="wmma-diagram" aria-labelledby="dependency-wait-title">
+<figcaption>
+<span id="dependency-wait-title" class="visually-hidden">Dependencies and waits: a shared map for §§2, 6, and 7</span>
+<p class="note">Read each applicable branch. A single instruction sequence may need more than one of these checks. Connectors classify requirements; they do not show elapsed cycles, instruction order, or LLVM pass order.</p>
+</figcaption>
+<div class="dependency-start">Check the producer and synchronization scope</div>
+<ul class="dependency-paths" role="list">
+<li class="dependency-path">
+<h4><a href="#completion-waits">Memory readiness · §6</a></h4>
+<p>Memory read → register operand use</p>
+<dl>
+<dt>Required mechanism</dt>
+<dd class="dependency-rule">Satisfy the memory producer’s completion dependency before consuming its result.</dd>
+<dt>Counter examples</dt>
+<dd><p><strong>Global / buffer:</strong> VMcnt on RDNA 3 / 3.5; LOADcnt on RDNA 4.</p><p><strong>Indexed LDS:</strong> LGKMcnt on RDNA 3 / 3.5; DScnt on RDNA 4.</p><p><a href="#memory-completion-waits">Wait encodings, other producer classes, and exceptions →</a></p></dd>
+<dt>LLVM companion</dt>
+<dd><a href="../rdna-llvm-dependencies/index.html#llvm-memory-readiness">Operand-aware wait insertion</a> chooses a threshold from the pending dependency; it does not require a full-memory wait before every WMMA.</dd>
+</dl>
+<details class="source-details"><summary>Sources</summary>
+<p class="refs"><a href="https://gpuopen.com/download/rdna3-shader-instruction-set-architecture-feb-2023.pdf#page=52">RDNA 3 pp.52–53</a> · <a href="https://gpuopen.com/download/rdna35_instruction_set_architecture.pdf#page=53">RDNA 3.5 pp.53–54</a> · <a href="https://gpuopen.com/download/rdna4-instruction-set-architecture.pdf#page=62">RDNA 4 pp.62–65</a></p>
+</details>
+</li>
+<li class="dependency-path">
+<h4><a href="#register-dependencies">WMMA register overlap · §2</a></h4>
+<p>Previous D → following matrix sources</p>
+<dl>
+<dt>Required mechanism</dt>
+<dd class="dependency-rule">D → A/B overlap requires the specified <code>V_NOP</code> / independent-VALU separator. RDNA 4 also checks the sparse-index input.</dd>
+<dt>C-only case</dt>
+<dd>No extra <code>V_NOP</code> is specified for D → C alone; hardware stalls may still occur. <a href="#wmma-dependency-diagram">Overlap diagram and generation-specific conditions →</a></dd>
+<dt>LLVM companion</dt>
+<dd><a href="../rdna-llvm-dependencies/index.html#llvm-wmma-spacing">Recognized, unseparated overlap</a> gets a vector no-op. Scalar waits do not satisfy the separator check.</dd>
+</dl>
+<details class="source-details"><summary>Sources</summary>
+<p class="refs"><a href="https://gpuopen.com/download/rdna3-shader-instruction-set-architecture-feb-2023.pdf#page=82">RDNA 3 p.82</a> · <a href="https://gpuopen.com/download/rdna35_instruction_set_architecture.pdf#page=86">RDNA 3.5 p.86</a> · <a href="https://gpuopen.com/download/rdna4-instruction-set-architecture.pdf#page=101">RDNA 4 p.101</a></p>
+</details>
+</li>
+<li class="dependency-path">
+<h4><a href="#memory-waits-row-5">Workgroup synchronization · §6</a></h4>
+<p>Participating waves → barrier arrival / wait</p>
+<dl>
+<dt>Barrier interface</dt>
+<dd class="dependency-rule"><p><strong>RDNA 3 / 3.5:</strong> <code>S_BARRIER</code> combines arrival and wait.</p><p><strong>RDNA 4:</strong> <code>S_BARRIER_SIGNAL</code> + <code>S_BARRIER_WAIT</code>; ordinary shader workgroup ID <code>-1</code>.</p></dd>
+<dt>Memory visibility</dt>
+<dd>LLVM’s memory model pairs arrival with a preceding release fence and wait with a following acquire fence. Scopes and address spaces determine synchronization.</dd>
+<dt>Read the contract</dt>
+<dd><a href="#barrier-visibility">Barrier visibility and scope →</a><p>A per-wave memory-counter wait alone does not express the workgroup arrival / wait protocol.</p></dd>
+</dl>
+<details class="source-details"><summary>Sources</summary>
+<p class="refs"><a href="https://llvm.org/docs/AMDGPUExecutionSynchronization.html#gfx6-11">GFX6–11 barriers</a> · <a href="https://llvm.org/docs/AMDGPUExecutionSynchronization.html#gfx12">GFX12 barriers</a> · <a href="https://llvm.org/docs/AMDGPUUsage.html#amdgpu-amdhsa-execution-barriers-memory-model">LLVM memory model</a></p>
+</details>
+</li>
+</ul>
+<p class="dependency-boundary"><strong>Keep the requirements separate:</strong> memory counters do not track WMMA arithmetic completion, and <code>V_NOP</code> does not complete a memory read. When dependencies coexist, satisfy each applicable rule.</p>
+<p class="note"><a href="../rdna-llvm-dependencies/index.html#llvm-alu-delay"><code>S_DELAY_ALU</code> is optional</a>; mandatory spacing and ISA stall conditions still apply. LLVM behavior is bounded by the <a href="../rdna-llvm-dependencies/index.html#llvm-wmma-handling">reviewed revision and instruction coverage</a>, including <a href="../rdna-llvm-dependencies/index.html#llvm-inline-asm">inline assembly</a> and <a href="../rdna-llvm-dependencies/index.html#expert-scheduling">expert scheduling</a>.</p>
+</figure>

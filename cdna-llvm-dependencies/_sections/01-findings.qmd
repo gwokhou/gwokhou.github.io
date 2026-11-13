@@ -1,0 +1,13 @@
+## 1. Findings and scope {#compiler-behavior}
+
+**Targets:** CDNA 3 `gfx942` and CDNA 4 `gfx950`, with wave64 matrix operations. The worked dependency table uses the shared FP16 `16×16×16` instruction and VGPR C/D operands; other opcodes and register files need their own checks.
+
+**Basis:** LLVM [4e9d349ab86d](#compiler-evidence), source review of recognized instructions in the shown pipelines. Compilation, regression tests and GPU execution were **not performed**.
+
+- **Exact D → C reuse has a conditional zero case; partial C and A/B overlap use different thresholds.** For the shared FP16 P = 4 example, the paired values are 0/0, 5/6 and 7/8 compiler wait states for gfx942/gfx950. [Cases and full conditions](#mfma-compiler-cases).
+- **Already-counted spacing reduces the remaining deficit.** The threshold is not a fixed number of NOP instructions and is not measured GPU latency. [Distance accounting](#mfma-distance-accounting).
+- **Builtin availability and dependency handling are separate checks.** Match the exact opcode, target features and operand contract. [Target interfaces](#compiler-target-lookup).
+
+**Memory readiness is separate:** the [wait-counter path](#llvm-copy-completion) tracks load-produced operands and direct-to-LDS writes; MFMA spacing does not replace it.
+
+**Automatic handling has a visibility boundary:** dependencies hidden inside an inline-assembly string are not guaranteed to be repaired. Audit the [register constraints and internal sequence](#mfma-asm-warning) when applying these rules to hand-written assembly.

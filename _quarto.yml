@@ -1,0 +1,79 @@
+project:
+  type: website
+  output-dir: _site
+  render:
+    - index.qmd
+    - amd-gpu/index.qmd
+    - 404.qmd
+    - rdna-architecture-compare/index.qmd
+    - cdna-architecture-compare/index.qmd
+    - rdna-llvm-dependencies/index.qmd
+    - cdna-llvm-dependencies/index.qmd
+  resources:
+    - cdna-architecture-compare/source-audit.md
+    - cdna-architecture-compare/mfma-compiler-audit.md
+    - cdna-llvm-dependencies/mfma-compiler-audit.md
+
+website:
+  title: "Guohao's Engineering Notes"
+  description: "Personal engineering notes on systems software, GPU computing, and compilers, with source evidence and explicit scope."
+  site-url: https://gwokhou.github.io/
+  repo-url: https://github.com/gwokhou/gwokhou.github.io
+  repo-branch: main
+  navbar:
+    title: "Guohao's Notes"
+    pinned: true
+    left:
+      - href: index.qmd
+        text: Home
+      - text: AMD GPU
+        menu:
+          - href: amd-gpu/index.qmd
+            text: Topic overview
+          - href: rdna-architecture-compare/index.qmd
+            text: RDNA architecture comparison
+          - href: rdna-llvm-dependencies/index.qmd
+            text: LLVM on RDNA
+          - href: cdna-architecture-compare/index.qmd
+            text: CDNA architecture comparison
+          - href: cdna-llvm-dependencies/index.qmd
+            text: LLVM on CDNA
+    right:
+      - icon: github
+        href: https://github.com/gwokhou/gwokhou.github.io
+        aria-label: Source repository
+  search:
+    location: navbar
+    type: overlay
+  page-footer:
+    left: "Guohao · Engineering notes"
+    right:
+      - text: Source and feedback
+        href: https://github.com/gwokhou/gwokhou.github.io
+
+format:
+  html:
+    theme:
+      - default
+      - _styles/research.scss
+    toc: true
+    toc-location: left-body
+    toc-depth: 4
+    toc-expand: 1
+    toc-title: "On this page"
+    number-sections: false
+    anchor-sections: true
+    hide-description: true
+    html-table-processing: none
+    smooth-scroll: false
+    link-external-newwindow: false
+    grid:
+      sidebar-width: 216px
+      body-width: 1292px
+      margin-width: 0px
+      gutter-width: 36px
+    include-after-body: _includes/fragment-navigation.html
+
+lang: en
+execute:
+  enabled: false

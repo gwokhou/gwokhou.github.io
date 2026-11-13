@@ -1,0 +1,34 @@
+## 3. Target support and interfaces {#compiler-target-lookup}
+
+In the table, **LLVM: Enabled / Not enabled** refers to the builtin's required features in the processor's default feature set at the pinned revision. The [shared evidence definitions](#evidence-conventions) separate this from runtime or library adoption. Forced feature overrides are outside this comparison.
+
+```{=html}
+{{< include /cdna-llvm-dependencies/_tables/compiler.html >}}
+```
+
+Target bindings: [gfx942 / gfx950 processors](https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/GCNProcessors.td#L154-L160), [shared matrix feature](https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/GCNFeatures.td#L2130-L2175), and [generation-specific features](https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/GCNFeatures.td#L2177-L2222). The `gfx950` definitions also enable the [larger LDS resource model](../cdna-architecture-compare/index.qmd#memory).
+
+```{=html}
+<details class="reading-details">
+<summary id="compiler-contracts">Builtin contracts and source gates</summary>
+<p>Names below omit the <code>__builtin_amdgcn_</code> prefix. Vector lengths are per lane; they do not prescribe a global-memory layout or validate tail handling.</p>
+<dl class="rule-details">
+<div>
+<dt>Common FP16 MFMA</dt>
+<dd><p><code>mfma_f32_16x16x16f16</code> takes four FP16 values for each A/B input and four FP32 accumulator values, and returns four FP32 values. Its gate is <code>mai-insts</code>. This is the <a href="../cdna-architecture-compare/index.html#layout">shared layout example</a>. <a href="https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/clang/include/clang/Basic/BuiltinsAMDGPU.td#L699">Clang declaration</a>.</p></dd>
+</div>
+<div>
+<dt>Wider FP16 MFMA</dt>
+<dd><p><code>mfma_f32_16x16x32_f16</code> takes eight FP16 values per A/B input and four FP32 accumulator values, and returns four FP32 values. Its gate is <code>gfx950-insts</code>. Adopting it changes the input contract; changing the compile target alone does not select it. <a href="https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/clang/include/clang/Basic/BuiltinsAMDGPU.td#L762">Clang declaration</a>.</p></dd>
+</div>
+<div>
+<dt>Scaled MFMA</dt>
+<dd><p><code>mfma_scale_*_f8f6f4</code> takes 8×32-bit packed vectors for A/B, with separate format selectors and scale arguments. Its gate is <code>gfx950-insts</code>. Check the <a href="../cdna-architecture-compare/index.html#block-scaling">packing boundary and scale mapping</a> for the selected format. <a href="https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/clang/include/clang/Basic/BuiltinsAMDGPU.td#L759-L760">Clang declarations</a>.</p></dd>
+</div>
+<div>
+<dt>Transpose LDS loads</dt>
+<dd><p><code>ds_read_tr4/6/8/16</code> interfaces require <code>gfx950-insts</code>. Select the pointer and return types together with the <a href="../cdna-architecture-compare/index.html#transpose-loads">LDS layout and element format</a>. These declarations establish compiler interfaces; runtime and library adoption require separate checks. <a href="https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/clang/include/clang/Basic/BuiltinsAMDGPU.td#L787-L792">Clang declarations</a>.</p></dd>
+</div>
+</dl>
+</details>
+```

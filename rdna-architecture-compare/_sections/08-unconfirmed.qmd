@@ -1,0 +1,37 @@
+## 8. Evidence status and limits {#unconfirmed}
+
+Read instruction inventory, LLVM target support, mechanism descriptions and validation as separate evidence dimensions. The [shared status definitions](#evidence-conventions) apply throughout this reference; the table below focuses on feature reports and unresolved mechanisms.
+
+### Feature reports and unresolved mechanisms {#feature-evidence-limits}
+
+:::: {.reading-block}
+
+Three entries have unconfirmed support: RDNA 4 LPDDR5 awareness and RDNA 3 / RDNA 4 single-use VGPR write suppression.
+
+AMD confirms the three RDNA 3.5 features listed here; their remaining gaps concern implementation details.
+
+The Radeon 700M memory improvement is confirmed for that product, while its equivalence to RDNA 3.5 LPDDR5 awareness is unconfirmed. Compression equivalence across generations is also unresolved.
+
+::::
+
+:::: {.note}
+
+An unspecified implementation is not an unconfirmed feature. These labels describe the reviewed sources; see the [status definitions](#evidence-conventions).
+
+::::
+
+```{=html}
+<nav class="section-links" aria-label="Evidence summary topics"><ul>
+  <li><a href="#uncertain-lpddr5-rdna3">LPDDR5-related reports</a></li>
+  <li><a href="#uncertain-compression-details">Compression</a></li>
+  <li><a href="#uncertain-vgpr-rdna3">Single-use VGPR writes</a></li>
+</ul></nav>
+```
+
+```{=html}
+{{< include /rdna-architecture-compare/_tables/support-status-and-unresolved-details.html >}}
+```
+
+### Validation status {#validation-status}
+
+**Source inspected:** the ISA references and XML inventory identified in [Appendix A](#evidence-appendix), plus the pinned compiler code and regression expectations in the [LLVM companion evidence section](../rdna-llvm-dependencies/index.qmd#compiler-evidence). **Not executed:** those LLVM regression tests and GPU benchmarks. The linked evidence records the exact source-check coverage; source inspection does not establish GPU behavior or performance.

@@ -1,0 +1,23 @@
+<div class="evidence-labels">
+<p>Read each status with its named targets, source revision and instruction scope. These four checks answer separate questions.</p>
+<dl class="rule-details">
+<div>
+<dt>ISA inventory</dt>
+<dd><p><strong>Listed / Not listed</strong> reports whether the specified instruction appears in the cited manual or machine-readable inventory. The source is named explicitly, for example <strong>AMD XML</strong>. An omitted entry does not establish hardware absence.</p></dd>
+</div>
+<div>
+<dt>LLVM target support</dt>
+<dd><p><strong>Enabled / Not enabled</strong> refers to the required builtin or native-instruction features in the exact processor's default feature set at the pinned revision. Forced overrides, software implementations, library dispatch and runtime support are separate questions.</p></dd>
+</div>
+<div>
+<dt>Mechanism</dt>
+<dd><p><strong>Documented</strong> applies only to the behavior described in the cited source. <strong>Details unspecified</strong> means that source leaves the relevant mechanism or conditions open. <strong>Mechanism equivalence unconfirmed</strong> means the evidence does not establish that two reported changes share an implementation.</p></dd>
+</div>
+<div>
+<dt>Validation</dt>
+<dd><p><strong>Source inspected</strong>, <strong>CPU checked</strong> and <strong>GPU tested</strong> identify the work actually completed, with its stated coverage. <strong>Not executed</strong> means the named test was not run. Source review, including reading regression expectations, is separate from executing those tests.</p></dd>
+</div>
+</dl>
+<p><strong>Feature reports:</strong> <strong>Confirmed by AMD</strong> means AMD explicitly reports the feature for the named generation or product. <strong>Support unconfirmed</strong> means the reviewed evidence does not establish presence or absence. Feature confirmation can coexist with unspecified implementation details.</p>
+<p><strong>Derived</strong> identifies arithmetic or indexing calculated from the cited definitions. <strong>Unmeasured</strong> identifies a performance or accuracy claim without a local GPU measurement. Neither label is a substitute for a test result.</p>
+</div>

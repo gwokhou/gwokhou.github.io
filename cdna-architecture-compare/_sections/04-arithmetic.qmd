@@ -1,0 +1,25 @@
+## 4. Numeric formats and cross-lane operations {#arithmetic}
+
+**Audit stored values before tuning instructions.** FP8 encoding is a correctness-sensitive change even when an instruction name and buffer size look familiar. Cross-lane operations are a separate question about where a value moves.
+
+### FP8 formats {#fp8-formats}
+
+```{=html}
+{{< include /cdna-architecture-compare/_tables/fp8.html >}}
+```
+
+The device-format split follows [HIP low-precision support](https://rocm.docs.amd.com/projects/HIP/en/latest/reference/low_fp_types.html#fp8-quarter-precision) and [ROCm precision support](https://rocm.docs.amd.com/en/latest/reference/precision-support.html#hip-c-type-implementation-support). Bit-format properties are specified in the [ONNX float8 reference](https://onnx.ai/onnx/technical/float8.html) and AMD's [format table](https://rocm.blogs.amd.com/software-tools-optimization/matrix-cores-cdna/README.html#low-precision-floating-point-types).
+
+```{=html}
+{{< include /cdna-architecture-compare/_figures/fp8-bytes.html >}}
+```
+
+The byte example is a normal finite value, so it does not depend on saturation or NaN conversion policy. For a real port, inspect the checkpoint/tensor encoding, dequantization scales, conversion mode and special-value handling together. Changing a type name or reinterpreting bytes is not a numerical conversion.
+
+### Cross-lane movement {#cross-lane}
+
+Both ISAs document `DS_BPERMUTE_B32` for an indexed gather: each destination lane selects the source lane whose value it receives. `DS_PERMUTE_B32` expresses a scatter instead. Their LDS routing hardware does not mean the program must allocate a shared-memory array for the shuffle. [CDNA 3 ISA, DS instruction definitions](https://www.amd.com/content/dam/amd/en/documents/instinct-tech-docs/instruction-set-architectures/amd-instinct-mi300-cdna3-instruction-set-architecture.pdf) · [CDNA 4 ISA, DS instruction definitions](https://www.amd.com/content/dam/amd/en/documents/instinct-tech-docs/instruction-set-architectures/amd-instinct-cdna4-instruction-set-architecture.pdf#page=483).
+
+For a simple gather example with all 64 lanes active and `OFFSET=0`, aligned byte index `4×7` selects lane 7's source value. Multiple destination lanes may select it. An inactive source, inactive destination, out-of-range index or colliding scatter is outside that example; consult the exact instruction semantics before relying on its result.
+
+DPP controls describe particular lane patterns and masks; they are not interchangeable with an arbitrary gather. Likewise, an MFMA broadcast modifier changes the matrix operand interpretation rather than acting as a general-purpose shuffle. Keep the matrix's `CBSZ`, `ABID` and `BLGP` values attached to any layout claim. [Common MFMA parameters](https://rocm-handbook.amd.com/projects/amd-rocm-optimization-guide/en/latest/compiler-builtins/cdna/mfma-common-parameters.html).

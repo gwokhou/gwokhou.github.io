@@ -1,0 +1,149 @@
+<figure class="wmma-diagram memory-diagram" aria-labelledby="memory-path-title">
+<figcaption>
+<span id="memory-path-title" class="visually-hidden">Global, LDS, and VGPR: follow the data payload</span>
+
+
+<p class="figure-lead">Follow the payload destination: ordinary staging, transpose loads, and LDS direct loads use different paths.</p>
+<p class="figure-scope">Targets and required modes are labeled per panel. The dashed route is a builtin category marked unavailable for the covered targets.</p>
+</figcaption>
+<div class="wmma-panels">
+<section class="wmma-panel" aria-labelledby="memory-staged-heading">
+<h4 id="memory-staged-heading">Ordinary loads and stores</h4>
+<p><strong>RDNA 3 / RDNA 3.5 / RDNA 4</strong></p>
+<svg class="memory-vertical" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 266" role="img" aria-labelledby="memory-staged-title memory-staged-desc">
+<title id="memory-staged-title">Global and LDS loads and stores use VGPR data operands</title>
+<desc id="memory-staged-desc">A global load moves data from global memory into VGPRs; a global store moves it back. An indexed LDS store moves VGPR data into LDS, and an indexed LDS load returns LDS data to VGPRs. Following the two downward arrows stages global data into LDS through VGPRs.</desc>
+<defs><marker id="memory-staged-arrow" viewBox="0 0 7 7" refX="6" refY="3.5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L7 3.5 L0 7 Z" fill="#245a91"/></marker></defs>
+<g font-size="17" text-anchor="middle">
+<rect class="memory-global" x="100" y="10" width="120" height="44" rx="4"/><text x="160" y="38">Global</text>
+<rect class="memory-vgpr" x="100" y="110" width="120" height="44" rx="4"/><text x="160" y="138">VGPR</text>
+<rect class="memory-lds" x="100" y="210" width="120" height="44" rx="4"/><text x="160" y="238">LDS</text></g>
+<g class="memory-transfer" marker-end="url(#memory-staged-arrow)">
+<path d="M130 60 V104"/><path d="M190 104 V60"/>
+<path d="M130 160 V204"/><path d="M190 204 V160"/></g>
+<g font-size="16"><text x="95" y="77" text-anchor="end"><tspan x="95">Global</tspan><tspan x="95" dy="19">load</tspan></text><text x="225" y="77"><tspan x="225">Global</tspan><tspan x="225" dy="19">store</tspan></text>
+<text x="95" y="177" text-anchor="end"><tspan x="95">Indexed</tspan><tspan x="95" dy="19">store</tspan></text><text x="225" y="177"><tspan x="225">Indexed</tspan><tspan x="225" dy="19">load</tspan></text></g>
+</svg>
+<svg class="memory-horizontal" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 140" role="img" aria-labelledby="memory-staged-horizontal-title memory-staged-horizontal-desc">
+<title id="memory-staged-horizontal-title">Global and LDS loads and stores use VGPR data operands</title>
+<desc id="memory-staged-horizontal-desc">A global load moves data from global memory into VGPRs; a global store moves it back. An indexed LDS store moves VGPR data into LDS, and an indexed LDS load returns LDS data to VGPRs. Following the two rightward arrows stages global data into LDS through VGPRs.</desc>
+<defs><marker id="memory-staged-horizontal-arrow" viewBox="0 0 7 7" refX="6" refY="3.5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L7 3.5 L0 7 Z" fill="#245a91"/></marker></defs>
+<g font-size="17" text-anchor="middle">
+<rect class="memory-global" x="1" y="46" width="100" height="44" rx="4"/><text x="51" y="74">Global</text>
+<rect class="memory-vgpr" x="210" y="46" width="100" height="44" rx="4"/><text x="260" y="74">VGPR</text>
+<rect class="memory-lds" x="419" y="46" width="100" height="44" rx="4"/><text x="469" y="74">LDS</text>
+</g>
+<g class="memory-transfer" marker-end="url(#memory-staged-horizontal-arrow)"><path d="M108 58 H202"/><path d="M202 78 H108"/><path d="M318 58 H411"/><path d="M411 78 H318"/></g>
+<g font-size="16" text-anchor="middle"><text x="155" y="17">Global<tspan x="155" dy="19">load</tspan></text><text x="155" y="112">Global<tspan x="155" dy="19">store</tspan></text><text x="365" y="17">Indexed<tspan x="365" dy="19">store</tspan></text><text x="365" y="112">Indexed<tspan x="365" dy="19">load</tspan></text></g>
+</svg>
+<p><strong>Staging example:</strong> global load → VGPR payload → indexed LDS store. A later indexed LDS load can supply a VGPR consumer.</p>
+<details class="figure-notes"><summary>Staging and synchronization</summary>
+<p>Each arrow is a separate operation. The diagram does not imply a fused global-to-LDS instruction or eliminate synchronization requirements.</p>
+</details>
+<details class="source-details"><summary>Sources</summary>
+<p class="refs"><span class="source-group"><strong>RDNA 3:</strong> <a href="https://gpuopen.com/download/rdna3-shader-instruction-set-architecture-feb-2023.pdf#page=121">Global p.121</a> · <a href="https://gpuopen.com/download/rdna3-shader-instruction-set-architecture-feb-2023.pdf#page=134">LDS pp.134–135</a></span> <span class="source-group"><strong>RDNA 3.5:</strong> <a href="https://gpuopen.com/download/rdna35_instruction_set_architecture.pdf#page=123">Global p.123</a> · <a href="https://gpuopen.com/download/rdna35_instruction_set_architecture.pdf#page=136">LDS pp.136–137</a></span> <span class="source-group"><strong>RDNA 4:</strong> <a href="https://gpuopen.com/download/rdna4-instruction-set-architecture.pdf#page=146">Global p.146</a> · <a href="https://gpuopen.com/download/rdna4-instruction-set-architecture.pdf#page=160">LDS pp.160–161</a></span></p>
+</details>
+</section>
+<section class="wmma-panel" aria-labelledby="memory-transpose-heading">
+<h4 id="memory-transpose-heading">Transpose during a global load</h4>
+<p><strong>RDNA 4 · gfx1200 / gfx1201</strong></p>
+<svg class="memory-vertical" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 266" role="img" aria-labelledby="memory-transpose-title memory-transpose-desc">
+<title id="memory-transpose-title">Global transpose loads write their results into VGPRs</title>
+<desc id="memory-transpose-desc">GLOBAL_LOAD_TR_B128 or GLOBAL_LOAD_TR_B64 reads global-memory data and changes its matrix storage order while loading it into VGPRs. LDS is not the destination of this instruction.</desc>
+<defs><marker id="memory-transpose-arrow" viewBox="0 0 7 7" refX="6" refY="3.5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L7 3.5 L0 7 Z" fill="#245a91"/></marker></defs>
+<g font-size="17" text-anchor="middle">
+<rect class="memory-global" x="100" y="10" width="120" height="44" rx="4"/><text x="160" y="38">Global</text>
+<rect class="memory-vgpr" x="100" y="210" width="120" height="44" rx="4"/><text x="160" y="238">VGPR</text></g>
+<path class="memory-transfer" d="M160 60 V204" marker-end="url(#memory-transpose-arrow)"/>
+<rect x="44" y="110" width="232" height="44" fill="#fff"/>
+<text x="160" y="138" font-size="16" text-anchor="middle">Load + transpose</text>
+</svg>
+<svg class="memory-horizontal" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 140" role="img" aria-labelledby="memory-transpose-horizontal-title memory-transpose-horizontal-desc">
+<title id="memory-transpose-horizontal-title">Global transpose loads write their results into VGPRs</title>
+<desc id="memory-transpose-horizontal-desc">GLOBAL_LOAD_TR_B128 or GLOBAL_LOAD_TR_B64 reads global-memory data and changes its matrix storage order while loading it into VGPRs. LDS is not the destination of this instruction.</desc>
+<defs><marker id="memory-transpose-horizontal-arrow" viewBox="0 0 7 7" refX="6" refY="3.5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L7 3.5 L0 7 Z" fill="#245a91"/></marker></defs>
+<g font-size="17" text-anchor="middle">
+<rect class="memory-global" x="1" y="46" width="100" height="44" rx="4"/><text x="51" y="74">Global</text>
+<rect class="memory-vgpr" x="419" y="46" width="100" height="44" rx="4"/><text x="469" y="74">VGPR</text>
+</g>
+<path class="memory-transfer" d="M108 68 H411" marker-end="url(#memory-transpose-horizontal-arrow)"/>
+<rect x="164" y="46" width="192" height="44" fill="#fff"/><text x="260" y="74" font-size="16" text-anchor="middle">Load + transpose</text>
+</svg>
+<p><code>GLOBAL_LOAD_TR_B128</code><br><code>GLOBAL_LOAD_TR_B64</code></p>
+<p class="critical-condition"><strong>EXEC:</strong> zero makes the instruction a no-op; any nonzero value must have all bits set, otherwise behavior is undefined. The ISA specifies wave32 / wave64 layouts separately.</p>
+<p>The cited GFX12 builtin target set includes gfx1200/1201 and excludes the covered RDNA 3 / 3.5 targets. This interface result does not describe every possible transpose mechanism.</p>
+<details class="source-details"><summary>Sources</summary>
+<p class="refs"><a href="https://gpuopen.com/download/rdna4-instruction-set-architecture.pdf#page=152">RDNA 4 ISA pp.152–153</a> · <a href="https://rocm-handbook.amd.com/projects/amd-rocm-optimization-guide/en/latest/compiler-builtins/rdna/rdna4-wmma-transpose-builtins.html#architecture-availability">AMD builtin targets</a></p>
+</details>
+</section>
+<section class="wmma-panel" aria-labelledby="memory-direct-heading">
+<h4 id="memory-direct-heading">LDS direct load</h4>
+<p><strong>RDNA 4 ISA example · CU mode only</strong></p>
+<svg class="memory-vertical" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 266" role="img" aria-labelledby="memory-direct-title memory-direct-desc">
+<title id="memory-direct-title">DS_DIRECT_LOAD reads LDS and broadcasts into VGPRs</title>
+<desc id="memory-direct-desc">The data starts in LDS at the address supplied by M0. DS_DIRECT_LOAD broadcasts the loaded value into VGPRs under its quad-level EXEC write rule. This is an LDS-to-register path, not a global-to-LDS load.</desc>
+<defs><marker id="memory-direct-arrow" viewBox="0 0 7 7" refX="6" refY="3.5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L7 3.5 L0 7 Z" fill="#245a91"/></marker></defs>
+<g font-size="17" text-anchor="middle">
+<rect class="memory-lds" x="100" y="10" width="120" height="44" rx="4"/><text x="160" y="38">LDS</text>
+<rect class="memory-vgpr" x="100" y="210" width="120" height="44" rx="4"/><text x="160" y="238">VGPR</text></g>
+<path class="memory-transfer" d="M160 60 V204" marker-end="url(#memory-direct-arrow)"/>
+<rect x="44" y="110" width="232" height="44" fill="#fff"/>
+<text x="160" y="138" font-size="16" text-anchor="middle">Read + broadcast</text>
+</svg>
+<svg class="memory-horizontal" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 140" role="img" aria-labelledby="memory-direct-horizontal-title memory-direct-horizontal-desc">
+<title id="memory-direct-horizontal-title">DS_DIRECT_LOAD reads LDS and broadcasts into VGPRs</title>
+<desc id="memory-direct-horizontal-desc">The data starts in LDS at the address supplied by M0. DS_DIRECT_LOAD broadcasts the loaded value into VGPRs under its quad-level EXEC write rule. This is an LDS-to-register path, not a global-to-LDS load.</desc>
+<defs><marker id="memory-direct-horizontal-arrow" viewBox="0 0 7 7" refX="6" refY="3.5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L7 3.5 L0 7 Z" fill="#245a91"/></marker></defs>
+<g font-size="17" text-anchor="middle">
+<rect class="memory-lds" x="1" y="46" width="100" height="44" rx="4"/><text x="51" y="74">LDS</text>
+<rect class="memory-vgpr" x="419" y="46" width="100" height="44" rx="4"/><text x="469" y="74">VGPR</text>
+</g>
+<path class="memory-transfer" d="M108 68 H411" marker-end="url(#memory-direct-horizontal-arrow)"/>
+<rect x="164" y="46" width="192" height="44" fill="#fff"/><text x="260" y="74" font-size="16" text-anchor="middle">Read + broadcast</text>
+</svg>
+<p class="critical-condition"><code>DS_DIRECT_LOAD</code> reads LDS; <code>M0</code> supplies its address and data type. The byte address must be DWORD aligned. WGP mode is excluded.</p>
+<p class="critical-condition"><strong>EXEC is applied per quad:</strong> if any lane in a quad is enabled, all four receive the result. This panel illustrates the cited RDNA 4 instruction, rather than an availability comparison with earlier generations.</p>
+<details class="source-details"><summary>Sources</summary>
+<p class="refs"><a href="https://gpuopen.com/download/rdna4-instruction-set-architecture.pdf#page=160">RDNA 4 ISA §12.4, p.160</a></p>
+</details>
+</section>
+<section class="wmma-panel" aria-labelledby="memory-builtin-heading">
+<h4 id="memory-builtin-heading">Global-to-LDS builtin category</h4>
+<p class="memory-status"><strong>RDNA 3 / 3.5 / 4: “No”</strong> for the four named builtins in AMD’s availability table.</p>
+<svg class="memory-vertical" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 266" role="img" aria-labelledby="memory-builtin-title memory-builtin-desc">
+<title id="memory-builtin-title">Intended builtin route with a separate availability restriction</title>
+<desc id="memory-builtin-desc">A dashed arrow identifies the global-to-LDS category, which bypasses payload staging in VGPRs. It does not assert that these builtins are available on RDNA 3, 3.5, or 4; AMD marks all four listed interfaces No for those generations. It also does not establish absence of all hardware memory-to-LDS paths.</desc>
+<defs><marker id="memory-builtin-arrow" viewBox="0 0 7 7" refX="6" refY="3.5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L7 3.5 L0 7 Z" fill="#697586"/></marker></defs>
+<g font-size="17" text-anchor="middle">
+<rect class="memory-global" x="100" y="10" width="120" height="44" rx="4"/><text x="160" y="38">Global</text>
+<rect class="memory-lds" x="100" y="210" width="120" height="44" rx="4"/><text x="160" y="238">LDS</text></g>
+<path class="memory-interface" d="M160 60 V204" marker-end="url(#memory-builtin-arrow)"/>
+<rect x="16" y="94" width="288" height="76" fill="#fff"/>
+<g font-size="16" text-anchor="middle"><text x="160" y="112">Named builtin route</text><text x="160" y="136">Unavailable via these builtins</text><text x="160" y="158">on the covered targets</text></g>
+</svg>
+<svg class="memory-horizontal" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 140" role="img" aria-labelledby="memory-builtin-horizontal-title memory-builtin-horizontal-desc">
+<title id="memory-builtin-horizontal-title">Intended builtin route with a separate availability restriction</title>
+<desc id="memory-builtin-horizontal-desc">A dashed arrow identifies the global-to-LDS category, which bypasses payload staging in VGPRs. It does not assert that these builtins are available on RDNA 3, 3.5, or 4; AMD marks all four listed interfaces No for those generations. It also does not establish absence of all hardware memory-to-LDS paths.</desc>
+<defs><marker id="memory-builtin-horizontal-arrow" viewBox="0 0 7 7" refX="6" refY="3.5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L7 3.5 L0 7 Z" fill="#697586"/></marker></defs>
+<g font-size="17" text-anchor="middle">
+<rect class="memory-global" x="1" y="46" width="100" height="44" rx="4"/><text x="51" y="74">Global</text>
+<rect class="memory-lds" x="419" y="46" width="100" height="44" rx="4"/><text x="469" y="74">LDS</text>
+</g>
+<path class="memory-interface" d="M108 68 H411" marker-end="url(#memory-builtin-horizontal-arrow)"/>
+<rect x="142" y="22" width="236" height="92" fill="#fff"/><g font-size="16" text-anchor="middle"><text x="260" y="44">Named builtin route</text><text x="260" y="68">Unavailable via these builtins</text><text x="260" y="92">on the covered targets</text></g>
+</svg>
+<details class="figure-notes"><summary>How to read the dashed route</summary>
+<p>This category transfers the payload without a VGPR staging step. The dashed route names the interface’s purpose; it is not a supported-path claim for the covered targets.</p>
+</details>
+<p class="critical-condition"><strong>Evidence boundary:</strong> availability of these <a href="#global-lds-builtin-scope">four named interfaces and their target feature</a> does not determine whether every hardware memory-to-LDS path is absent.</p>
+<details class="source-details"><summary>Sources</summary>
+<p class="refs"><a href="https://rocm-handbook.amd.com/projects/amd-rocm-optimization-guide/en/latest/compiler-builtins/cross-arch/direct-to-lds-builtins.html#architecture-availability">AMD builtin availability</a> · <a href="#data-interfaces-row-2">Original comparison row</a></p>
+</details>
+</section>
+</div>
+<p class="note"><strong>Before consuming data:</strong> these paths do not imply completion or visibility. Apply the relevant <a href="#dependency-wait-overview">memory-completion and synchronization rules</a>. The <a href="#cross-lane-diagram">DS permutes in §4</a> use LDS hardware without storing the payload in LDS; they are distinct from the storage transfers drawn here.</p>
+<details class="figure-notes"><summary>Diagram scope and conventions</summary>
+<p class="note"><strong>Scope:</strong> the covered RDNA 3, RDNA 3.5, and RDNA 4 targets; each panel states its instruction or interface scope. Boxes identify data locations, and arrows identify transfer direction. Addresses, caches, physical interconnects, latency, and completion waits are not drawn.</p>
+<p class="note"><strong>Line styles:</strong> solid arrows show the described ISA transfers. The dashed arrow names a builtin category whose availability is limited as stated in its panel.</p>
+</details>
+</figure>

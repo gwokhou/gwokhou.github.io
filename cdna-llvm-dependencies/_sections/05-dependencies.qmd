@@ -1,0 +1,31 @@
+## 5. One instruction, three dependency cases {#mfma-compiler-cases}
+
+**Reusing a result as C differs from reusing it as A/B.** Consider the shared `V_MFMA_F32_16X16X16F16`, using VGPR C/D operands. It belongs to LLVM's XDL class of matrix instructions and is modeled as **P = 4 passes on both targets**. Here P comes from the pinned scheduling model; these thresholds are compiler wait states, not measured GPU clock latency. [Pass definition](https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/SISchedule.td#L173-L180) · [gfx942/gfx950 instruction mapping](https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/SISchedule.td#L294-L334).
+
+**Read the register ranges:** `v[0:3]` means the four physical VGPRs v0–v3, also called a register tuple. Each example keeps the preceding result in that range and changes the following instruction's input.
+
+```{=html}
+{{< include /cdna-llvm-dependencies/_tables/mfma-waits.html >}}
+```
+
+Scope: the listed producer, LLVM-recognized operands and the stated overlap. A/B inputs must not introduce an additional dependency in the C-only rows. **Zero applies only to the listed D → C relationship**, not to every hazard in the instruction stream. The partial-C and A/B values follow different helpers; do not transfer them to every MFMA shape, register file or modifier combination. [Partial-C and A/B rules](https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/GCNHazardRecognizer.cpp#L3346-L3393) · [Full-C and operand selection](https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/GCNHazardRecognizer.cpp#L3456-L3541).
+
+::: {#mfma-distance-accounting .reading-block}
+**A threshold is not an unconditional NOP count.** LLVM subtracts the already-counted distance and considers earlier relevant producers within the scan window. Its distance model counts an ordinary non-meta instruction as 1 and `S_NOP n` as `n + 1`; inserted spacing covers the remaining deficit. [Distance accounting](https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/SIInstrInfo.cpp#L2084-L2095) · [Dependency-window scan](https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/GCNHazardRecognizer.cpp#L973-L1103).
+:::
+
+```{=html}
+<details class="reading-details">
+<summary id="mfma-c-reuse">Why exact C reuse needs conditions</summary>
+<p>“Exact” means the producer destination and consumer C are the same physical register tuple, including its extent. LLVM also compares normalized MFMA opcodes: supported MAC/non-MAC and accumulator-register/VGPR encoding variants normalize to a common operation. Equal matrix values or a shared starting register alone do not establish this path. <a href="https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/GCNHazardRecognizer.cpp#L3328-L3344">Opcode normalization</a> · <a href="https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/GCNHazardRecognizer.cpp#L3470-L3497">Full-C decision</a>.</p>
+<p>For a different normalized opcode, the gfx940-family path also checks the partial-overlap helper. This does not mean every change of opcode needs a nonzero wait: family-specific zero cases remain. For an exact-C chain using the same normalized MFMA opcode, two-pass operations require 2 wait states, and FP64 <code>4×4×4</code> self-chains require 4. Changing the opcode still invokes the family-specific checks above. <a href="https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/GCNHazardRecognizer.cpp#L3396-L3497">Family cases and exceptions</a>.</p>
+<p>The table uses one common FP16 instruction. A wider-K or scaled instruction needs its own opcode classification and pass count; the word “MFMA” alone is not enough to reuse these numbers.</p>
+</details>
+
+```
+
+The [inspected regression expectations](#mfma-regression-evidence) distinguish the FP16 partial-C and A/B cases from corroborating INT8 and VALU-input cases. They were not executed.
+
+### Input overwrite and result access {#mfma-write-hazards}
+
+**A register can still be in use after MFMA issues.** Besides MFMA-to-MFMA reads, the recognizer checks an MFMA result being read or overwritten by later VALU/memory instructions, and a later write overwriting an accumulator input still being read. For the XDL P = 4 path, overwriting C has a 3-state write-after-read window on both targets; result-access and write-after-write checks are separate and can require more. Do not treat input lifetime as result latency. [Result access and overwrite](https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/GCNHazardRecognizer.cpp#L3693-L3989) · [C-input lifetime check](https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/GCNHazardRecognizer.cpp#L3994-L4028).

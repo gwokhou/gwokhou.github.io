@@ -1,0 +1,33 @@
+## 6. Memory-produced operands {#memory-waits}
+
+### Memory read → WMMA operand {#llvm-memory-readiness .compiler-case}
+
+```{=html}
+<dl class="rule-details">
+<div><dt>Register analysis</dt><dd><p><strong>Check:</strong> machine-instruction register uses/definitions against pending event scores.</p><p><strong>Coverage:</strong> the generic operand loop includes recognized WMMA inputs and register-reuse hazards involving pending writes or asynchronous source reads.</p></dd></div>
+<div><dt>Wait decision</dt><dd><p><strong>Threshold:</strong> depends on outstanding events and the register score.</p><p><strong>Outcomes:</strong> no new wait for a satisfied dependency; potentially nonzero for ordered completion; potentially zero for out-of-order cases.</p></dd></div>
+<div><dt>Boundary</dt><dd><p>The operand-wait logic has no unconditional full-memory wait before every WMMA and no dedicated WMMA-completion counter.</p></dd></div>
+</dl>
+```
+
+```{=html}
+<details class="source-details"><summary>Sources by check</summary>
+<ul class="case-sources"><li><strong>Register analysis</strong><p class="refs"><a href="https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/SIInsertWaitcnts.cpp#L2544-L2604" title="Register dependency checks">LLVM: operands</a></p></li><li><strong>Wait decision</strong><p class="refs"><a href="https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/SIInsertWaitcnts.cpp#L1377-L1402" title="Threshold calculation">LLVM: thresholds</a> · <a href="https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/SIInsertWaitcnts.cpp#L1525-L1545" title="Register-score lookup">LLVM: scores</a></p></li><li><strong>Boundary</strong><p class="refs"><a href="https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/SIInsertWaitcnts.cpp#L1377-L1402" title="Threshold calculation">LLVM: thresholds</a> · <a href="https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/SIInsertWaitcnts.cpp#L1525-L1545" title="Register-score lookup">LLVM: scores</a></p></li></ul>
+</details>
+```
+
+### Memory-counter selection {#llvm-memory-counters .compiler-case}
+
+```{=html}
+<dl class="rule-details">
+<div><dt>Instruction encoding</dt><dd><p><strong>Before GFX12:</strong> internal <code>LOAD_CNT</code>/<code>DS_CNT</code> encode VMcnt/LGKMcnt in <code>S_WAITCNT</code>.</p><p><strong>GFX12:</strong> separate counter instructions; LOADcnt or STOREcnt can be combined with DScnt when both need waits.</p></dd></div>
+<div><dt>Producer classification</dt><dd><p><strong>Producer classes:</strong> regular VMEM reads and indexed LDS accesses use their corresponding counters; direct LDS uses <code>EXP_LDS_ACCESS</code>.</p><p><strong>FLAT:</strong> classified by possible VMEM and/or LDS access.</p></dd></div>
+<div><dt>Naming boundary</dt><dd><p>Shared compiler field names do not rename pre-GFX12 ISA counters.</p></dd></div>
+</dl>
+```
+
+```{=html}
+<details class="source-details"><summary>Sources by check</summary>
+<ul class="case-sources"><li><strong>Instruction encoding</strong><p class="refs"><a href="https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/AMDGPUWaitcntUtils.cpp#L114-L125" title="Legacy field mapping">LLVM: legacy fields</a> · <a href="https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/SIInsertWaitcnts.cpp#L1894-L1899" title="S_WAITCNT emission">LLVM: S_WAITCNT</a> · <a href="https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/SIInsertWaitcnts.cpp#L2295-L2337" title="GFX12 wait emission">LLVM: GFX12 waits</a></p></li><li><strong>Producer classification</strong><p class="refs"><a href="https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/SIInsertWaitcnts.cpp#L252-L266" title="Pre-GFX12 event mapping">LLVM: GFX11 events</a> · <a href="https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/SIInsertWaitcnts.cpp#L294-L306" title="GFX12 event mapping">LLVM: GFX12 events</a> · <a href="https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/AMDGPUHWEvents.cpp#L163-L165" title="Direct LDS classification">LLVM: direct LDS</a> · <a href="https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/AMDGPUHWEvents.cpp#L107-L133" title="DS / FLAT classification">LLVM: DS / FLAT</a></p></li><li><strong>Naming boundary</strong><p class="refs"><a href="https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/AMDGPUWaitcntUtils.cpp#L114-L125" title="Legacy field mapping">LLVM: legacy fields</a> · <a href="https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/SIInsertWaitcnts.cpp#L1894-L1899" title="S_WAITCNT emission">LLVM: S_WAITCNT</a> · <a href="https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/SIInsertWaitcnts.cpp#L2295-L2337" title="GFX12 wait emission">LLVM: GFX12 waits</a></p></li></ul>
+</details>
+```

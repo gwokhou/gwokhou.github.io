@@ -1,0 +1,43 @@
+## 7. Compiler support and behavior {#compiler}
+
+**Use the exact target and inspect the emitted sequence.** The full analysis is now in [LLVM on RDNA: WMMA dependencies and waits](../rdna-llvm-dependencies/index.qmd).
+
+### Target support and tools {#compiler-target-lookup}
+
+Scope: `gfx1100–gfx1103`, `gfx1150–gfx1153`, and `gfx1200/1201`. Native availability remains beside the [SWMMAC](#matrix-operands-row-5), [FP8 conversion](#fp8-availability-row-1), and [packed atomic](#packed-atomic-availability-row-1) comparisons. [Compiler targets and ISA tools](../rdna-llvm-dependencies/index.qmd#compiler-target-lookup) gives the supporting interfaces.
+
+### Compiler takeaways {#compiler-summary}
+
+- **D → A/B overlap:** LLVM inserts one vector no-op for a recognized, unseparated dependency; GFX12 also checks the sparse index. [Exact detection and separator](../rdna-llvm-dependencies/index.qmd#llvm-wmma-spacing).
+- **D → C only:** that WMMA fix does not add a vector no-op. ISA stall conditions still apply. [C-only conditions](../rdna-llvm-dependencies/index.qmd#llvm-wmma-c-only).
+- **Memory readiness and optional ALU delay:** separate mechanisms with their own eligibility and limits. [Memory waits](../rdna-llvm-dependencies/index.qmd#memory-waits) · [Optional controls and inline assembly](../rdna-llvm-dependencies/index.qmd#developer-boundaries).
+
+### Applicability and validation limits {#native-availability}
+
+The analysis is pinned to LLVM `4e9d349ab86d` and recognized machine instructions in the reviewed pipelines. Source and regression expectations were inspected; LLVM regression tests and GPU execution were not performed. [Full revision, coverage and limits](../rdna-llvm-dependencies/index.qmd#compiler-evidence).
+
+```{=html}
+<details class="reading-details">
+<summary>Detailed compiler topics</summary>
+<ul>
+<li><a id="llvm-wmma-handling" data-moved-fragment href="../rdna-llvm-dependencies/index.html#llvm-wmma-handling">Findings and scope</a></li>
+<li><a href="../rdna-llvm-dependencies/index.html#compiler-target-lookup">Compiler targets and ISA tools</a>
+<a id="comparison-18-column-0" data-moved-fragment href="../rdna-llvm-dependencies/index.html#comparison-18-column-0" hidden>Compiler targets and ISA tools</a>
+<a id="compiler-tools-arch-1" data-moved-fragment href="../rdna-llvm-dependencies/index.html#compiler-tools-arch-1" hidden>RDNA 3 target tools</a>
+<a id="compiler-tools-arch-2" data-moved-fragment href="../rdna-llvm-dependencies/index.html#compiler-tools-arch-2" hidden>RDNA 3.5 target tools</a>
+<a id="compiler-tools-arch-3" data-moved-fragment href="../rdna-llvm-dependencies/index.html#compiler-tools-arch-3" hidden>RDNA 4 target tools</a>
+<a id="compiler-tools-row-1" data-moved-fragment href="../rdna-llvm-dependencies/index.html#compiler-tools-row-1" hidden>LLVM generic processor grouping</a>
+<a id="compiler-tools-row-2" data-moved-fragment href="../rdna-llvm-dependencies/index.html#compiler-tools-row-2" hidden>Machine-readable ISA and IsaDecoder</a></li>
+<li><a id="llvm-pass-pipeline" data-moved-fragment href="../rdna-llvm-dependencies/index.html#llvm-pass-pipeline">Pass pipeline at the reviewed revision</a></li>
+<li><a id="llvm-dependency-cases" data-moved-fragment href="../rdna-llvm-dependencies/index.html#llvm-dependency-cases">Detailed dependency cases</a></li>
+<li><a id="llvm-wmma-spacing" data-moved-fragment href="../rdna-llvm-dependencies/index.html#llvm-wmma-spacing">D → A/B; RDNA 4 D → sparse index</a></li>
+<li><a id="llvm-wmma-c-only" data-moved-fragment href="../rdna-llvm-dependencies/index.html#llvm-wmma-c-only">D → C only</a></li>
+<li><a id="llvm-memory-readiness" data-moved-fragment href="../rdna-llvm-dependencies/index.html#llvm-memory-readiness">Memory read → WMMA operand</a></li>
+<li><a id="llvm-memory-counters" data-moved-fragment href="../rdna-llvm-dependencies/index.html#llvm-memory-counters">Memory-counter selection</a></li>
+<li><a id="llvm-inline-asm" data-moved-fragment href="../rdna-llvm-dependencies/index.html#llvm-inline-asm">Inline assembly</a></li>
+<li><a id="llvm-alu-delay" data-moved-fragment href="../rdna-llvm-dependencies/index.html#llvm-alu-delay">Optional S_DELAY_ALU and C reuse</a></li>
+<li><a id="expert-scheduling" data-moved-fragment href="../rdna-llvm-dependencies/index.html#expert-scheduling">GFX12 expert-scheduling exception</a></li>
+<li><a href="../rdna-llvm-dependencies/index.html#compiler-evidence">Evidence and validation</a></li>
+</ul>
+</details>
+```

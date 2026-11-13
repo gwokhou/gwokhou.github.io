@@ -1,0 +1,14 @@
+::::: {.overview}
+## Quick comparison {#overview}
+
+Covered targets: **CDNA 3 `gfx942` and CDNA 4 `gfx950`**. Start with the four changes below, then follow each link for its scope and evidence.
+
+```{=html}
+<ul class="overview-list">
+<li><strong>FP8 values need a format-aware migration.</strong><p>CDNA 3 uses FNUZ; CDNA 4 uses OCP FP8/BF8. The same byte can mean a different number. <a href="#fp8-formats">Formats and byte example</a>.</p></li>
+<li><strong>More work per MFMA changes the input fragment.</strong><p>CDNA 4 adds wider-K FP16/BF16 and INT8 instructions and scaled FP8/FP6/FP4 operations. A shared instruction can retain its layout; a new shape needs a new input mapping. <a href="#matrix">Instruction families</a> · <a href="#layout">Lane formulas</a>.</p></li>
+<li><strong>LDS capacity and data paths change together.</strong><p>64 KiB / 32 banks becomes 160 KiB / 64 banks per CU. CDNA 4 also adds wider global-to-LDS transfers and LDS reads with transpose. <a href="#memory">Memory comparison and diagram</a>.</p></li>
+<li><strong>Completion, rendezvous and arithmetic hazards remain separate.</strong><p>A memory wait, a workgroup barrier and MFMA dependency scheduling solve different problems. Direct-to-LDS copies still need completion tracking. <a href="#execution">Dependency overview</a> · <a href="../cdna-llvm-dependencies/index.html#mfma-compiler-cases">MFMA compiler cases</a>.</p></li>
+</ul>
+```
+:::::

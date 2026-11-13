@@ -1,0 +1,34 @@
+## 5. Register dependency cases {#llvm-dependency-cases}
+
+### D → A/B; RDNA 4 D → sparse index {#llvm-wmma-spacing .compiler-case}
+
+```{=html}
+<dl class="rule-details">
+<div><dt>Detection</dt><dd><p>Physical-register overlap between recognized WMMA/SWMMAC instructions.</p></dd></div>
+<div><dt>Compiler action</dt><dd><p>One <code>V_NOP_e32</code> for unseparated D → A/B overlap; GFX12+ also checks the current SWMMAC index.</p></dd></div>
+<div><dt>Scan and separator</dt><dd><p><strong>Scan:</strong> backward across predecessor blocks, expiring at an intervening instruction classified by LLVM as VALU.</p><p><strong>Scalar instructions:</strong> <code>S_NOP</code> and memory-counter waits do not satisfy the intervening-VALU predicate.</p></dd></div>
+<div><dt>Boundary</dt><dd><p>The WMMA hazard fix implements the <a href="../rdna-architecture-compare/index.html#wmma-register-hazards">register-spacing rule</a>; it does not test memory completion.</p></dd></div>
+</dl>
+```
+
+```{=html}
+<details class="source-details"><summary>Sources by check</summary>
+<ul class="case-sources"><li><strong>Detection</strong><p class="refs"><a href="https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/GCNHazardRecognizer.cpp#L2658-L2710" title="Overlap checks and insertion">LLVM: overlap fix</a></p></li><li><strong>Compiler action</strong><p class="refs"><a href="https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/GCNHazardRecognizer.cpp#L2658-L2710" title="Overlap checks and insertion">LLVM: overlap fix</a></p></li><li><strong>Scan and separator</strong><p class="refs"><a href="https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/GCNHazardRecognizer.cpp#L1109-L1159" title="Backward scan">LLVM: scan</a> · <a href="https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/GCNHazardRecognizer.cpp#L2699-L2710" title="VALU expiry and V_NOP">LLVM: spacing</a></p></li><li><strong>Boundary</strong><p class="refs"><a href="https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/GCNHazardRecognizer.cpp#L1109-L1159" title="Backward scan">LLVM: scan</a> · <a href="https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/GCNHazardRecognizer.cpp#L2699-L2710" title="VALU expiry and V_NOP">LLVM: spacing</a></p></li></ul>
+</details>
+```
+
+### D → C only {#llvm-wmma-c-only .compiler-case}
+
+```{=html}
+<dl class="rule-details">
+<div><dt>Compiler action</dt><dd><p><strong>V_NOP:</strong> D → C alone does not trigger this WMMA hazard fix.</p></dd></div>
+<div><dt>Regression evidence</dt><dd><p>The cited GFX11 tests expect no added <code>V_NOP</code> for D → C cases with differing opcodes or source modifiers.</p></dd></div>
+<div><dt>Hardware boundary</dt><dd><p><strong>Hardware stalls:</strong> absence of an inserted <code>V_NOP</code> is not a zero-stall guarantee. RDNA 3.5 / 4 retain their D/C-overlap, instruction-type, and SRC2-modifier conditions.</p><p><strong>Combined overlap:</strong> D → A/B overlap (or RDNA 4 sparse-index overlap) still invokes the WMMA spacing rule.</p></dd></div>
+</dl>
+```
+
+```{=html}
+<details class="source-details"><summary>Sources by check</summary>
+<ul class="case-sources"><li><strong>Compiler action</strong><p class="refs"><a href="https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/GCNHazardRecognizer.cpp#L2678-L2696" title="Return paths">LLVM: return paths</a></p></li><li><strong>Regression evidence</strong><p class="refs"><a href="https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/test/CodeGen/AMDGPU/wmma-hazards.mir#L103-L175" title="D → C regression expectations">LLVM: D → C tests</a></p></li><li><strong>Hardware boundary</strong><p class="refs"><a href="https://gpuopen.com/download/rdna35_instruction_set_architecture.pdf#page=86" title="RDNA 3.5 stall cases">ISA p.86</a> · <a href="https://gpuopen.com/download/rdna4-instruction-set-architecture.pdf#page=101" title="RDNA 4 stall cases">ISA p.101</a></p></li></ul>
+</details>
+```

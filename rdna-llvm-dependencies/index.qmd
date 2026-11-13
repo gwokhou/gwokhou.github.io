@@ -1,0 +1,23 @@
+---
+title: "LLVM on RDNA: WMMA dependencies and waits"
+subtitle: "RDNA 3 / 3.5 / 4 · Pinned compiler analysis"
+description: "How the reviewed LLVM revision handles WMMA dependencies, memory readiness and compiler-visible hazards, with conditions and source evidence."
+---
+
+Read the compiler's decisions alongside their target, instruction and visibility conditions. The companion [architecture comparison](../rdna-architecture-compare/index.qmd) covers ISA rules, lane layouts, data movement and hardware differences.
+
+{{< include /rdna-llvm-dependencies/_sections/01-findings.qmd >}}
+
+{{< include /rdna-llvm-dependencies/_sections/02-background.qmd >}}
+
+{{< include /rdna-llvm-dependencies/_sections/03-targets.qmd >}}
+
+{{< include /rdna-llvm-dependencies/_sections/04-pipeline.qmd >}}
+
+{{< include /rdna-llvm-dependencies/_sections/05-dependencies.qmd >}}
+
+{{< include /rdna-llvm-dependencies/_sections/06-memory.qmd >}}
+
+{{< include /rdna-llvm-dependencies/_sections/07-boundaries.qmd >}}
+
+{{< include /rdna-llvm-dependencies/_sections/08-evidence.qmd >}}

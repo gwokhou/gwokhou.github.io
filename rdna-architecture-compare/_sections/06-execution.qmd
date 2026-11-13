@@ -1,0 +1,55 @@
+## 6. Execution and synchronization {#execution}
+
+For global/buffer reads, completion uses VMcnt on RDNA 3 / 3.5 and LOADcnt on RDNA 4; the producer instruction class determines the counter. Use this chapter to check register state, memory completion, and workgroup synchronization, with the [shared dependency map](#dependency-wait-overview) showing how they relate to WMMA spacing.
+
+### Execution and register state {#register-state}
+
+```{=html}
+{{< include /rdna-architecture-compare/_tables/execution-and-register-state.html >}}
+```
+
+:::: {.note}
+
+**Dynamic-VGPR mode in LLVM:** the cited documentation dates the mode to GFX12. [LLVM: mode](https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/docs/AMDGPUUsage.md?plain=1#L3474-L3479 "LLVM dynamic-VGPR attribute").
+
+::::
+
+### Completion waits and barriers {#completion-waits}
+
+```{=html}
+<nav class="section-links" aria-label="Related to memory completion"><ul><li><a href="#dependency-wait-overview">Dependencies and waits overview</a></li><li><a href="#register-dependencies">Hardware dependencies</a></li><li><a href="../rdna-llvm-dependencies/index.html#llvm-wmma-handling">LLVM handling</a></li></ul></nav>
+```
+
+```{=html}
+{{< include /rdna-architecture-compare/_tables/completion-waits-and-barriers.html >}}
+```
+
+:::: {.note}
+
+**Counter exceptions:** FLAT instructions use both the vector-memory and LDS-related counters; direct/parameter LDS loads use EXPcnt rather than the indexed-LDS counter. These are memory-producer rules, separate from [WMMA register spacing](#wmma-register-hazards). [RDNA 3 counter groups](https://gpuopen.com/download/rdna3-shader-instruction-set-architecture-feb-2023.pdf#page=53) · [RDNA 3.5 direct/parameter loads](https://gpuopen.com/download/rdna35_instruction_set_architecture.pdf#page=54) · [RDNA 3.5 FLAT](https://gpuopen.com/download/rdna35_instruction_set_architecture.pdf#page=53) · [RDNA 4 FLAT and LDS](https://gpuopen.com/download/rdna4-instruction-set-architecture.pdf#page=65).
+
+::::
+
+### Single-use VGPR writes: evidence boundary {#single-use-evidence}
+
+:::: {.reading-block #single-use-history}
+
+<strong class="reading-label">AMD statement</strong>AMD’s Hot Chips 2024 presentation confirms the RDNA 3.5 feature but does not specify triggering conditions. <a class="added-source" href="https://hc2024.hotchips.org/assets/program/conference/day2/24_HC2024.AMD.Cohen.Subramony.final.pdf#page=21">AMD 2024 p.21</a>.
+
+<strong class="reading-label">Historical implementation</strong>A 2023 LLVM contribution authored by AMD engineers described [`S_SINGLEUSE_VDST` annotations and conditional write suppression](https://github.com/llvm/llvm-project/blob/28233b11ac0efd28ab1f6c83842342d2e7f0a4d3/llvm/lib/Target/AMDGPU/AMDGPUInsertSingleUseVDST.cpp#L9-L13): forwarding a single-use VALU result before VGPR writeback could avoid that write.
+
+<strong class="reading-label">Compiler targets and removal</strong>LLVM modeled this hint for [GFX11.5](https://github.com/llvm/llvm-project/commit/28233b11ac0efd28ab1f6c83842342d2e7f0a4d3) and [GFX12](https://github.com/llvm/llvm-project/blob/bfd8f7ee4a85ae8873db14fa6e7e31223a1df169/llvm/lib/Target/AMDGPU/AMDGPU.td#L1636-L1666) ([gfx1200/1201 processor bindings](https://github.com/llvm/llvm-project/blob/bfd8f7ee4a85ae8873db14fa6e7e31223a1df169/llvm/lib/Target/AMDGPU/GCNProcessors.td#L311-L317)); in September 2024, [LLVM removed the unused compiler feature definition, instruction definitions, and pass](https://github.com/llvm/llvm-project/commit/396f6775143ffa80b9f0e72e7250613092d88124).
+
+<strong class="reading-label">Hardware evidence boundary</strong>These compiler records leave RDNA 3 / RDNA 4 hardware support unconfirmed. They also do not establish the full connection between the historical hint and the feature reported in AMD’s RDNA 3.5 presentation. Removing compiler support does not establish hardware absence.
+
+::::
+
+### Instruction and memory-model details {#memory-model-details}
+
+```{=html}
+<ul>
+<li><strong>Legacy opcode:</strong> RDNA 4’s <code>S_WAITCNT</code> machine opcode is equivalent to <code>S_WAIT_IDLE</code> and ignores its operand. <a href="https://gpuopen.com/download/rdna4-instruction-set-architecture.pdf#page=281">ISA p.281</a>.</li>
+<li id="barrier-visibility"><strong>Barrier visibility:</strong> LLVM’s memory model pairs barrier arrival with a preceding release fence and barrier wait with a following acquire fence; synchronization depends on scopes and address spaces. <a href="https://llvm.org/docs/AMDGPUUsage.html#amdgpu-amdhsa-execution-barriers-memory-model">Execution-barrier memory model</a>.</li>
+<li><strong>Later extensions:</strong> LLVM lists named barrier IDs 0–16 and cluster barrier IDs -4/-3 as GFX12.5 features, outside this page’s target scope. <a href="https://llvm.org/docs/AMDGPUExecutionSynchronization.html#amdgpu-execution-synchronization-barriers-sbarrier-ids-gfx12">LLVM barrier-ID table</a>.</li>
+</ul>
+```

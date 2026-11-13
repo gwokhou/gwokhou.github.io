@@ -1,0 +1,31 @@
+## 3. Lane and register layouts {#layout}
+
+**The shared FP16 instruction keeps its output mapping across these generations.** In the wider-K CDNA 4 operation, each lane owns more K values while its output rows stay the same.
+
+Let `L` be a lane index in `0…63`, `q = floor(L/16)` its lane group, and `t = L mod 16` its position in that group. `e` indexes FP16 input elements within one lane; `g` indexes FP32 accumulator elements. A has shape `16×K`, B is `K×16`, and C/D are `16×16`.
+
+```{=html}
+{{< include /cdna-architecture-compare/_figures/lane-layout.html >}}
+```
+
+```{=html}
+{{< include /cdna-architecture-compare/_tables/layout.html >}}
+```
+
+These formulas are derived from the ISA's input and output layout rules with one block, `M=N=16`, and all broadcast controls zero. Low/high halfwords mean bits `15:0` / `31:16`. Register indices here are offsets inside an operand, not allocated physical register numbers. [CDNA 4 ISA §7.1.4](https://www.amd.com/content/dam/amd/en/documents/instinct-tech-docs/instruction-set-architectures/amd-instinct-cdna4-instruction-set-architecture.pdf#page=55) · [AMD's shared 16×16×16 FP16 example](https://rocm.blogs.amd.com/software-tools-optimization/matrix-cores-cdna/README.html#builtin-amdgcn-mfma-f32-16x16x16f16).
+
+### Worked example: lane 18 {#lane-example}
+
+Here `q=1` and `t=2`. With K=16, lane 18 supplies `A[2,4…7]` and `B[4…7,2]`. With K=32, it supplies `A[2,8…15]` and `B[8…15,2]`. In both cases its four output values are `D[4…7,2]`; for example, accumulator item `g=2` is `D[6,2]`.
+
+::: {.note}
+**Scope:** this is a dense, single-block, FP16 → FP32 example with `CBSZ=ABID=BLGP=0`. It is not a universal MFMA layout. FP64 output grouping, multiple blocks, broadcast controls, sparse inputs and scaled-format packing require their own definitions. Storage order in global memory is a separate choice from register ownership.
+:::
+
+```{=html}
+<details class="reading-details">
+<summary id="layout-validation">How the coordinate examples were checked</summary>
+<p>CPU enumeration checks all 64 lanes: A and B each cover 16×K coordinates once, and 64×4 FP32 output items cover every coordinate of the 16×16 result once. This checks the derived indexing, not GPU execution or floating-point accuracy.</p>
+<p>The AMD Matrix Instruction Calculator snapshot linked in the sources supports CDNA 3, but does not list CDNA 4. It is not used as proof of CDNA 4 behavior.</p>
+</details>
+```

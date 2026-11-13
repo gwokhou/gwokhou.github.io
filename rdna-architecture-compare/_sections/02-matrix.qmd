@@ -1,0 +1,66 @@
+## 2. Matrix instructions {#matrix}
+
+For the [default wave32 dense WMMA configuration](#default-wmma-configuration), RDNA 4 halves the per-lane A/B fragment size while retaining eight FP32 C/D values per lane. Check the operand interface first, then register overlap and memory readiness; the sections below keep these separate requirements explicit.
+
+### Operands and instruction interfaces {#matrix-interfaces}
+
+```{=html}
+{{< include /rdna-architecture-compare/_tables/matrix-operands-and-interfaces.html >}}
+```
+
+:::: {.note}
+
+**RDNA 4 sparse matrix semantics:** SWMMAC uses 2:4 sparse A, dense B, and position metadata. For FP16 16×16×32, logical K=32 and stored A has K=16. [ISA p.100](https://gpuopen.com/download/rdna4-instruction-set-architecture.pdf#page=100 "ISA instruction table") · [ISA p.106](https://gpuopen.com/download/rdna4-instruction-set-architecture.pdf#page=106 "ISA sparse dimensions").
+
+::::
+
+:::: {.note}
+
+These naming examples describe wave32 interfaces. Clang also documents [GFX11 wave64](https://clang.llvm.org/docs/AMDGPUBuiltinReference.html#builtin-amdgcn-wmma-f32-16x16x16-f16-w64) and [GFX12 wave64](https://clang.llvm.org/docs/AMDGPUBuiltinReference.html#builtin-amdgcn-wmma-f32-16x16x16-f16-w64-gfx12) WMMA builtins.
+
+::::
+
+### Dependencies and waits: a shared map for §§2, 6, and 7 {#dependency-wait-overview}
+
+```{=html}
+{{< include /rdna-architecture-compare/_figures/dependency-wait-overview.html >}}
+```
+
+### Register dependencies {#register-dependencies}
+
+```{=html}
+<nav class="section-links" aria-label="Related to hardware dependencies"><ul><li><a href="#dependency-wait-overview">Dependencies and waits overview</a></li><li><a href="#completion-waits">Memory completion</a></li><li><a href="../rdna-llvm-dependencies/index.html#llvm-wmma-handling">LLVM handling</a></li></ul></nav>
+```
+
+#### Register overlap determines the spacing rule {#wmma-dependency-diagram}
+
+```{=html}
+{{< include /rdna-architecture-compare/_figures/wmma-dependency-diagram.html >}}
+```
+
+```{=html}
+{{< include /rdna-architecture-compare/_tables/wmma-register-dependencies.html >}}
+```
+
+:::: {.note}
+
+The [RDNA 3.5 scheduling section](https://gpuopen.com/download/rdna35_instruction_set_architecture.pdf#page=86) also mentions SWMMAC. That wording alone does not establish instruction availability for the targets on this page; the sparse-instruction row separately reports the AMD XML and pinned LLVM target evidence.
+
+::::
+
+
+### WMMA spacing and operand readiness {#wmma-waits}
+
+:::: {.note}
+
+The rules here describe the ISA contract. The [LLVM handling reference](../rdna-llvm-dependencies/index.qmd#llvm-wmma-handling) separately identifies automatic compiler actions, their conditions, and their limits at a fixed source revision.
+
+::::
+
+**Register dependency:** D → A/B and D → C refer to the preceding instruction’s destination and the following instruction’s sources, not to equality of matrix values. If D overlaps both C and A/B, the D → A/B correctness rule still applies; RDNA 4 also includes the sparse index input. Absence of an explicit D → C gap does not imply zero latency or stall-free execution. [RDNA 3](https://gpuopen.com/download/rdna3-shader-instruction-set-architecture-feb-2023.pdf#page=82) · [RDNA 3.5](https://gpuopen.com/download/rdna35_instruction_set_architecture.pdf#page=86) · [RDNA 4](https://gpuopen.com/download/rdna4-instruction-set-architecture.pdf#page=101).
+
+**V\_NOP:** a vector no-op, not a memory-completion test. RDNA 4 explicitly defines it as a single-cycle bubble in the vector ALU pipeline. The WMMA overlap rule names `V_NOP` or an independent VALU instruction as the separator; a scalar `S_NOP` or scalar memory-counter wait is not one of those specified substitutes. [RDNA 3 V\_NOP](https://gpuopen.com/download/rdna3-shader-instruction-set-architecture-feb-2023.pdf#page=274) · [RDNA 3.5 V\_NOP](https://gpuopen.com/download/rdna35_instruction_set_architecture.pdf#page=292) · [RDNA 4 V\_NOP](https://gpuopen.com/download/rdna4-instruction-set-architecture.pdf#page=315); the overlap-rule sources are in the table above.
+
+**Memory-produced operands:** the input read has its own completion dependency. RDNA 3 / 3.5 `S_WAITCNT` and RDNA 4 `S_WAIT_*CNT` test outstanding-operation counters against thresholds. Use the producer-specific counter in the [completion-wait table](#memory-completion-waits); the [shared map](#dependency-wait-overview) explains why a WMMA separator cannot replace that wait. [RDNA 3 §§5.6–5.7, pp.52–53](https://gpuopen.com/download/rdna3-shader-instruction-set-architecture-feb-2023.pdf#page=52) · [RDNA 3.5 §§5.6–5.7, pp.53–54](https://gpuopen.com/download/rdna35_instruction_set_architecture.pdf#page=53) · [RDNA 4 §5.7, pp.61–65](https://gpuopen.com/download/rdna4-instruction-set-architecture.pdf#page=61).
+
+**S\_DELAY\_ALU:** the manuals separately describe this as optional ALU dependency scheduling that can avoid pipeline stalls; it is not required for correct operation. This statement does not remove the explicit WMMA overlap rule above. [RDNA 3 §5.7](https://gpuopen.com/download/rdna3-shader-instruction-set-architecture-feb-2023.pdf#page=53) · [RDNA 3.5 §5.7](https://gpuopen.com/download/rdna35_instruction_set_architecture.pdf#page=54) · [RDNA 4 §5.8](https://gpuopen.com/download/rdna4-instruction-set-architecture.pdf#page=66).

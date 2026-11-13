@@ -1,0 +1,11 @@
+<div class="table-scroll" role="region" aria-label="LDS and global-to-LDS differences" tabindex="0">
+<table class="comparison-table">
+<caption>LDS and global-to-LDS differences</caption>
+<thead><tr><th scope="col">Property</th><th scope="col">CDNA 3 · gfx942</th><th scope="col">CDNA 4 · gfx950</th></tr></thead>
+<tbody>
+<tr><th scope="row">LDS geometry</th><td><span class="mobile-cell-label">CDNA 3 · gfx942</span><code>32 × 512 × 4 bytes = 64 KiB</code></td><td><span class="mobile-cell-label">CDNA 4 · gfx950</span><code>64 × 640 × 4 bytes = 160 KiB</code></td></tr>
+<tr><th scope="row">Compiler LDS allocation granularity</th><td><span class="mobile-cell-label">CDNA 3 · gfx942</span>512 bytes at the pinned target definition.</td><td><span class="mobile-cell-label">CDNA 4 · gfx950</span>1280 bytes at the pinned target definition. Allocations round to this unit; a capacity increase does not imply proportional occupancy.</td></tr>
+<tr><th scope="row">Global-to-LDS transfer sizes</th><td><span class="mobile-cell-label">CDNA 3 · gfx942</span>The reviewed direct-load interface supports 1, 2 and 4 bytes per participating lane.</td><td><span class="mobile-cell-label">CDNA 4 · gfx950</span>Adds 12 and 16 bytes per participating lane. The 12-byte transfer uses a 16-byte destination stride.</td></tr>
+<tr><th scope="row">LDS read with transpose</th><td><span class="mobile-cell-label">CDNA 3 · gfx942</span>The gfx950 <code>ds_read_tr*</code> builtin family is not enabled for gfx942.</td><td><span class="mobile-cell-label">CDNA 4 · gfx950</span>Adds 4-, 6-, 8- and 16-bit transpose variants. These move LDS data into VGPRs; they are not global-to-LDS copies.</td></tr>
+</tbody></table>
+</div>

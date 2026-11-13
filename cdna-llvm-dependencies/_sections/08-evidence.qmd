@@ -1,0 +1,40 @@
+## 8. Evidence and validation {#compiler-evidence}
+
+**Reviewed revision:** LLVM `4e9d349ab86dc0a913db3cba11aa2763d6985aff`. All source and regression-test links for the MFMA handling analysis use this commit. **Source-review date:** November 13, 2026. This is an independently organized analysis.
+
+### Completed checks {#completed-checks}
+
+**Source inspected:** [gfx942/gfx950 target features and builtin contracts](#compiler-target-lookup), the [shown pass pipelines](#llvm-pass-pipeline), [MFMA dependency rules and distance accounting](#mfma-compiler-cases), [memory waits](#llvm-copy-completion), and [inline-assembly boundaries and optional controls](#mfma-compiler-scope). The [MFMA compiler audit](mfma-compiler-audit.md) records source locators, dependency formulas and instruction-gate boundaries.
+
+**Regression expectations inspected:** the cases below distinguish the shared FP16 partial-C and A/B examples from corroborating INT8 and VALU-input cases. Source rules and the P = 4 model establish the FP16 table's exact-C zero; the INT8 regression is not a direct FP16 test. The gfx942/gfx950 RUN lines were inspected, not executed.
+
+**Document checked:** site rendering, local links and legacy fragments, disclosure behavior, and desktop/narrow-screen layout. These checks validate the document's presentation and navigation.
+
+```{=html}
+<details class="reading-details">
+<summary id="mfma-regression-evidence">Regression expectations inspected, not executed</summary>
+<p><code>mai-hazards-gfx942.mir</code> has RUN lines for both <code>amdgpu9.42</code> and <code>amdgpu9.50</code>, including a gfx950 run with <code>--schedmodel=0</code>. The file name alone understates its target coverage. These are checked-in expectations, not results from this document's validation. <a href="https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/test/CodeGen/AMDGPU/mai-hazards-gfx942.mir#L1-L3">RUN lines</a>.</p>
+<p>These RUN lines exercise the hazard pass, not instruction availability. In the audit's different-opcode case, the wider FP16 <code>16×16×32</code> instruction requires <code>HasGFX950Insts</code>; its gfx942 MIR expectation does not establish a compilable or executable gfx942 sequence. The shared <code>16×16×16</code> examples below retain their stated scope. <a href="https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/VOP3PInstructions.td#L1434-L1436">Wider-instruction gate</a> · <a href="https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/test/CodeGen/AMDGPU/mai-hazards-gfx942.mir#L2791-L2802">Different-opcode MIR case</a>.</p>
+<dl class="rule-details">
+<div><dt>FP16 partial C</dt><dd><p>The adjacent <code>16×16×16</code> pair expects <code>S_NOP 4</code> on gfx942 and <code>S_NOP 5</code> on gfx950: 5 / 6 wait states. <a href="https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/test/CodeGen/AMDGPU/mai-hazards-gfx942.mir#L2302-L2313">Partial-C case</a>.</p></dd></div>
+<div><dt>FP16 result → A/B</dt><dd><p>The two adjacent-pair cases expect <code>S_NOP 6</code> / <code>S_NOP 7</code>: 7 / 8 wait states. The MIR supplies concrete physical registers and modifiers; it is not an executed matrix-layout check. <a href="https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/test/CodeGen/AMDGPU/mai-hazards-gfx942.mir#L2318-L2345">A/B cases</a>.</p></dd></div>
+<div><dt>Exact accumulator chain</dt><dd><p>A separate INT8 <code>16×16×32</code> case with accumulator registers expects consecutive MFMA instructions without a NOP. The FP16 table's zero is derived from the source rule and P = 4 model; this INT8 case is corroborating coverage, not a direct FP16 test. <a href="https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/test/CodeGen/AMDGPU/mai-hazards-gfx942.mir#L141-L149">Exact-C case</a>.</p></dd></div>
+<div><dt>VALU writes an input</dt><dd><p>An F32 <code>4×4×1</code> case expects <code>S_NOP 1</code>, matching the 2-state non-dot VALU-input rule. This checks a different producer/consumer relationship from the FP16 rows. <a href="https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/test/CodeGen/AMDGPU/mai-hazards-gfx942.mir#L5-L16">VALU-input case</a>.</p></dd></div>
+</dl>
+</details>
+```
+
+### Applicability and validation limits {#compiler-boundaries}
+
+**Not performed:** kernel compilation, LLVM regression execution, GPU execution, or GPU correctness/performance benchmarking for this analysis. No result here depends on those tests having passed.
+
+Compiler actions apply to recognized machine instructions and visible dependencies in the reviewed pipelines. This source snapshot does not establish behavior for every ROCm release, downstream compiler or custom pipeline. Dependencies hidden inside an assembly string remain subject to the [inline-assembly boundary](#mfma-asm-warning).
+
+For kernel-level follow-up, use the [CDNA architecture article's port-validation steps](../cdna-architecture-compare/index.qmd#port-validation). The [CDNA architecture article, Appendix A](../cdna-architecture-compare/index.qmd#evidence), separately records architecture-source review and CPU enumeration of the illustrated lane layouts.
+
+```{=html}
+<details class="reading-details">
+<summary id="evidence-conventions">Evidence labels and scope</summary>
+{{< include /_includes/evidence-labels.html >}}
+</details>
+```

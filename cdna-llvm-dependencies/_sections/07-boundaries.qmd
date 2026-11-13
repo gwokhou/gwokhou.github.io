@@ -1,0 +1,16 @@
+## 7. Developer checks and optional controls {#mfma-compiler-scope}
+
+When applying this analysis, inspect the **actual target and emitted sequence**: opcode changes, partial register overlap, reuse of D as A/B, early C overwrite and register-file transitions. Check asynchronous load completion separately; a load returning an MFMA input is tracked by the wait-counter pass. The numbers above do not replace that memory protocol. [Load-result dependency tracking](https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/SIInsertWaitcnts.cpp#L2544-L2604) · [MFMA audit with source locators](mfma-compiler-audit.md).
+
+```{=html}
+<p id="mfma-asm-warning"><strong>Inline assembly needs an explicit dependency audit.</strong> LLVM does not guarantee automatic repair of MFMA dependencies hidden inside an asm string. Supply accurate register constraints and a correct internal sequence, then inspect the resulting assembly. <a href="https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/GCNHazardRecognizer.cpp#L1831-L1842">Checker scope</a>.</p>
+<details class="reading-details">
+<summary id="mfma-asm-boundary">Why inline-assembly coverage is limited</summary>
+<p>LLVM's inline-asm hazard checker documents limited coverage and applies feature-specific checks. Distance accounting treats an asm statement as zero because it may be empty. These checks do not establish that LLVM parses the instructions inside every asm string. <a href="https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/GCNHazardRecognizer.cpp#L1831-L1842">Checker scope</a> · <a href="https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/GCNHazardRecognizer.cpp#L973-L979">Asm distance accounting</a>.</p>
+</details>
+
+<details class="reading-details">
+<summary id="mfma-scheduling-controls">Optional scheduling controls</summary>
+<p><code>amdgpu-mfma-padding-ratio</code> defaults to 0. Its optional inter-wave performance padding is separate from mandatory dependency spacing; the recognizer combines them by taking the maximum. Likewise, the scheduler's <code>MIMFMARead</code> conservative read model is not an extra universal hardware wait to add to every table entry. <a href="https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/GCNHazardRecognizer.cpp#L56-L59">Padding default</a> · <a href="https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/GCNHazardRecognizer.cpp#L3134-L3161">Padding implementation</a> · <a href="https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/GCNHazardRecognizer.cpp#L3599-L3602">Combined requirement</a> · <a href="https://github.com/llvm/llvm-project/blob/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU/SISchedule.td#L191-L199">Read-model explanation</a>.</p>
+</details>
+```

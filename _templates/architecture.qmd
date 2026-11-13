@@ -1,0 +1,71 @@
+---
+title: "Architecture comparison"
+subtitle: "Kernel and compiler reference"
+description: "Replace with the verified scope of this comparison."
+---
+
+<!-- Copy into a new document directory, then replace these authoring prompts.
+     This template is excluded from the site's explicit render list. -->
+
+## Quick comparison {#overview}
+
+<!-- Summarize established differences. Link each to its full conditions and
+     evidence below. Do not present research questions as conclusions. -->
+
+## 1. Scope and source revisions {#scope}
+
+<!-- Record exact targets, wave sizes, instruction variants, source versions,
+     compiler commits, and verification dates. State the excluded scope. -->
+
+```{=html}
+<details class="reading-details">
+<summary id="evidence-conventions">Evidence labels and scope</summary>
+{{< include /_includes/evidence-labels.html >}}
+</details>
+```
+
+## 2. Matrix instructions {#matrix}
+
+<!-- Compare confirmed instruction interfaces and types. Distinguish hardware
+     semantics from builtin availability and compiler target predicates. -->
+
+## 3. Lane and register layouts {#layout}
+
+<!-- Define coordinates and register offsets before formulas. State all shape,
+     wave-size, input-type, and accumulation conditions beside each diagram. -->
+
+## 4. Arithmetic and cross-lane operations {#arithmetic}
+
+## 5. Memory and data movement {#memory}
+
+<!-- Separate logical data paths, instruction availability, and synchronization
+     requirements. Do not imply an undocumented physical implementation. -->
+
+## 6. Execution and synchronization {#execution}
+
+## 7. Compiler support and behavior {#compiler}
+
+### Target support and tools {#compiler-target-lookup}
+
+### Compiler takeaways {#compiler-summary}
+
+<!-- Keep a short summary linked to the compiler companion's full conditions
+     and pinned evidence. The companion owns pass logic and regression cases;
+     this article retains ISA requirements and native-availability results. -->
+
+### Applicability and validation limits {#compiler-boundaries}
+
+## 8. Evidence status and limits {#unconfirmed}
+
+<!-- Distinguish missing support evidence, unspecified implementation details,
+     and unconfirmed cross-generation equivalence. -->
+
+### Validation status {#validation-status}
+
+<!-- State the actual checks: source inspected, CPU checked, GPU tested, or
+     named tests not executed. Add migration priorities as a separate subsection
+     only when the document contains that guidance. -->
+
+## 9. Sources {#sources}
+
+<!-- Keep exact page/section or pinned source-line links beside each claim. -->

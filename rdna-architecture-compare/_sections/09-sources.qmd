@@ -1,0 +1,32 @@
+## 9. Sources {#sources}
+
+:::: {.note}
+
+This list identifies the source documents; precise page and source-line links remain beside the claims. See [citation and status conventions](#evidence-conventions) for how those links apply, and the [evidence appendix](#evidence-appendix) for the pinned snapshots and checks.
+
+::::
+
+```{=html}
+<ol class="sources">
+    <li id="ref-hub"><a href="https://rocm.docs.amd.com/en/latest/reference/gpu-arch/rdna.html">AMD RDNA architecture documentation</a><p>Official entry point for the generation-specific ISA references.</p></li>
+    <li id="ref-isa3"><a href="https://gpuopen.com/download/rdna3-shader-instruction-set-architecture-feb-2023.pdf">RDNA 3 Instruction Set Architecture Reference Guide</a><p>Execution state, instruction semantics, registers, memory operations, and dependencies.</p></li>
+    <li id="ref-isa35"><a href="https://gpuopen.com/download/rdna35_instruction_set_architecture.pdf">RDNA 3.5 Instruction Set Architecture Reference Guide</a><p>The independent RDNA 3.5 contract, including SALU floating-point operations in §6.8.</p></li>
+    <li id="ref-isa4"><a href="https://gpuopen.com/download/rdna4-instruction-set-architecture.pdf">RDNA 4 Instruction Set Architecture Reference Guide</a><p>Cited sections cover dynamic VGPR allocation, cache controls, instruction dependencies, scalar and vector arithmetic, WMMA, memory addressing, atomics, and cross-lane operations.</p></li>
+    <li id="ref-wmma3"><a href="https://rocm-handbook.amd.com/projects/amd-rocm-optimization-guide/en/latest/compiler-builtins/rdna/rdna3-dense-wmma-builtins.html">AMD ROCm Optimization Guide: RDNA 3 dense WMMA builtins</a><p>Covers RDNA 3 and RDNA 3.5, including target availability, fragments, and builtin interfaces.</p></li>
+    <li id="ref-wmma4"><a href="https://rocm-handbook.amd.com/projects/amd-rocm-optimization-guide/en/latest/compiler-builtins/rdna/rdna4-dense-wmma-builtins.html">AMD ROCm Optimization Guide: RDNA 4 dense WMMA builtins</a><p>Target availability, builtin signatures, and input formats. The RDNA 4 coordinate mappings on this page are linked directly to ISA diagrams.</p></li>
+    <li id="ref-transpose"><a href="https://rocm-handbook.amd.com/projects/amd-rocm-optimization-guide/en/latest/compiler-builtins/rdna/rdna4-wmma-transpose-builtins.html">AMD ROCm Optimization Guide: RDNA 4 WMMA transpose load builtins</a><p>GFX12 transpose builtin target availability. EXEC semantics are sourced to the ISA.</p></li>
+    <li id="ref-direct"><a href="https://rocm-handbook.amd.com/projects/amd-rocm-optimization-guide/en/latest/compiler-builtins/cross-arch/direct-to-lds-builtins.html#architecture-availability">AMD ROCm Optimization Guide: Global-to-LDS builtin availability</a><p>Availability and feature requirements by builtin and target.</p></li>
+    <li id="ref-hotchips"><a href="https://hc2024.hotchips.org/assets/program/conference/day2/24_HC2024.AMD.Cohen.Subramony.final.pdf#page=21">AMD Hot Chips 2024 presentation, slide 21</a><p>RDNA 3.5 shader and mobile-memory improvements in AMD's presentation hosted by the conference.</p></li>
+    <li id="ref-reboot3"><a href="https://gpuopen.com/download/RDNA3_Beyond-the-current-gen-v4.pdf">AMD: RDNA 3 — Beyond the Current Gen</a><p>Lou Kramer, Reboot Develop Blue, April 2023. Slides 12–14 describe DCC and shader write compression.</p></li>
+    <li id="ref-hotchips3"><a href="https://hc2023.hotchips.org/assets/program/conference/day1/CPU2/HC%202023%20AMD%20Ryzen%207040%20Series%20Processor%208-26-2023.pdf">AMD Ryzen 7040 Series Technology Overview — Hot Chips 2023</a><p>Slides 3 and 8 describe the Phoenix memory platform and Radeon 700M memory support.</p></li>
+    <li id="ref-hotchips4"><a href="https://hc2025.hotchips.org/assets/program/conference/day1/8_amd_pomianowski_final.pdf">AMD RDNA 4 Radeon 9000 Series GPU — Hot Chips 2025</a><p>Andy Pomianowski and Laks Pappu, August 2025. Architecture, memory compression, and register-management material.</p></li>
+    <li id="ref-xml"><a href="https://gpuopen.com/machine-readable-isa/">AMD machine-readable GPU ISA documentation</a><p>Supported architecture list, XML specification downloads, and IsaDecoder tools.</p></li>
+    <li id="ref-xml-archive"><a href="https://gpuopen.com/download/AMD_GPU_MR_ISA_XML_2026_08_06.zip">AMD machine-readable ISA archive (2026-08-06 package)</a><p>Checked files, release metadata, entry counts, encoding values, and archive fingerprint are recorded in the <a href="#native-isa-check">XML / LLVM cross-check</a>.</p></li>
+    <li id="ref-llvm-source"><a href="https://github.com/llvm/llvm-project/tree/4e9d349ab86dc0a913db3cba11aa2763d6985aff/llvm/lib/Target/AMDGPU">LLVM AMDGPU source, pinned revision</a><p>Processor bindings, feature inheritance, native-instruction predicates, and real encodings. Cell-level links point to the relevant source lines at this fixed revision.</p></li>
+    <li id="ref-single-use-history"><a href="https://github.com/llvm/llvm-project/commit/28233b11ac0efd28ab1f6c83842342d2e7f0a4d3">AMD-authored LLVM single-use VGPR hint implementation</a><p><a href="https://github.com/llvm/llvm-project/blob/28233b11ac0efd28ab1f6c83842342d2e7f0a4d3/llvm/lib/Target/AMDGPU/AMDGPUInsertSingleUseVDST.cpp#L9-L13">Conditional write-suppression description</a>, November 2023. The <a href="https://github.com/llvm/llvm-project/commit/396f6775143ffa80b9f0e72e7250613092d88124">September 2024 removal</a> is recorded separately from hardware availability.</p></li>
+    <li id="ref-llvm"><a href="https://llvm.org/docs/AMDGPUUsage.html">LLVM AMDGPU Usage</a><p>LLVM's target, feature, ABI, code-object, and memory-model documentation.</p></li>
+    <li id="ref-clang"><a href="https://clang.llvm.org/docs/AMDGPUBuiltinReference.html">Clang AMDGPU Builtin Reference</a><p>Builtin signatures, operand types, required target features, and explicit wave64 entries.</p></li>
+    <li id="ref-sync"><a href="https://llvm.org/docs/AMDGPUExecutionSynchronization.html#gfx12">LLVM AMDGPU Execution Synchronization: GFX12</a><p>Barrier mechanisms and the boundary between GFX12 and later extensions.</p></li>
+    <li id="ref-system"><a href="https://rocm.docs.amd.com/en/docs-10.1.0/reference/system-optimization/rdna3-5.html">AMD RDNA 3.5 system optimization</a><p>Ryzen APU GPUVM and system-memory considerations; platform guidance rather than a WMMA specification.</p></li>
+  </ol>
+```

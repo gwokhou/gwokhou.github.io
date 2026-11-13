@@ -1,0 +1,32 @@
+## 8. Evidence status and limits {#unconfirmed}
+
+Read instruction inventory, LLVM target support, mechanism descriptions and validation as separate evidence dimensions. The [shared status definitions](#evidence-conventions) apply throughout this reference; the table below records the evidence found and its limits.
+
+```{=html}
+{{< include /cdna-architecture-compare/_tables/status.html >}}
+```
+
+The evidence for these boundaries is linked beside each technical claim in [§2](#matrix)–[§7](#compiler). Unspecified mechanisms remain open questions rather than inferred hardware diagrams.
+
+### Validation status {#validation-status}
+
+**Source inspected:** the cited ISA, pinned compiler definitions and MFMA hazard implementation, including gfx942/gfx950 regression expectations. **CPU checked:** coverage of the illustrated dense FP16 coordinate formulas. **Not executed:** CDNA kernel compilation, LLVM regression tests, GPU execution and benchmarks. [Appendix A](#evidence) records these boundaries and the source audits.
+
+### Migration priorities {#migration-priorities}
+
+**Resolve correctness-sensitive changes before comparing speed.** The following order is an engineering recommendation derived from the preceding sections, not an AMD compatibility guarantee.
+
+1. **Identify formats and targets.** Separate FNUZ and OCP tensors and confirm the actual processor and compiler.
+2. **Select the exact matrix operation.** Update input packing, K loops and tails if adopting a wider or scaled instruction; verify sparse metadata separately. Recheck [MFMA dependencies](../cdna-llvm-dependencies/index.qmd#mfma-compiler-cases) when changing opcodes, reusing results as A/B or overlapping accumulator registers.
+3. **Audit the memory protocol.** Confirm direct-copy destination stride, LDS tile bounds, completion waits and cross-wave synchronization.
+4. **Revisit resource use.** Check allocated LDS granularity and registers before increasing tile or pipeline depth.
+5. **Measure alternatives.** Compare the correct baseline with candidate tile, swizzle, transpose-load and copy paths on real hardware.
+
+#### What a kernel port still needs {#port-validation}
+
+1. Build for `gfx942` and `gfx950` separately with the compiler version actually used by the project.
+2. Inspect the generated MFMA opcode, operand widths, wait sequence and kernel resource metadata.
+3. Compare outputs against a reference, including tails, strides, special values and quantization scales relevant to the kernel.
+4. Measure the intended shapes on each GPU after correctness passes. Record occupancy, LDS traffic and bank-conflict evidence when evaluating layout changes.
+
+These are the next validation steps; they were **not** executed as GPU tests for this document. The current checks are listed in the [evidence appendix](#evidence).

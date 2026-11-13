@@ -1,0 +1,17 @@
+## 3. Target support and tools {#compiler-target-lookup}
+
+Native-instruction comparisons: [SWMMAC](../rdna-architecture-compare/index.qmd#matrix-operands-row-5), [FP8 conversions](../rdna-architecture-compare/index.qmd#fp8-availability-row-1), and [packed global atomics](../rdna-architecture-compare/index.qmd#packed-atomic-availability-row-1). Their LLVM status uses the exact targets and default features at the pinned revision.
+
+```{=html}
+{{< include /rdna-llvm-dependencies/_tables/compiler-targets-and-isa-tools.html >}}
+```
+
+LLVM documents specific processors and generic processors separately; the generic-processor table gives supported targets and restrictions. [LLVM generic processors](https://llvm.org/docs/AMDGPUUsage.html#amdgpu-generic-processor-table).
+
+AMD’s XML specifications contain instructions, encodings, operands, data formats, and human-readable descriptions. [AMD machine-readable ISA documentation](https://gpuopen.com/machine-readable-isa/).
+
+### Native availability and evidence scope {#native-availability}
+
+The SWMMAC, FP32-to-FP8/BF8, and packed 16-bit global-atomic comparisons report two results separately: LLVM native-instruction support and entries in AMD’s XML inventory. The LLVM result uses **default features for the exact listed targets at the pinned revision**; an XML omission alone does not establish hardware absence.
+
+Use the [evidence conventions](#evidence-conventions) to interpret these labels. The [RDNA architecture article, Appendix A](../rdna-architecture-compare/index.qmd#native-isa-check), records the XML inventory checks and pinned processor-feature bindings. Its [architecture evidence-status table](../rdna-architecture-compare/index.qmd#unconfirmed) separately tracks presentation-level memory and register-write claims.
